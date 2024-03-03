@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup>
 definePageMeta({ middleware: 'auth' })
 </script>
 
 <template>
-    <h1>Hi! I'm protected.</h1>
+    <h1>Protected</h1>
 </template>
