@@ -2,11 +2,37 @@
 import GithubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { NuxtAuthHandler } from '#auth'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export default NuxtAuthHandler({
   secret: 'my-secret',
   pages: {
     signIn: '/login'
+  },
+  session: {
+    strategy: 'jwt'
+  },
+  adapter: PrismaAdapter(prisma) as any,
+  callbacks: {
+    // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
+    jwt: async ({ token, user }) => {
+      const isSignIn = user ? true : false;
+      if (isSignIn) {
+        // token.jwt = user ? (user as any).access_token || '' : '';
+        // token.id = user ? user.id || '' : '';
+        // token.role = user ? (user as any).role || '' : '';
+      }
+      return Promise.resolve(token);
+    },
+    // Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
+    session: async ({ session, token }) => {
+      // (session as any).role = token.role;
+      // (session as any).uid = token.id;
+      return Promise.resolve(session);
+    },
   },
   providers: [
     // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
@@ -16,8 +42,6 @@ export default NuxtAuthHandler({
     }),
     // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
     CredentialsProvider.default({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'Credentials',
       authorize(credentials: any) {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
@@ -28,7 +52,7 @@ export default NuxtAuthHandler({
 
         if (credentials?.username === user.username && credentials?.password === user.password) {
           // Any object returned will be saved in `user` property of the JWT
-          return user
+          return { name: 'Knecht', email: 'test@test.de' }
         } else {
           // eslint-disable-next-line no-console
           console.error('Warning: Malicious login attempt registered, bad credentials provided')
