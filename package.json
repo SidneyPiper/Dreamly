@@ -12,6 +12,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.0",
     "@prisma/client": "^5.10.2",
+    "bcrypt-ts": "^5.0.2",
     "next-auth": "^4.22.5",
     "nuxt": "^3.10.3",
     "vue": "^3.4.19",

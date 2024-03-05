@@ -9,16 +9,17 @@ definePageMeta({
 
 const { signIn } = useAuth()
 
-const username = ref('')
+const name = ref('')
 const password = ref('')
 </script>
 
 <template>
     <button @click="signIn('github')">Login with GitHub</button>
     <div>
-        <input type="text" v-model="username">
+        <input type="text" v-model="name">
         <input type="text" v-model="password">
-        <button @click="signIn('credentials', { username, password })">Login with
+        <button @click="signIn('credentials', { name, password })">Login with
             credentials</button>
     </div>
+    <NuxtLink to="/register">Register</NuxtLink>
 </template>
