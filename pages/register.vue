@@ -4,20 +4,20 @@
         <form @submit.prevent="register">
             <input v-model="name" type="text" placeholder="Username" />
             <input v-model="email" type="text" placeholder="Email" />
-            <input v-model="password" type="text" placeholder="Password" />
+            <input v-model="password" type="password" placeholder="Password" />
             <button>Register</button>
         </form>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const status = ref(false)
+var success = false
 
 async function register() {
-    status.value = await $fetch('/api/register', {
+    success = await $fetch('/api/register', {
         method: 'POST',
         body: {
             name: name.value,
@@ -26,7 +26,7 @@ async function register() {
         }
     })
 
-    if (status.value) {
+    if (success) {
         await navigateTo('/login')
     }
 }
