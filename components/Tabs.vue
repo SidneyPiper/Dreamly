@@ -37,7 +37,7 @@ function isActive(route: string): boolean {
 <style scoped>
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.2s ease;
 }
 
 .v-enter-from,

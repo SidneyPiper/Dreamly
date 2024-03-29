@@ -3,7 +3,8 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     '@sidebase/nuxt-auth',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts'
   ],
   runtimeConfig: {
     githubClientId: '',
@@ -12,6 +13,11 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1.0, interactive-widget=resizes-visual'
+    }
+  },
+  googleFonts: {
+    families: {
+      Inter: true
     }
   }
 })

@@ -1,5 +1,5 @@
 <template>
-    <div ref="containerRef" class="flex flex-col h-dvh text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
+    <div ref="containerRef" class="flex flex-col h-dvh font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
         <slot />
     </div>
 </template>
@@ -13,7 +13,6 @@ const resizeHandler = (event) => {
     containerRef.value.style.height = height + 'px'
     window.scrollTo(0, 0)
 }
-
 
 onMounted(() => {
     window.visualViewport.addEventListener('resize', resizeHandler)
