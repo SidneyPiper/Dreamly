@@ -15,6 +15,7 @@ definePageMeta({
         unauthenticatedOnly: true,
         navigateAuthenticatedTo: '/protected',
     },
+    layout: false
 })
 
 const { signIn } = useAuth()
