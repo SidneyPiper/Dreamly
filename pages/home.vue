@@ -14,7 +14,7 @@
 import { PlusIcon } from '@heroicons/vue/24/outline';
 
 definePageMeta({
-    middleware: 'auth',
+    //middleware: 'auth',
     layoutTransition: { name: 'stay' }
 })  
 </script>
