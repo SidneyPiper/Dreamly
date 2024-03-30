@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="h-96"></div>
+    <div class="flex flex-col">
+        <div class="h-96">testestst</div>
         <div class="h-96"></div>
         <div class="h-96"></div>
         <div class="h-96"></div>
@@ -14,20 +14,9 @@
 import { PlusIcon } from '@heroicons/vue/24/outline';
 
 definePageMeta({
-    //middleware: 'auth',
+    middleware: 'auth',
+    layout: 'default',
+    pageTransition: { name: 'fade-page' },
     layoutTransition: { name: 'stay' }
-})  
+})
 </script>
-
-
-<style>
-.stay-enter-active,
-.stay-leave-active {
-    transition: all 0.2s;
-}
-
-.stay-enter-from,
-.stay-leave-to {
-    filter: grayscale(0);
-}
-</style>

@@ -9,19 +9,58 @@
  *   </div>
  * </transition>
 */
-.expand-enter-active, .expand-leave-active {
+.expand-enter-active,
+.expand-leave-active {
     display: grid;
     transition: grid-template-rows 0.5s ease-out;
 }
 
-.expand-enter-to, .expand-leave-from {
+.expand-enter-to,
+.expand-leave-from {
     grid-template-rows: 1fr;
 }
 
-.expand-enter-from, .expand-leave-to {
+.expand-enter-from,
+.expand-leave-to {
     grid-template-rows: 0fr;
 }
 
-.expand-enter-active > *, .expand-leave-active > * {
+.expand-enter-active>*,
+.expand-leave-active>* {
     overflow: hidden;
+}
+
+
+/* fade in and out transition for objects */
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.2s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.fade-leave-active {
+    position: absolute;
+}
+
+
+/* fade in and out transition for pages*/
+.fade-page-move,
+.fade-page-enter-active,
+.fade-page-leave-active {
+    transition: all 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.fade-page-enter-from,
+.fade-page-leave-to {
+    opacity: 0;
+}
+
+.fade-page-leave-active {
+    position: absolute;
 }
