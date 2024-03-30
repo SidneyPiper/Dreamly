@@ -1,0 +1,27 @@
+/* expand vertically transition
+ * (Kind of hacky solution, but works great!)
+ *
+ * <transition name="expand">
+ *    <div v-if="isVisible">               <!-- Conditional wrapper -->
+ *      <div>                              <!-- Singular child! Important!! -->
+ *        Expandable content goes here...  <!-- Content here -->
+ *      </div>
+ *   </div>
+ * </transition>
+*/
+.expand-enter-active, .expand-leave-active {
+    display: grid;
+    transition: grid-template-rows 0.5s ease-out;
+}
+
+.expand-enter-to, .expand-leave-from {
+    grid-template-rows: 1fr;
+}
+
+.expand-enter-from, .expand-leave-to {
+    grid-template-rows: 0fr;
+}
+
+.expand-enter-active > *, .expand-leave-active > * {
+    overflow: hidden;
+}
