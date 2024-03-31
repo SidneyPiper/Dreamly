@@ -8,7 +8,6 @@
 const containerRef = ref(null)
 
 const resizeHandler = (event) => {
-    console.log(event.target);
     const height = event.target.height
     containerRef.value.style.height = height + 'px'
     window.scrollTo(0, 0)

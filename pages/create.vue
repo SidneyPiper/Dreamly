@@ -4,70 +4,24 @@
             <TextButton to="/home">Cancel</TextButton>
             <PrimaryButton>Save</PrimaryButton>
         </div>
-        <div class="flex flex-col grow group w-full" @click="handleClick">
-            <div @input="handleInputChange" type="text" ref="inputRef" @keydown.down="handleInputKeyDown"
-                @keydown.right="handleInputKeyRight" @keypress.enter="handleInputEnter" contenteditable="true"
-                tabindex="0"
-                class="text-3xl resize-none break-words text-wrap px-4 font-bold pb-1 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent">
-            </div>
-            <div class="flex flex-wrap relative gap-2 items-center px-4 transition-all"
-                :class="{ 'py-2': selectedTags.length > 0 }">
-                <TransitionGroup name="fade" @before-leave="beforeLeave">
-                    <button v-for="tag in selectedTags" :key="tag.name" @click="handleRemoveTag(tag)">
-                        <Tag :hex="tag.hex">
-                            {{ tag.name }}
-                        </Tag>
-                    </button>
-                </TransitionGroup>
-            </div>
-            <textarea ref="textareaRef" @keydown.up="handleTextareaKeyUp" @keydown.left="handleTextareaKeyLeft"
-                @keydown.backspace="handleTextareaBackspace" :readonly="readonly"
-                class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
-                rows="3"></textarea>
-        </div>
-        <div class="flex items-stretch bg-white dark:bg-stone-950">
-            <IconButton @click="handleTagMenuOpen" class="flex items-center justify-center aspect-square h-full">
-                <PlusIcon class="w-6 h-6 stroke-[1.5px] stroke-stone-950 dark:stroke-white" />
-            </IconButton>
-            <div
-                class="relative h-14 w-full overflow-hidden before:absolute before:z-10 before:h-full before:w-1 before:bg-gradient-to-r before:from-white dark:before:from-stone-950 before:to-transparent after:absolute after:z-10 after:h-full after:w-1 after:right-0 after:top-0 after:bg-gradient-to-l dark:after:from-stone-950 after:from-white after:to-transparent">
-                <div class="flex relative w-full h-full gap-2 overflow-scroll items-center py-3 px-1">
-                    <TransitionGroup name="fade" @before-leave="beforeLeave">
-                        <button v-for="tag in availableTags" :key="tag.name" @click="handleSelectTag(tag)">
-                            <Tag :hex="tag.hex">
-                                {{ tag.name }}
-                            </Tag>
-                        </button>
-                    </TransitionGroup>
+        <TagManager>
+            <div class="flex flex-col grow group w-full" @click="handleClick">
+                <div @input="handleInputChange" type="text" ref="inputRef" @keydown.down="handleInputKeyDown"
+                    @keydown.right="handleInputKeyRight" @keypress.enter="handleInputEnter" contenteditable="true"
+                    tabindex="0"
+                    class="text-3xl resize-none break-words text-wrap px-4 font-bold pb-1 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent">
                 </div>
+                <textarea ref="textareaRef" @keydown.up="handleTextareaKeyUp" @keydown.left="handleTextareaKeyLeft"
+                    @keydown.backspace="handleTextareaBackspace" :readonly="readonly"
+                    class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
+                    rows="3"></textarea>
             </div>
-        </div>
+        </TagManager>
     </div>
-    <div v-if="tagMenu" class="absolute flex flex-col grow pt-4 gap-16 w-full h-dvh z-30 bg-cloud dark:bg-stone-900">
-        <div class="flex justify-between items-center px-4">
-            <TextButton @click="handleTagMenuClose">Close</TextButton>
-            <PrimaryButton :disabled="preview.length == 0">Add</PrimaryButton>
-        </div>
-        <div class="flex flex-col gap-5">
-            <div class="flex justify-center">
-                <Tag :hex="selectedColor">{{ preview || 'Preview' }}</Tag>
-            </div>
-            <div class="flex justify-center">
-                <input ref="tagInputRef" type="text"
-                    class="bg-transparent text-2xl font-medium border-none focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 focus:placeholder:opacity-0 text-center"
-                    v-model="preview" placeholder="name your tag...">
-            </div>
-            <div class="flex justify-center">
-                <ColorPicker :colors="colors"
-                    @change-selected-color="(color) => { selectedColor = color; tagInputRef.focus() }" />
-            </div>
-        </div>
-    </div>
+
 </template>
 
 <script setup>
-import { PlusIcon } from '@heroicons/vue/24/outline';
-
 definePageMeta({
     middleware: 'auth',
     layout: 'fullscreen',
@@ -226,15 +180,6 @@ const handleRemoveTag = (tag) => {
     } else {
         textareaRef.value.focus()
     }
-}
-
-const beforeLeave = (el) => {
-    const relativeLeft = el.offsetLeft;
-
-    el.disabled = true
-
-    el.style.position = 'absolute';
-    el.style.left = relativeLeft + 'px';
 }
 </script>
 
