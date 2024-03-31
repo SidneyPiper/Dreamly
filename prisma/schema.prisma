@@ -45,8 +45,8 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  Dream    Dream[]
-  Tag      Tag[]
+  dreams   Dream[]
+  tags     Tag[]
 }
 
 model VerificationToken {
@@ -75,7 +75,7 @@ model Tag {
   userId  String
   colorId String
 
-  dream Dream[]
+  dreams Dream[]
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   color Color @relation(fields: [colorId], references: [id], onDelete: Restrict)
