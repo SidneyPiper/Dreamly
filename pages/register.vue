@@ -34,7 +34,7 @@ definePageMeta({
   middleware: 'auth',
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/protected',
+    navigateAuthenticatedTo: '/profile',
   },
   layout: 'auth'
 })
@@ -45,7 +45,7 @@ const password = ref('')
 var success = false
 
 async function register() {
-  success = await $fetch('/api/register', {
+  success = await $fetch('/api/auth/register', {
     method: 'POST',
     body: {
       name: name.value,

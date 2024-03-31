@@ -42,8 +42,11 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
+
+  accounts Account[]
+  sessions Session[]
+  Dream    Dream[]
+  Tag      Tag[]
 }
 
 model VerificationToken {
@@ -52,4 +55,35 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Dream {
+  id      String   @id @default(cuid())
+  userId  String
+  title   String
+  content String   @default("")
+  date    DateTime @default(now())
+
+  tags Tag[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id      String @id @default(cuid())
+  label   String
+  userId  String
+  colorId String
+
+  dream Dream[]
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  color Color @relation(fields: [colorId], references: [id], onDelete: Restrict)
+}
+
+model Color {
+  id  String @id @default(cuid())
+  hex String
+
+  Tag Tag[]
 }

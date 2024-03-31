@@ -7,8 +7,8 @@
 
     <div class="flex flex-col gap-5">
       <button
-          class="flex text-gray-900 w-full bg-white py-3 rounded-lg focus:bg-gray-200 hover:bg-gray-100 justify-center items-center gap-3 font-semibold"
-          @click="signIn('github')">
+        class="flex text-gray-900 w-full bg-white py-3 rounded-lg focus:bg-gray-200 hover:bg-gray-100 justify-center items-center gap-3 font-semibold"
+        @click="signIn('github')">
         <img alt="Github Invertocat" class="h-6" src="../assets/auth/github.svg">
         Login with GitHub
       </button>
@@ -17,13 +17,13 @@
 
       <form class="flex flex-col gap-3" @submit.prevent="signIn('credentials', { name, password })">
         <input v-model="name"
-               class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-               placeholder="Username/Email" type="text">
+          class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          placeholder="Username/Email" type="text">
         <input v-model="password"
-               class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-               placeholder="Password" type="password">
+          class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          placeholder="Password" type="password">
         <PrimaryButton
-            class="flex text-gray-900 w-full py-3 rounded-lg justify-center items-center gap-3 font-semibold">
+          class="flex text-gray-900 w-full py-3 rounded-lg justify-center items-center gap-3 font-semibold">
           Login with credentials
         </PrimaryButton>
       </form>
@@ -49,7 +49,7 @@ definePageMeta({
   layout: 'auth'
 })
 
-const {signIn} = useAuth()
+const { signIn } = useAuth()
 
 const name = ref('')
 const password = ref('')

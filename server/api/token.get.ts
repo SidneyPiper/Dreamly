@@ -1,4 +1,4 @@
 // file: ~/server/api/token.get.ts
 import { getToken } from '#auth'
 
-export default eventHandler(event => getToken({ event }))
+export default defineEventHandler(event => getToken({ event }))

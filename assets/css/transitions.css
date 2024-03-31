@@ -63,4 +63,16 @@
 
 .fade-page-leave-active {
     position: absolute;
+    inset: 0;
+}
+
+/* stay */
+.stay-enter-active,
+.stay-leave-active {
+    transition: all 0.2s;
+}
+
+.stay-enter-from,
+.stay-leave-to {
+    filter: grayscale(0);
 }

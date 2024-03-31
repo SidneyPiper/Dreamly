@@ -69,6 +69,7 @@
 import { PlusIcon } from '@heroicons/vue/24/outline';
 
 definePageMeta({
+    middleware: 'auth',
     layout: 'fullscreen',
     layoutTransition: { name: 'slide-up' }
 })
