@@ -9,8 +9,6 @@
       <PrimaryButton :disabled="label.length == 0" @click="addTag">Add</PrimaryButton>
     </div>
 
-    <Alert v-if="error" :message="error" level="danger"/>
-
     <div class="flex flex-col gap-5">
       <div class="flex justify-center">
         <Tag :hex="color?.hex">{{ label || 'Preview' }}</Tag>
@@ -30,11 +28,14 @@
 <script lang="ts" setup>
 import {PlusIcon} from '@heroicons/vue/24/outline';
 import {type Color} from '~/prisma/types'
+import {useNotifications} from "~/composables/Notifications";
 
 const emit = defineEmits<{
   (e: 'created'): void,
   (e: 'close'): void
 }>()
+
+const {notify} = useNotifications()
 
 const isOpen = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement | null>()
@@ -60,17 +61,21 @@ const colorSelect = (selected: Color) => {
 }
 
 const addTag = async () => {
-  $fetch('/api/tags', {
+  let l = [Level.SUCCESS, Level.INFO, Level.DANGER, Level.WARNING][Math.floor(Math.random() * 4)]
+  notify(l, "Success")
+  /*$fetch('/api/tags', {
     method: 'POST',
     body: {
       label: label.value,
       colorId: color.value!.id
     },
   }).then(response => {
-    emit('created')
-    close()
+
+
+    //emit('created')
+    //close()
   }).catch(response => {
     error.value = response.data.statusMessage
-  })
+  })*/
 }
 </script>

@@ -21,7 +21,7 @@ const props = defineProps<{
   tags: TagWithColor[]
 }>()
 
-const beforeLeave = (el: HTMLButtonElement) => {
+const beforeLeave = (el: any) => {
   el.disabled = true
 
   const relativeLeft = el.offsetLeft;
