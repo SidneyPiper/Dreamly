@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type TagWithColor } from '../prisma/types'
+import {type TagWithColor} from '~/prisma/types'
 
 const emit = defineEmits<{
   (e: 'click', tag: TagWithColor): void
@@ -21,7 +21,7 @@ const props = defineProps<{
   tags: TagWithColor[]
 }>()
 
-const beforeLeave = (el: any) => {
+const beforeLeave = (el: HTMLButtonElement) => {
   el.disabled = true
 
   const relativeLeft = el.offsetLeft;
