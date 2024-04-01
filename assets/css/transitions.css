@@ -12,7 +12,7 @@
 .expand-enter-active,
 .expand-leave-active {
     display: grid;
-    transition: grid-template-rows 0.5s ease-out;
+    transition: grid-template-rows 0.2s ease-out;
 }
 
 .expand-enter-to,
@@ -25,8 +25,8 @@
     grid-template-rows: 0fr;
 }
 
-.expand-enter-active>*,
-.expand-leave-active>* {
+.expand-enter-active > *,
+.expand-leave-active > * {
     overflow: hidden;
 }
 
@@ -75,4 +75,20 @@
 .stay-enter-from,
 .stay-leave-to {
     filter: grayscale(0);
+}
+
+/* slide up */
+.slide-up-enter-active,
+.slide-up-leave-active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    transition: all 0.2s cubic-bezier(.18, .98, .7, .99);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+    transform: translateY(100vh);
 }
