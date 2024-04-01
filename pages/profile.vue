@@ -3,13 +3,13 @@
     <h1 class="text-2xl font-semibold">Profile</h1>
 
     <DataWithIcon :value="data?.user?.name">
-      <UserIcon class="w-5 h-5" />
+      <UserIcon class="w-5 h-5"/>
     </DataWithIcon>
     <DataWithIcon :value="data?.user?.email">
-      <EnvelopeIcon class="w-5 h-5" />
+      <EnvelopeIcon class="w-5 h-5"/>
     </DataWithIcon>
     <DataWithIcon :value="data?.user?.image">
-      <PhotoIcon class="w-5 h-5" />
+      <PhotoIcon class="w-5 h-5"/>
     </DataWithIcon>
 
     <SecondaryButton class="justify-center py-2" @click="signOut({ callbackUrl: '/login' })">
@@ -20,7 +20,7 @@
       <div class="flex items-center justify-between mb-3">
         <p class="font-semibold">Statistics for nerds</p>
         <button @click="nerdStats = !nerdStats">
-          <ChevronDownIcon :class="{ 'rotate-180': !nerdStats }" class="w-5 h-5 transition-transform" />
+          <ChevronDownIcon :class="{ 'rotate-180': !nerdStats }" class="w-5 h-5 transition-transform"/>
         </button>
       </div>
 
@@ -50,20 +50,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ChevronDownIcon, EnvelopeIcon, PhotoIcon, UserIcon } from "@heroicons/vue/24/solid";
+import {ChevronDownIcon, EnvelopeIcon, PhotoIcon, UserIcon} from "@heroicons/vue/24/solid";
 
 definePageMeta({
   middleware: 'auth',
   layout: 'default',
-  pageTransition: { name: 'fade-page' },
-  layoutTransition: { name: 'stay' }
+  pageTransition: {name: 'fade-page'},
+  layoutTransition: {name: 'stay'}
 })
 
-const nerdStats = ref(false)
+const nerdStats = ref<boolean>(false)
 
-const { signOut } = useAuth()
-const { data } = await useFetch('/api/me')
+const {signOut} = useAuth()
+const {data} = await useFetch('/api/me')
 
 const headers = useRequestHeaders(['cookie'])
-const { data: token } = await useFetch('/api/token', { headers })
+const {data: token} = await useFetch('/api/token', {headers})
 </script>

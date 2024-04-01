@@ -47,7 +47,10 @@ const lineBreak = () => {
 
 }
 
-defineExpose({
+defineExpose<{
+  get: () => [string, string],
+  focus: () => void
+}>({
   get,
   focus
 })
