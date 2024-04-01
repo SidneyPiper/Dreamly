@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 defineProps<{
-  hex: string
+  hex?: string
 }>()
 </script>
 

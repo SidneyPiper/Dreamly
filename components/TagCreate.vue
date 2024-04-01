@@ -8,6 +8,9 @@
       <TextButton @click="close">Close</TextButton>
       <PrimaryButton :disabled="label.length == 0" @click="addTag">Add</PrimaryButton>
     </div>
+
+    <Alert v-if="error" :message="error" level="danger"/>
+
     <div class="flex flex-col gap-5">
       <div class="flex justify-center">
         <Tag :hex="color?.hex">{{ label || 'Preview' }}</Tag>
@@ -36,6 +39,8 @@ const emit = defineEmits<{
 const isOpen = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement | null>()
 
+const error = ref<string | false>(false)
+
 const label = ref<string>('')
 const color = ref<Color | null>()
 
@@ -55,15 +60,17 @@ const colorSelect = (selected: Color) => {
 }
 
 const addTag = async () => {
-  await $fetch('/api/tags', {
+  $fetch('/api/tags', {
     method: 'POST',
     body: {
       label: label.value,
       colorId: color.value!.id
-    }
+    },
+  }).then(response => {
+    emit('created')
+    close()
+  }).catch(response => {
+    error.value = response.data.statusMessage
   })
-
-  emit('created')
-  close()
 }
 </script>
