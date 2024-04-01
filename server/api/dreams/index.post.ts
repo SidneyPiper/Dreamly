@@ -1,14 +1,66 @@
+import validate from "validate.js";
+
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    const label = body.label
-    const colorId = body.colorId
 
-    await event.context.prisma.user.update({
-        where: { id: event.context.userId },
-        data: {
-            tags: {
-                create: [{ label: label, colorId: colorId }]
-            }
+    const error = validate(body, {
+        title: {
+            presence: true,
+            length: {
+                minimum: 1
+            },
+            type: "string"
+        },
+        content: {
+            presence: true,
+            length: {
+                minimum: 1
+            },
+            type: "string"
+        },
+        tags: {
+            type: "array"
         }
     })
+
+    if (error) throw createError({
+        statusCode: 400,
+        statusMessage: 'The provided data was flawed.',
+        data: error
+    })
+
+    const title = body.title
+    const content = body.content
+    const tags = body.tags.map((x: string) => { return { id: x } })
+
+    try {
+        await event.context.prisma.user.update({
+            where: { id: event.context.userId },
+            data: {
+                dreams: {
+                    create: [{
+                        title: title,
+                        content: content,
+                        tags: {
+                            connect: tags
+                        }
+                    }]
+                }
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'An internal server error occurred.'
+        })
+    }
+
+    return {
+        data: {
+            statusCode: 200,
+            statusMessage: 'The tag was successfully created.'
+        }
+    }
+
 })

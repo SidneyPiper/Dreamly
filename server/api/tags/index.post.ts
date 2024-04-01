@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
             type: "string"
         }
     })
-    console.log(error)
+
     if (error) throw createError({
         statusCode: 400,
         statusMessage: 'The provided data was flawed.',
@@ -28,10 +28,10 @@ export default defineEventHandler(async (event) => {
 
     try {
         await event.context.prisma.user.update({
-            where: {id: event.context.userId},
+            where: { id: event.context.userId },
             data: {
                 tags: {
-                    create: [{label: label, colorId: colorId}]
+                    create: [{ label: label, colorId: colorId }]
                 }
             }
         })
@@ -43,8 +43,10 @@ export default defineEventHandler(async (event) => {
     }
 
     return {
-        statusCode: 200,
-        statusMessage: 'The tag was successfully created.'
+        data: {
+            statusCode: 200,
+            statusMessage: 'The tag was successfully created.'
+        }
     }
 
 })
