@@ -1,5 +1,6 @@
 <template>
-    <div ref="containerRef" class="flex flex-col h-dvh font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
+    <div ref="containerRef"
+        class="flex flex-col h-dvh font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
         <slot />
     </div>
 </template>
