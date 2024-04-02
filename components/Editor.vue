@@ -3,13 +3,18 @@
     <div ref="inputRef" class="text-wrap first-line:text-3xl break-words grow px-4 focus:outline-none"
          contenteditable="true"
          tabindex="0"
-         @keydown.enter.exact.prevent="lineBreak"><br>
+         @keydown.enter.exact.prevent="lineBreak">{{ title }}<br>{{ content }}<br>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const inputRef = ref<HTMLDivElement>()
+
+const props = defineProps<{
+  title?: string
+  content?: string
+}>()
 
 onMounted(() => {
   focus()

@@ -2,6 +2,7 @@ import validate from "validate.js";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+    const id = getRouterParam(event, 'id')
 
     const error = validate(body, {
         'label': {
@@ -31,11 +32,20 @@ export default defineEventHandler(async (event) => {
             where: {id: event.context.userId},
             data: {
                 tags: {
-                    create: [{label: label, colorId: colorId}]
+                    update: {
+                        where: {
+                            id: id
+                        },
+                        data: {
+                            label: label,
+                            colorId: colorId
+                        }
+                    }
                 }
             }
         })
     } catch (error) {
+        console.log(error);
         throw createError({
             statusCode: 500,
             statusMessage: 'An internal server error occurred.'
@@ -45,7 +55,7 @@ export default defineEventHandler(async (event) => {
     return {
         data: {
             statusCode: 200,
-            statusMessage: 'The tag was successfully created.'
+            statusMessage: 'The dream was successfully edited.'
         }
     }
 

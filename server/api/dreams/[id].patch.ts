@@ -2,17 +2,16 @@ import validate from "validate.js";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+    const id = getRouterParam(event, 'id')
 
     const error = validate(body, {
         title: {
-            presence: true,
             length: {
                 minimum: 1
             },
             type: "string"
         },
         content: {
-            presence: true,
             length: {
                 minimum: 1
             },
@@ -40,13 +39,18 @@ export default defineEventHandler(async (event) => {
             where: {id: event.context.userId},
             data: {
                 dreams: {
-                    create: [{
-                        title: title,
-                        content: content,
-                        tags: {
-                            connect: tags
+                    update: {
+                        where: {
+                            id: id
+                        },
+                        data: {
+                            title: title,
+                            content: content,
+                            tags: {
+                                connect: tags
+                            }
                         }
-                    }]
+                    }
                 }
             }
         })
@@ -61,7 +65,7 @@ export default defineEventHandler(async (event) => {
     return {
         data: {
             statusCode: 200,
-            statusMessage: 'The dream was successfully created.'
+            statusMessage: 'The dream was successfully edited.'
         }
     }
 

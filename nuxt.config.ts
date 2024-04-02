@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     css: ['./assets/css/transitions.css'],
-    devtools: {enabled: false},
+    devtools: {enabled: true},
     sourcemap: true,
     modules: [
         '@sidebase/nuxt-auth',
         '@nuxtjs/tailwindcss',
-        '@nuxtjs/google-fonts'
+        '@nuxtjs/google-fonts',
+        '@pinia/nuxt',
     ],
     runtimeConfig: {
         githubClientId: '',
@@ -19,7 +20,10 @@ export default defineNuxtConfig({
     },
     googleFonts: {
         families: {
-            Inter: true
+            Inter: [300, 400, 500, 600, 700]
         }
+    },
+    experimental: {
+        typedPages: true
     }
 })

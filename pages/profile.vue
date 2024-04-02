@@ -61,8 +61,7 @@ definePageMeta({
 
 const nerdStats = ref<boolean>(false)
 
-const {signOut} = useAuth()
-const {data} = await useFetch('/api/me')
+const {data, signOut} = useAuth()
 
 const headers = useRequestHeaders(['cookie'])
 const {data: token} = await useFetch('/api/token', {headers})
