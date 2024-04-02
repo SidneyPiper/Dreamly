@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import type {Response, TagWithColor} from "~/prisma/types";
-import {useNotifications} from "~/composables/Notifications";
+import {useNotificationsStore} from "~/stores/notifications";
 
 /**
  * Defines a store for managing tags.
@@ -9,7 +9,7 @@ export const useTagsStore = defineStore('tags', () => {
     const tags = ref<TagWithColor[]>([])
     const dirty = ref<boolean>(true)
 
-    const {notify} = useNotifications()
+    const {notify} = useNotificationsStore()
 
     /**
      * Retrieves a tag by its ID.

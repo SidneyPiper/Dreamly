@@ -28,15 +28,12 @@
 <script lang="ts" setup>
 import {PlusIcon} from '@heroicons/vue/24/outline';
 import {type Color} from '~/prisma/types'
-import {useNotifications} from "~/composables/Notifications";
 import {useTagsStore} from "~/stores/tags";
 
 const emit = defineEmits<{
-  (e: 'created'): void,
   (e: 'close'): void
 }>()
 
-const {notify} = useNotifications()
 const tagsStore = useTagsStore()
 tagsStore.fetch()
 

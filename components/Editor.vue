@@ -3,7 +3,9 @@
     <div ref="inputRef" class="text-wrap first-line:text-3xl break-words grow px-4 focus:outline-none"
          contenteditable="true"
          tabindex="0"
-         @keydown.enter.exact.prevent="lineBreak">{{ title }}<br>{{ content }}<br>
+         @keydown.enter.exact.prevent="lineBreak">
+      <template v-if="props.title && props.content">{{ props.title }}<br>{{ props.content }}<br></template>
+      <template v-else><br></template>
     </div>
   </div>
 </template>

@@ -11,9 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import {useNotifications} from "~/composables/Notifications";
+import {useNotificationsStore} from "~/stores/notifications";
+import {storeToRefs} from "pinia";
 
-const {notifications} = useNotifications()
+const {notifications} = storeToRefs(useNotificationsStore())
 
 const beforeLeave = (el: any) => {
   el.disabled = true

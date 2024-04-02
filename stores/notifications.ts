@@ -1,4 +1,5 @@
-import {v4 as uuid} from 'uuid';
+import {defineStore} from 'pinia'
+import {v4 as uuid} from "uuid";
 
 export enum Level {
     INFO = "info",
@@ -14,13 +15,10 @@ export interface Notification {
     message?: string
 }
 
-const notifications = ref<Notification[]>([])
+export const useNotificationsStore = defineStore('notification', () => {
+    const notifications = ref<Notification[]>([])
 
-export const useNotifications = (): {
-    notify: (level: Level, title?: string, message?: string) => void,
-    notifications: globalThis.Ref<Notification[]>
-} => {
-    const notify = (level: Level, title?: string, message?: string) => {
+    function notify(level: Level, title?: string, message?: string) {
         notifications.value.push({id: uuid(), level, title, message});
 
         setTimeout(() => {
@@ -28,5 +26,5 @@ export const useNotifications = (): {
         }, 2000)
     }
 
-    return {notify, notifications}
-}
+    return {notifications, notify}
+})

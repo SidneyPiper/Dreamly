@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import type {DreamWithTags, Response, TagWithColor} from "~/prisma/types";
-import {useNotifications} from "~/composables/Notifications";
+import {useNotificationsStore} from "~/stores/notifications";
 
 /**
  * Represents a Dream.
@@ -26,7 +26,7 @@ export const useDreamsStore = defineStore('dreams', () => {
     const dreams = ref<Dream[]>([])
     const dirty = ref<boolean>(true)
 
-    const {notify} = useNotifications()
+    const {notify} = useNotificationsStore()
 
     /**
      * Returns a dream with the specified id.

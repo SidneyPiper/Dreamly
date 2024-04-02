@@ -20,14 +20,14 @@
 
       <!-- Chosen tags -->
       <TagList :tags="dream.tags" class="px-4 flex-wrap" @click="unselect"/>
-      
+
       <!-- Editor -->
       <Editor ref="editorRef" :content="dream.content" :title="dream.title"/>
     </div>
 
     <!-- Available tags -->
     <div class="flex items-stretch bg-white dark:bg-stone-950">
-      <TagCreate @close="editorRef?.focus()" @created="focusEditor"/>
+      <TagCreate @close="focusEditor"/>
       <Fader>
         <TagList :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>
