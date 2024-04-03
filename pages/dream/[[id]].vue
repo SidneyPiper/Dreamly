@@ -43,7 +43,6 @@ import type {TagWithColor} from '~/prisma/types'
 import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
-import {awaitExpression} from "@babel/types";
 
 definePageMeta({
   middleware: 'auth',
@@ -60,6 +59,13 @@ const tagsStore = useTagsStore()
 onMounted(async () => {
   await dreamsStore.fetch()
   await tagsStore.fetch()
+
+  if ('id' in route.params && route.params.id) {
+    dream.value = await dreamsStore.get(route.params.id)
+    selectedTags.value = [...dream.value.tags]
+    edit.value = false
+    create.value = false
+  }
 })
 
 const dream = ref<Dream>(dreamsStore.empty())
@@ -69,12 +75,6 @@ const selectedTags = ref<TagWithColor[]>([])
 const edit = ref<boolean>(true)
 const create = ref<boolean>(true)
 
-if ('id' in route.params && route.params.id) {
-  dream.value = await dreamsStore.get(route.params.id)
-  selectedTags.value = [...dream.value.tags]
-  edit.value = false
-  create.value = false
-}
 
 const editorRef = ref<InstanceType<typeof Editor> | null>()
 

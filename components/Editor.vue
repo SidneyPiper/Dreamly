@@ -76,16 +76,54 @@ const highlight = () => {
   const editor = inputRef.value;
   let text = editor.innerHTML;
 
-  text = text.replace('<span style="background: blue">', '').replace('</span>', '')
+  text = text.replace('<span style="font-size: 36px">', '').replace('</span>', '');
   // Split content by line breaks
   const lines = text.split('<br>');
 
   // Highlight the first line
-  lines[0] = `<span style="background: blue">${lines[0]}</span>`;
+  lines[0] = `<span style="font-size: 36px">${lines[0]}</span>`;
+
+  // Store current selection
+  const selection = window.getSelection();
+  const range = selection!.getRangeAt(0);
+  const selectedNode = range.commonAncestorContainer;
+  const selectedOffset = range.endOffset;
+
+  // Get the length of text before cursor
+  let textBeforeCursorLength = 0;
+  const iterator = document.createNodeIterator(editor, NodeFilter.SHOW_TEXT);
+  let currentNode;
+  while (currentNode = iterator.nextNode()) {
+    if (currentNode === selectedNode) {
+      textBeforeCursorLength += selectedOffset;
+      break;
+    }
+    textBeforeCursorLength += currentNode.textContent.length;
+  }
 
   // Update editor content
   editor.innerHTML = lines.join('<br>');
+
+  // Restore selection
+  const newIterator = document.createNodeIterator(editor, NodeFilter.SHOW_TEXT);
+  let newTextBeforeCursorLength = 0;
+  let newRange = document.createRange();
+  let newSelection = window.getSelection();
+  let newTextBeforeCursorNode;
+  let newNode;
+  while (newNode = newIterator.nextNode()) {
+    if (newTextBeforeCursorLength + newNode.textContent.length >= textBeforeCursorLength) {
+      newTextBeforeCursorNode = newNode;
+      break;
+    }
+    newTextBeforeCursorLength += newNode.textContent.length;
+  }
+  newRange.setStart(newTextBeforeCursorNode, textBeforeCursorLength - newTextBeforeCursorLength);
+  newRange.collapse(true);
+  newSelection!.removeAllRanges();
+  newSelection!.addRange(newRange);
 }
+
 
 defineExpose<{
   get: () => [string, string],

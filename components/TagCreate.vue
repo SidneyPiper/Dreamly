@@ -35,7 +35,10 @@ const emit = defineEmits<{
 }>()
 
 const tagsStore = useTagsStore()
-tagsStore.fetch()
+
+onMounted(async () => {
+  await tagsStore.fetch()
+})
 
 const isOpen = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement | null>()
