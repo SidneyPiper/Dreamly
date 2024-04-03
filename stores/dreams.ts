@@ -82,7 +82,8 @@ export const useDreamsStore = defineStore('dreams', () => {
                 }
             })
             dirty.value = false;
-        }).catch(() => {
+        }).catch((error) => {
+            console.log(error)
             notify(Level.DANGER, 'Couldn\'t load dreams')
         })
     }

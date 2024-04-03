@@ -4,6 +4,7 @@
     <!-- Top bar -->
     <div class="flex justify-between items-center px-4">
       <TextButton to="/home">Cancel</TextButton>
+
       <!-- Date -->
       <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
           new Date(dream.date).toLocaleDateString('en-us', {
@@ -13,23 +14,26 @@
           })
         }}
       </p>
-      <PrimaryButton @click="save">Save</PrimaryButton>
+      <PrimaryButton v-if="edit" @click="save">Save</PrimaryButton>
+      <PrimaryButton v-else @click="edit = true; focusEditor()">Edit</PrimaryButton>
+
     </div>
 
     <div class="flex flex-col grow overflow-y-scroll gap-2 transition-all">
 
       <!-- Chosen tags -->
-      <TagList :tags="dream.tags" class="px-4 flex-wrap" @click="unselect"/>
+      <TagList :tags="selectedTags" :editable="edit" class="px-4 flex-wrap" @click="unselect"/>
 
       <!-- Editor -->
-      <Editor ref="editorRef" :content="dream.content" :title="dream.title"/>
+      <Editor ref="editorRef" :editable="edit" :content="create ? null : dream.content "
+              :title="create ? null : dream.title"/>
     </div>
 
     <!-- Available tags -->
-    <div class="flex items-stretch bg-white dark:bg-stone-950">
+    <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950">
       <TagCreate @close="focusEditor"/>
       <Fader>
-        <TagList :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
+        <TagList :tags="availableTags" :editable="edit" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>
     </div>
   </div>
@@ -40,6 +44,7 @@ import type {TagWithColor} from '~/prisma/types'
 import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
+import {awaitExpression} from "@babel/types";
 
 definePageMeta({
   middleware: 'auth',
@@ -57,24 +62,34 @@ tagsStore.fetch()
 
 const dream = ref<Dream>(dreamsStore.empty())
 
+const selectedTags = ref<TagWithColor[]>([])
+
+const edit = ref<boolean>(true)
+const create = ref<boolean>(true)
+
 if ('id' in route.params && route.params.id) {
   dream.value = await dreamsStore.get(route.params.id)
+  selectedTags.value = [...dream.value.tags]
+  edit.value = false
+  create.value = false
 }
 
 const editorRef = ref<InstanceType<typeof Editor> | null>()
 
 const availableTags = computed(() => {
   return tagsStore.tags.filter((tag) => {
-    return !dream.value.tags.some(t => t.id == tag.id)
+    return !selectedTags.value.some(t => t.id == tag.id)
   }).sort((a: TagWithColor, b: TagWithColor) => {
     return a.label.localeCompare(b.label)
   })
 })
 
+
 const save = async () => {
   const [title, content] = editorRef.value!.get()
   dream.value.title = title
   dream.value.content = content
+  dream.value.tags = selectedTags.value
 
   dreamsStore.update(dream.value).then(() => {
     navigateTo('/home')
@@ -86,12 +101,12 @@ const focusEditor = () => {
 }
 
 const select = (tag: TagWithColor) => {
-  dream.value.tags.push(tag)
+  selectedTags.value.push(tag)
   focusEditor()
 }
 
 const unselect = (tag: TagWithColor) => {
-  dream.value.tags = dream.value.tags.filter(x => x != tag)
+  selectedTags.value = selectedTags.value.filter(x => x != tag)
   focusEditor()
 }
 </script>

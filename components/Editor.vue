@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col grow w-full">
     <div ref="inputRef" class="text-wrap first-line:text-3xl break-words grow px-4 focus:outline-none"
-         contenteditable="true"
+         :contenteditable="editable"
          tabindex="0"
          @keydown.enter.exact.prevent="lineBreak">
       <template v-if="props.title && props.content">{{ props.title }}<br>{{ props.content }}<br></template>
@@ -15,7 +15,8 @@ const inputRef = ref<HTMLDivElement>()
 
 const props = defineProps<{
   title?: string
-  content?: string
+  content?: string,
+  editable: boolean
 }>()
 
 onMounted(() => {

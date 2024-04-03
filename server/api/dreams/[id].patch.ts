@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
                             title: title,
                             content: content,
                             tags: {
+                                set: [],
                                 connect: tags
                             }
                         }

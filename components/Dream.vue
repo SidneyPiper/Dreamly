@@ -17,12 +17,12 @@
 
       <!-- Edit button -->
       <IconButton :to="'/dream/' + dream.id" class="p-2 shrink-0">
-        <PencilSquareIcon class="w-6 h-6"/>
+        <EllipsisHorizontalIcon class="w-6 h-6"/>
       </IconButton>
     </div>
 
     <!-- Taglist -->
-    <TagList :tags="dream.tags" class="mb-2 flex-wrap"/>
+    <TagList :tags="dream.tags" :editable="false" class="mb-2 flex-wrap"/>
 
     <!-- Content -->
     <p>{{ dream.content }}</p>
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import {PencilSquareIcon} from "@heroicons/vue/24/solid";
+import {EllipsisHorizontalIcon} from "@heroicons/vue/24/outline";
 import {type DreamWithTags} from "~/prisma/types";
 
 const props = defineProps<{

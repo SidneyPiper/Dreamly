@@ -31,5 +31,9 @@ definePageMeta({
 })
 
 const dreamsStore = useDreamsStore()
-await dreamsStore.fetch()
+
+onMounted(async () => {
+  await dreamsStore.fetch()
+})
+
 </script>
