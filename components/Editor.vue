@@ -3,19 +3,21 @@
     <div ref="inputRef" class="text-wrap first-line:text-3xl break-words grow px-4 focus:outline-none"
          :contenteditable="editable"
          tabindex="0"
-         @keydown.enter.exact.prevent="lineBreak">
-      <template v-if="props.title && props.content">{{ props.title }}<br>{{ props.content }}<br></template>
+         @keydown.enter.exact.prevent="lineBreak" @input="highlight">
+      <template v-if="dream.title && dream.content">{{ dream.title }}<br>{{ dream.content }}<br>
+      </template>
       <template v-else><br></template>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const inputRef = ref<HTMLDivElement>()
+import type {DreamWithTags} from "~/prisma/types";
+
+const inputRef = ref()
 
 const props = defineProps<{
-  title?: string
-  content?: string,
+  dream: DreamWithTags
   editable: boolean
 }>()
 
@@ -47,19 +49,57 @@ const lineBreak = () => {
   const br = document.createElement('br');
   range.insertNode(br);
 
+  const cursorPosition = range.endOffset; // Store cursor position
+
   range.setStartAfter(br);
   range.setEndAfter(br);
 
   selection!.removeAllRanges();
   selection!.addRange(range);
 
+  highlight();
+
+  // Restore cursor position
+  const newRange = document.createRange();
+  newRange.setStart(inputRef.value, cursorPosition);
+  newRange.collapse(true);
+  selection!.removeAllRanges();
+  selection!.addRange(newRange);
+}
+
+
+const reset = () => {
+  inputRef.value.innerHTML = props.dream.title + '<br>' + props.dream.content + '<br>'
+}
+
+const highlight = () => {
+  const editor = inputRef.value;
+  let text = editor.innerHTML;
+
+  text = text.replace('<span style="background: blue">', '').replace('</span>', '')
+  // Split content by line breaks
+  const lines = text.split('<br>');
+
+  // Highlight the first line
+  lines[0] = `<span style="background: blue">${lines[0]}</span>`;
+
+  // Update editor content
+  editor.innerHTML = lines.join('<br>');
 }
 
 defineExpose<{
   get: () => [string, string],
   focus: () => void
+  reset: () => void
 }>({
   get,
-  focus
+  focus,
+  reset
 })
 </script>
+
+<style scoped>
+.highlighted {
+  background: blue;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full gap-4 px-4 pt-4 text-cloud">
-    <h1 class="text-2xl font-semibold">Calendar</h1>
+    <h1 class="text-2xl font-semibold">Search</h1>
   </div>
 </template>
 

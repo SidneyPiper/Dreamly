@@ -1,9 +1,10 @@
 <template>
-  <div class="flex flex-col grow pt-4 gap-4 h-dvh">
+  <div class="flex flex-col grow pt-4 gap-4 h-full">
 
     <!-- Top bar -->
     <div class="flex justify-between items-center px-4">
-      <TextButton to="/home">Cancel</TextButton>
+      <TextButton v-if="!create && edit" @click="editOff">Cancel</TextButton>
+      <TextButton v-else @click="$router.back()">Cancel</TextButton>
 
       <!-- Date -->
       <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
@@ -16,7 +17,6 @@
       </p>
       <PrimaryButton v-if="edit" @click="save">Save</PrimaryButton>
       <PrimaryButton v-else @click="edit = true; focusEditor()">Edit</PrimaryButton>
-
     </div>
 
     <div class="flex flex-col grow overflow-y-scroll gap-2 transition-all">
@@ -25,12 +25,11 @@
       <TagList :tags="selectedTags" :editable="edit" class="px-4 flex-wrap" @click="unselect"/>
 
       <!-- Editor -->
-      <Editor ref="editorRef" :editable="edit" :content="create ? null : dream.content "
-              :title="create ? null : dream.title"/>
+      <Editor ref="editorRef" :editable="edit" :dream="dream"/>
     </div>
 
     <!-- Available tags -->
-    <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950">
+    <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
       <TagCreate @close="focusEditor"/>
       <Fader>
         <TagList :tags="availableTags" :editable="edit" class="overflow-x-scroll py-3 px-1" @click="select"/>
@@ -55,10 +54,13 @@ definePageMeta({
 const route = useRoute()
 
 const dreamsStore = useDreamsStore()
-dreamsStore.fetch()
 
 const tagsStore = useTagsStore()
-tagsStore.fetch()
+
+onMounted(async () => {
+  await dreamsStore.fetch()
+  await tagsStore.fetch()
+})
 
 const dream = ref<Dream>(dreamsStore.empty())
 
@@ -84,7 +86,6 @@ const availableTags = computed(() => {
   })
 })
 
-
 const save = async () => {
   const [title, content] = editorRef.value!.get()
   dream.value.title = title
@@ -108,5 +109,12 @@ const select = (tag: TagWithColor) => {
 const unselect = (tag: TagWithColor) => {
   selectedTags.value = selectedTags.value.filter(x => x != tag)
   focusEditor()
+}
+
+const editOff = async () => {
+  edit.value = false
+
+  selectedTags.value = [...dream.value.tags]
+  editorRef.value?.reset()
 }
 </script>
