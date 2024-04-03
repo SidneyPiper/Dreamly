@@ -69,7 +69,7 @@ export const useDreamsStore = defineStore('dreams', () => {
     async function fetch(): Promise<void> {
         if (!dirty.value) return
 
-        $fetch<DreamWithTags[]>('/api/dreams/', {
+        await $fetch<DreamWithTags[]>('/api/dreams/', {
             method: 'GET'
         }).then((response: DreamWithTags[]) => {
             dreams.value = response.map((dream: DreamWithTags): Dream => {

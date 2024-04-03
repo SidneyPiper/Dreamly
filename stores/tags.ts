@@ -36,9 +36,9 @@ export const useTagsStore = defineStore('tags', () => {
      */
     function empty(initial?: Partial<TagWithColor>): TagWithColor {
         return {
-            id: '',
-            label: '',
-            color: {
+            id: initial?.id ?? '',
+            label: initial?.label ?? '',
+            color: initial?.color ?? {
                 id: '',
                 hex: '#333333'
             }
@@ -53,7 +53,7 @@ export const useTagsStore = defineStore('tags', () => {
     async function fetch(): Promise<void> {
         if (!dirty.value) return
 
-        $fetch<TagWithColor[]>('/api/tags/', {
+        await $fetch<TagWithColor[]>('/api/tags/', {
             method: 'GET'
         }).then((response: TagWithColor[]) => {
             tags.value = response.map((tags: TagWithColor): TagWithColor => {

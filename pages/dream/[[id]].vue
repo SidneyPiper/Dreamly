@@ -22,17 +22,17 @@
     <div class="flex flex-col grow overflow-y-scroll gap-2 transition-all">
 
       <!-- Chosen tags -->
-      <TagList :tags="selectedTags" :editable="edit" class="px-4 flex-wrap" @click="unselect"/>
+      <TagList :editable="edit" :tags="selectedTags" class="px-4 flex-wrap" @click="unselect"/>
 
       <!-- Editor -->
-      <Editor ref="editorRef" :editable="edit" :dream="dream"/>
+      <Editor ref="editorRef" :dream="dream" :editable="edit"/>
     </div>
 
     <!-- Available tags -->
     <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
       <TagCreate @close="focusEditor"/>
       <Fader>
-        <TagList :tags="availableTags" :editable="edit" class="overflow-x-scroll py-3 px-1" @click="select"/>
+        <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>
     </div>
   </div>
