@@ -10,6 +10,7 @@ export const useTagsStore = defineStore('tags', () => {
     const dirty = ref<boolean>(true)
 
     const {notify} = useNotificationsStore()
+    const headers = useRequestHeaders(['cookie']) as HeadersInit
 
     /**
      * Retrieves a tag by its ID.
@@ -54,7 +55,8 @@ export const useTagsStore = defineStore('tags', () => {
         if (!dirty.value) return
 
         await $fetch<TagWithColor[]>('/api/tags/', {
-            method: 'GET'
+            method: 'GET',
+            headers: headers
         }).then((response: TagWithColor[]) => {
             tags.value = response.map((tags: TagWithColor): TagWithColor => {
                 return {
