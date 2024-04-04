@@ -66,11 +66,15 @@ export const useDreamsStore = defineStore('dreams', () => {
      *
      * @returns {Promise<void>} - A promise that resolves with the fetched dreams.
      */
-    async function fetch(): Promise<void> {
+    async function fetch(page: number = 0, count: number = 10): Promise<void> {
         if (!dirty.value) return
 
         await $fetch<DreamWithTags[]>('/api/dreams/', {
-            method: 'GET'
+            method: 'GET',
+            params: {
+                page: page,
+                count: count
+            }
         }).then((response: DreamWithTags[]) => {
             dreams.value = response.map((dream: DreamWithTags): Dream => {
                 return {
