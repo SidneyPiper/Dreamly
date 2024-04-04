@@ -4,11 +4,11 @@
          :contenteditable="editable"
          tabindex="0"
          @keydown.enter.exact.prevent="lineBreak" @input="highlight">
-      <template v-if="dream.title && dream.content"><span style="font-size: 36px">{{
+      <template v-if="dream.title && dream.content"><span class="text-3xl">{{
           dream.title
         }}</span><br>{{ dream.content }}<br>
       </template>
-      <template v-else><span style="font-size: 36px"></span><br></template>
+      <template v-else><span class="text-3xl"></span><br></template>
     </div>
   </div>
 </template>
@@ -53,12 +53,6 @@ const lineBreak = () => {
 
   const cursorPosition = range.endOffset; // Store cursor position
 
-  range.setStartAfter(br);
-  range.setEndAfter(br);
-
-  selection!.removeAllRanges();
-  selection!.addRange(range);
-
   highlight();
 
   // Restore cursor position
@@ -71,19 +65,18 @@ const lineBreak = () => {
 
 
 const reset = () => {
-  inputRef.value.innerHTML = '<span style="font-size: 30px">' + props.dream.title + '</span>' + '<br>' + props.dream.content + '<br>'
+  inputRef.value.innerHTML = '<span class="text-3xl"">' + props.dream.title + '</span>' + '<br>' + props.dream.content + '<br>'
 }
 
 const highlight = () => {
   const editor = inputRef.value;
   let text = editor.innerText;
 
-  text = text.replace('<span style="font-size: 30px">', '').replace('</span>', '');
   // Split content by line breaks
   const lines = text.split('\n');
 
   // Highlight the first line
-  lines[0] = `<span style="font-size: 36px">${lines[0]}</span>`;
+  lines[0] = `<span class="text-3xl">${lines[0]}</span>`;
 
   // Store current selection
   const selection = window.getSelection();
@@ -103,7 +96,7 @@ const highlight = () => {
       textBeforeCursorLength += selectedOffset;
       break;
     }
-    textBeforeCursorLength += currentNode.textContent.length;
+    textBeforeCursorLength += currentNode.textContent?.length || 0;
   }
 
   // Update editor content
@@ -117,16 +110,20 @@ const highlight = () => {
   let newTextBeforeCursorNode;
   let newNode;
   while (newNode = newIterator.nextNode()) {
-    if (newTextBeforeCursorLength + newNode.textContent.length >= textBeforeCursorLength) {
+    if (newTextBeforeCursorLength + (newNode.textContent?.length || 0) >= textBeforeCursorLength) {
       newTextBeforeCursorNode = newNode;
       break;
     }
-    newTextBeforeCursorLength += newNode.textContent.length;
+    newTextBeforeCursorLength += (newNode.textContent?.length || 0);
   }
-  newRange.setStart(newTextBeforeCursorNode, textBeforeCursorLength - newTextBeforeCursorLength);
-  newRange.collapse(true);
-  newSelection!.removeAllRanges();
-  newSelection!.addRange(newRange);
+
+  if (newTextBeforeCursorNode) {
+    newRange.setStart(newTextBeforeCursorNode, textBeforeCursorLength - newTextBeforeCursorLength);
+    newRange.collapse(true);
+
+    newSelection!.removeAllRanges();
+    newSelection!.addRange(newRange);
+  }
 }
 
 
