@@ -51,30 +51,24 @@ definePageMeta({
 })
 
 const route = useRoute()
-
 const dreamsStore = useDreamsStore()
-
 const tagsStore = useTagsStore()
 
-onMounted(async () => {
-  await dreamsStore.fetch()
-  await tagsStore.fetch()
-
-  if ('id' in route.params && route.params.id) {
-    dream.value = await dreamsStore.get(route.params.id)
-    selectedTags.value = [...dream.value.tags]
-    edit.value = false
-    create.value = false
-  }
-})
-
 const dream = ref<Dream>(dreamsStore.empty())
-
 const selectedTags = ref<TagWithColor[]>([])
 
 const edit = ref<boolean>(true)
 const create = ref<boolean>(true)
 
+await dreamsStore.fetch()
+await tagsStore.fetch()
+
+if ('id' in route.params && route.params.id) {
+  dream.value = await dreamsStore.get(route.params.id)
+  selectedTags.value = [...dream.value.tags]
+  edit.value = false
+  create.value = false
+}
 
 const editorRef = ref<InstanceType<typeof Editor> | null>()
 

@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         await event.context.prisma.user.update({
-            where: {id: event.context.userId},
+            where: {id: event.context.session!.user.id},
             data: {
                 tags: {
                     delete: {

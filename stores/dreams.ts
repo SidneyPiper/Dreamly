@@ -27,6 +27,7 @@ export const useDreamsStore = defineStore('dreams', () => {
     const dirty = ref<boolean>(true)
 
     const {notify} = useNotificationsStore()
+    const headers = useRequestHeaders(['cookie']) as HeadersInit
 
     /**
      * Returns a dream with the specified id.
@@ -70,7 +71,8 @@ export const useDreamsStore = defineStore('dreams', () => {
         if (!dirty.value) return
 
         await $fetch<DreamWithTags[]>('/api/dreams/', {
-            method: 'GET'
+            method: 'GET',
+            headers: headers
         }).then((response: DreamWithTags[]) => {
             dreams.value = response.map((dream: DreamWithTags): Dream => {
                 return {

@@ -1,7 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     css: ['./assets/css/transitions.css'],
-    devtools: {enabled: false},
+    devtools: {
+        enabled: true,
+
+        timeline: {
+            enabled: true
+        }
+    },
     sourcemap: true,
     modules: [
         '@sidebase/nuxt-auth',
@@ -28,6 +34,13 @@ export default defineNuxtConfig({
                 {name: 'theme-color', content: '#ffffff'}
             ]
         }
+    },
+    auth: {
+        isEnabled: true,
+        baseURL: process.env.AUTH_ORIGIN,
+        provider: {
+            type: 'authjs'
+        },
     },
     googleFonts: {
         families: {
