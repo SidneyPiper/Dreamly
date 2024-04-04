@@ -1,5 +1,5 @@
 <template>
-    <span
+    <span data-tag=""
         class="flex items-center font-medium justify-center px-3 py-0.5 text-stone-700 rounded-full whitespace-nowrap select-none">
         <slot/>
     </span>
