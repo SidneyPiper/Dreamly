@@ -1,12 +1,14 @@
 <template>
   <div class="flex flex-col grow w-full">
-    <div ref="inputRef" class="text-wrap first-line:text-3xl break-words grow px-4 focus:outline-none"
+    <div ref="inputRef" class="text-wrap break-words grow px-4 focus:outline-none"
          :contenteditable="editable"
          tabindex="0"
          @keydown.enter.exact.prevent="lineBreak" @input="highlight">
-      <template v-if="dream.title && dream.content">{{ dream.title }}<br>{{ dream.content }}<br>
+      <template v-if="dream.title && dream.content"><span style="font-size: 36px">{{
+          dream.title
+        }}</span><br>{{ dream.content }}<br>
       </template>
-      <template v-else><br></template>
+      <template v-else><span style="font-size: 36px"></span><br></template>
     </div>
   </div>
 </template>
@@ -69,16 +71,16 @@ const lineBreak = () => {
 
 
 const reset = () => {
-  inputRef.value.innerHTML = props.dream.title + '<br>' + props.dream.content + '<br>'
+  inputRef.value.innerHTML = '<span style="font-size: 30px">' + props.dream.title + '</span>' + '<br>' + props.dream.content + '<br>'
 }
 
 const highlight = () => {
   const editor = inputRef.value;
-  let text = editor.innerHTML;
+  let text = editor.innerText;
 
-  text = text.replace('<span style="font-size: 36px">', '').replace('</span>', '');
+  text = text.replace('<span style="font-size: 30px">', '').replace('</span>', '');
   // Split content by line breaks
-  const lines = text.split('<br>');
+  const lines = text.split('\n');
 
   // Highlight the first line
   lines[0] = `<span style="font-size: 36px">${lines[0]}</span>`;
@@ -86,6 +88,9 @@ const highlight = () => {
   // Store current selection
   const selection = window.getSelection();
   const range = selection!.getRangeAt(0);
+
+  if (selection?.anchorNode?.nodeName == 'DIV') return
+
   const selectedNode = range.commonAncestorContainer;
   const selectedOffset = range.endOffset;
 
@@ -135,9 +140,3 @@ defineExpose<{
   reset
 })
 </script>
-
-<style scoped>
-.highlighted {
-  background: blue;
-}
-</style>
