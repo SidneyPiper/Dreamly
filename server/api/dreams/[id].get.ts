@@ -5,7 +5,8 @@ export default defineEventHandler(async (event): Promise<DreamWithTags> => {
 
     return event.context.prisma.dream.findUniqueOrThrow({
         where: {
-            id: id
+            id: id,
+            userId: event.context.session?.user.id
         },
         include: {
             tags: {

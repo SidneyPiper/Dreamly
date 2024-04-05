@@ -19,12 +19,15 @@ export interface Dream {
     tags: TagWithColor[]
 }
 
+export interface DreamMap {
+    [key: string]: Dream
+}
+
 /**
  * A store for managing dreams.
  */
 export const useDreamsStore = defineStore('dreams', () => {
-    const dreams = ref<Dream[]>([])
-    const dirty = ref<boolean>(true)
+    const dreams = ref<DreamMap>({})
 
     const {notify} = useNotificationsStore()
     const headers = useRequestHeaders(['cookie']) as HeadersInit
@@ -36,14 +39,19 @@ export const useDreamsStore = defineStore('dreams', () => {
      * @return {Dream} - The dream object with the specified id.
      */
     async function get(id: string): Promise<Dream> {
-        await fetch()
+        if (dreams.value[id]) return dreams.value[id]
 
-        for (const dream of dreams.value) {
-            if (dream.id === id) return dream;
-        }
-
-        notify(Level.DANGER, 'Dream not found')
-        return empty()
+        return $fetch<DreamWithTags>('/api/dreams/' + id, {
+            method: 'GET',
+            headers: headers,
+        }).then((response: DreamWithTags) => {
+            dreams.value[response.id] = response
+            return response
+        }).catch((error) => {
+            console.log(error)
+            notify(Level.DANGER, 'Dream not found')
+            return empty()
+        })
     }
 
     /**
@@ -67,10 +75,8 @@ export const useDreamsStore = defineStore('dreams', () => {
      *
      * @returns {Promise<void>} - A promise that resolves with the fetched dreams.
      */
-    async function fetch(page: number = 0, count: number = 10): Promise<void> {
-        if (!dirty.value) return
-
-        await $fetch<DreamWithTags[]>('/api/dreams/', {
+    async function fetch(page: number = 1, count: number = 10): Promise<boolean> {
+        return $fetch<DreamWithTags[]>('/api/dreams/', {
             method: 'GET',
             headers: headers,
             params: {
@@ -78,19 +84,20 @@ export const useDreamsStore = defineStore('dreams', () => {
                 count: count
             }
         }).then((response: DreamWithTags[]) => {
-            dreams.value = response.map((dream: DreamWithTags): Dream => {
-                return {
-                    id: dream.id,
-                    title: dream.title,
-                    content: dream.content,
-                    date: dream.date,
-                    tags: dream.tags
-                }
-            })
-            dirty.value = false;
+            const mapped = response.reduce((accumulator: DreamMap, current: DreamWithTags) => {
+                accumulator[current.id] = current
+                return accumulator
+            }, {} as DreamMap)
+
+            dreams.value = {
+                ...dreams.value,
+                ...mapped
+            }
+            return response.length == count
         }).catch((error) => {
             console.log(error)
             notify(Level.DANGER, 'Couldn\'t load dreams')
+            return false
         })
     }
 
@@ -100,22 +107,21 @@ export const useDreamsStore = defineStore('dreams', () => {
      * @param {Dream} dream - The dream object containing the title, content, and tags of the dream.
      * @return {Promise<Response>} - A promise that resolves to the response of the POST request.
      */
-    async function create(dream: Dream): Promise<Response> {
+    async function create(dream: Dream): Promise<Response<DreamWithTags>> {
         const tagIds = dream.tags.map(x => x.id)
 
-        return $fetch<Response>('/api/dreams', {
+        return $fetch<Response<DreamWithTags>>('/api/dreams', {
             method: 'POST',
             body: {
                 title: dream.title,
                 content: dream.content,
                 tags: tagIds
             },
-        }).then((response: Response) => {
-            dirty.value = true;
-            fetch()
+        }).then((response: Response<DreamWithTags>) => {
+            dreams.value[response.data.data!.id] = response.data.data!
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
-        }).catch((response: Response) => {
+        }).catch((response: Response<DreamWithTags>) => {
             notify(Level.DANGER, response.data.statusMessage)
             return response
         })
@@ -128,20 +134,19 @@ export const useDreamsStore = defineStore('dreams', () => {
      * @param {Dream} dream - The dream object to be updated.
      * @return {Promise<Response>} - A promise that resolves with the response returned from the server.
      */
-    async function update(dream: Dream): Promise<Response> {
+    async function update(dream: Dream): Promise<Response<DreamWithTags>> {
         if (dream.id == null || dream.id == '') return create(dream)
         const tagIds = dream.tags.map(x => x.id)
 
-        return $fetch<Response>('/api/dreams/' + dream.id, {
+        return $fetch<Response<DreamWithTags>>('/api/dreams/' + dream.id, {
             method: 'PATCH',
             body: {
                 title: dream.title,
                 content: dream.content,
                 tags: tagIds
             },
-        }).then((response) => {
-            dirty.value = true;
-            fetch()
+        }).then((response: Response<DreamWithTags>) => {
+            dreams.value[response.data.data!.id] = response.data.data!
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
         }).catch((response) => {
@@ -157,14 +162,13 @@ export const useDreamsStore = defineStore('dreams', () => {
      * @param {Dream|string} dream - The dream to destroy. Can be either a Dream object or a string representing the dream's ID.
      * @return {Promise<Response>} - A promise that resolves to the response from the server.
      */
-    async function destroy(dream: Dream | string): Promise<Response> {
-        const id = typeof dream === 'object' && dream !== null ? dream.id : dream;
+    async function destroy(dream: Dream | string): Promise<Response<null>> {
+        const id: string = typeof dream === 'object' && dream !== null ? dream.id! : dream;
 
-        return $fetch<Response>('/api/dreams/' + id, {
+        return $fetch<Response<null>>('/api/dreams/' + id, {
             method: 'DELETE'
         }).then(response => {
-            dirty.value = true;
-            fetch()
+            delete dreams.value[id]
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
         }).catch((response) => {
@@ -173,5 +177,5 @@ export const useDreamsStore = defineStore('dreams', () => {
         })
     }
 
-    return {dreams, dirty, get, empty, fetch, create, update, destroy}
+    return {dreams, get, empty, fetch, create, update, destroy}
 })

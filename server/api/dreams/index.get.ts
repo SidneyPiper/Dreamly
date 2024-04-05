@@ -1,8 +1,9 @@
 import {DreamWithTags} from "~/prisma/types";
 
 export default defineEventHandler(async (event): Promise<DreamWithTags[]> => {
-    const page = getRouterParam(event, 'page')
-    const count = getRouterParam(event, 'count')
+    const url = getRequestURL(event)
+    let page = Math.max(parseInt(url.searchParams.get('page') ?? '1'), 1)
+    let count = Math.min(parseInt(url.searchParams.get('count') ?? '10'), 10)
 
     return event.context.prisma.dream.findMany({
         where: {userId: event.context.session!.user.id},
@@ -12,6 +13,9 @@ export default defineEventHandler(async (event): Promise<DreamWithTags[]> => {
                     color: true
                 }
             }
-        }
+        },
+        skip: (page - 1) * count,
+        take: count,
+        orderBy: [{date: 'desc'}]
     });
 })

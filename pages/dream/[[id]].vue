@@ -19,7 +19,7 @@
       <PrimaryButton v-else @click="edit = true; focusEditor()">Edit</PrimaryButton>
     </div>
 
-    <div class="flex flex-col grow overflow-y-scroll gap-2 transition-all text-cloud">
+    <div class="flex flex-col grow overflow-y-scroll gap-1.5 transition-all text-cloud">
 
       <!-- Chosen tags -->
       <TagList :editable="edit" :tags="selectedTags" class="px-4 flex-wrap" @click="unselect"/>
@@ -60,7 +60,6 @@ const selectedTags = ref<TagWithColor[]>([])
 const edit = ref<boolean>(true)
 const create = ref<boolean>(true)
 
-await dreamsStore.fetch()
 await tagsStore.fetch()
 
 if ('id' in route.params && route.params.id) {

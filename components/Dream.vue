@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" class="flex flex-col px-4 py-6 cursor-pointer">
+  <div @click="onClick" class="flex flex-col px-4 py-6 cursor-pointer gap-1.5">
     <!-- Date -->
     <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
         new Date(dream.date).toLocaleDateString('en-us', {
@@ -10,13 +10,11 @@
       }}
     </p>
 
-    <div class="flex mb-2 justify-between items-center gap-2">
-      <!-- Title -->
-      <h3 class="text-3xl font-semibold">{{ dream.title }}</h3>
-    </div>
-
     <!-- Taglist -->
-    <TagList :tags="dream.tags" :editable="true" class="mb-2 flex-wrap" @click="tag => emit('selectedTag', tag)"/>
+    <TagList :tags="dream.tags" :editable="true" class="flex-wrap" @click="tag => emit('selectedTag', tag)"/>
+
+    <!-- Title -->
+    <h3 class="text-3xl font-semibold">{{ dream.title }}</h3>
 
     <!-- Content -->
     <p class="line-clamp-5">{{ dream.content }}</p>

@@ -80,16 +80,16 @@ export const useTagsStore = defineStore('tags', () => {
      * @param {TagWithColor} tag - The tag object that contains the color information.
      * @return {Promise<Response>} A promise that resolves with the response from the API call.
      */
-    async function create(tag: TagWithColor): Promise<Response> {
-        return $fetch<Response>('/api/tags', {
+    async function create(tag: TagWithColor): Promise<Response<null>> {
+        return $fetch<Response<null>>('/api/tags', {
             method: 'POST',
             body: tag
-        }).then((response: Response) => {
+        }).then((response: Response<null>) => {
             dirty.value = true;
             fetch()
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
-        }).catch((response: Response) => {
+        }).catch((response: Response<null>) => {
             notify(Level.DANGER, response.data.statusMessage)
             return response
         })
@@ -101,10 +101,10 @@ export const useTagsStore = defineStore('tags', () => {
      * @param {TagWithColor} tag - The tag object to be updated.
      * @returns {Promise<Response>} - A Promise that resolves to the response from the server.
      */
-    async function update(tag: TagWithColor): Promise<Response> {
+    async function update(tag: TagWithColor): Promise<Response<null>> {
         if (tag.id == null || tag.id == '') return create(tag)
 
-        return $fetch<Response>('/api/tags/' + tag.id, {
+        return $fetch<Response<null>>('/api/tags/' + tag.id, {
             method: 'PATCH',
             body: tag,
         }).then((response) => {
@@ -124,10 +124,10 @@ export const useTagsStore = defineStore('tags', () => {
      * @param {TagWithColor | string} tag - The tag to be deleted. Can be either a TagWithColor object or a string representing the tag ID.
      * @returns {Promise<Response>} - A promise that resolves to the server response.
      */
-    async function destroy(tag: TagWithColor | string): Promise<Response> {
+    async function destroy(tag: TagWithColor | string): Promise<Response<null>> {
         const id = typeof tag === 'object' && tag !== null ? tag.id : tag;
 
-        return $fetch<Response>('/api/tags/' + id, {
+        return $fetch<Response<null>>('/api/tags/' + id, {
             method: 'DELETE'
         }).then(response => {
             dirty.value = true;

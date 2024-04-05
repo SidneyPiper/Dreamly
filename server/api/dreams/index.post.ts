@@ -36,20 +36,31 @@ export default defineEventHandler(async (event) => {
     })
 
     try {
-        await event.context.prisma.user.update({
-            where: {id: event.context.session!.user.id},
+        const dream = await event.context.prisma.dream.create({
             data: {
-                dreams: {
-                    create: [{
-                        title: title,
-                        content: content,
-                        tags: {
-                            connect: tags
-                        }
-                    }]
+                userId: event.context.session!.user.id,
+                title: title,
+                content: content,
+                tags: {
+                    connect: tags
+                }
+            },
+            include: {
+                tags: {
+                    include: {
+                        color: true
+                    }
                 }
             }
         })
+
+        return {
+            data: {
+                statusCode: 200,
+                statusMessage: 'The dream was successfully created.',
+                data: dream
+            }
+        }
     } catch (error) {
         console.log(error);
         throw createError({
@@ -57,12 +68,4 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'An internal server error occurred.'
         })
     }
-
-    return {
-        data: {
-            statusCode: 200,
-            statusMessage: 'The dream was successfully created.'
-        }
-    }
-
 })

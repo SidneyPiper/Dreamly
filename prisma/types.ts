@@ -4,11 +4,11 @@ import {Prisma} from '@prisma/client'
  * Represents a response from an API call.
  * @interface Response
  */
-export interface Response {
+export interface Response<T> {
     data: {
         status: number,
         statusMessage: string,
-        data?: object
+        data?: T
     }
 }
 

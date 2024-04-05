@@ -1,139 +1,110 @@
 <template>
-  <div class="flex flex-col grow w-full">
-    <div ref="inputRef" class="text-wrap break-words grow px-4 focus:outline-none"
-         :contenteditable="editable"
-         tabindex="0"
-         @keydown.enter.exact.prevent="lineBreak" @input="highlight">
-      <template v-if="dream.title && dream.content"><span class="text-3xl">{{
-          dream.title
-        }}</span><br>{{ dream.content }}<br>
-      </template>
-      <template v-else><span class="text-3xl"></span><br></template>
+  <div class="flex flex-col grow group w-full gap-1.5" @click="click">
+    <div ref="titleRef"
+         class="text-3xl resize-none break-words pt-0 text-wrap px-4 font-bold pb-0 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent"
+         :contenteditable="editable" tabindex="0" type="text"
+         @keydown.down.prevent="down"
+         @keydown.right="right"
+         @keydown.enter.prevent="handleInputEnter"
+         @input="computeTitleEmpty">{{ dream?.title }}
     </div>
+    <textarea ref="contentRef" :readonly="(titleEmpty && editable)"
+              class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
+              @keydown.up="up"
+              @keydown.left="left"
+              @keydown.backspace="left">{{ dream?.content }}</textarea>
   </div>
 </template>
 
-<script lang="ts" setup>
-import type {DreamWithTags} from "~/prisma/types";
+<script setup lang="ts">
+import type {Dream} from "~/stores/dreams";
 
-const inputRef = ref()
-
-const props = defineProps<{
-  dream: DreamWithTags
-  editable: boolean
+defineProps<{
+  dream?: Dream,
+  editable?: boolean
 }>()
 
+const titleRef = ref<HTMLInputElement>()
+const contentRef = ref<HTMLTextAreaElement>()
+
+const titleEmpty = ref<boolean>(true)
+
 onMounted(() => {
-  focus()
+  titleRef.value?.focus()
+  computeTitleEmpty()
 })
 
-const focus = () => {
-  inputRef.value!.focus({preventScroll: true})
+const computeTitleEmpty = () => {
+  titleEmpty.value = titleRef.value?.innerText.length == 1 || titleRef.value?.innerText.length == 0
 }
 
-const get = (): [string, string] => {
-  const newlineIndex = inputRef.value!.innerText.indexOf('\n');
+const handleInputEnter = () => {
+  if (titleRef.value!.innerText.length > 0) {
+    focusContent()
+  }
+}
 
-  if (newlineIndex === -1) {
-    return [inputRef.value!.innerText, ""];
+const focusContent = () => {
+  contentRef.value!.focus({preventScroll: true})
+}
+
+const click = (event: Event) => {
+  if (titleEmpty.value) {
+    event.preventDefault()
+    titleRef.value!.focus({preventScroll: true})
+  }
+}
+
+const down = () => {
+  const offset = document.getSelection()!.anchorOffset
+  focusContent()
+  contentRef.value!.selectionStart = offset
+  contentRef.value!.selectionEnd = offset
+}
+
+const right = (event: Event) => {
+  const selection = document.getSelection()!
+  if (selection.type == 'Caret' && selection.anchorOffset >= titleRef.value!.innerText.length) {
+    event.preventDefault()
+    focusContent()
+    contentRef.value!.selectionStart = 0
+    contentRef.value!.selectionEnd = 0
+  }
+}
+
+const up = (event: Event) => {
+  if (!contentRef.value!.value.substring(0, contentRef.value!.selectionStart).includes('\n')) {
+    event.preventDefault()
+    titleRef.value!.focus({preventScroll: true})
+    setCursorPosition(titleRef.value!, contentRef.value!.selectionStart)
+  }
+}
+
+const left = (event: Event) => {
+  if (contentRef.value!.selectionStart == 0 && contentRef.value!.selectionEnd == 0) {
+    event.preventDefault()
+    titleRef.value!.focus({preventScroll: true})
+    setCursorPosition(titleRef.value!, titleRef.value!.innerText.length)
+  }
+}
+
+const setCursorPosition = (contentEditableElement: HTMLElement, position: number) => {
+  const range = document.createRange();
+  const selection = window.getSelection();
+
+  contentEditableElement.focus();
+
+  if (contentEditableElement.childNodes.length === 0) {
+    const textNode = document.createTextNode("");
+    contentEditableElement.appendChild(textNode);
   }
 
-  const title = inputRef.value!.innerText.substring(0, newlineIndex);
-  const content = inputRef.value!.innerText.substring(newlineIndex + 1);
+  const textNode = contentEditableElement.childNodes[0] as Text;
+  const safePosition = Math.min(position, textNode.length);
 
-  return [title, content];
-}
-
-const lineBreak = () => {
-  const selection = window.getSelection();
-  const range = selection!.getRangeAt(0);
-
-  const br = document.createElement('br');
-  range.insertNode(br);
-
-  const cursorPosition = range.endOffset; // Store cursor position
-
-  highlight();
-
-  // Restore cursor position
-  const newRange = document.createRange();
-  newRange.setStart(inputRef.value, cursorPosition);
-  newRange.collapse(true);
+  range.setStart(textNode, safePosition);
+  range.collapse(true);
   selection!.removeAllRanges();
-  selection!.addRange(newRange);
+  selection!.addRange(range);
 }
-
-
-const reset = () => {
-  inputRef.value.innerHTML = '<span class="text-3xl"">' + props.dream.title + '</span>' + '<br>' + props.dream.content + '<br>'
-}
-
-const highlight = () => {
-  const editor = inputRef.value;
-  let text = editor.innerText;
-
-  // Split content by line breaks
-  const lines = text.split('\n');
-
-  // Highlight the first line
-  lines[0] = `<span class="text-3xl">${lines[0]}</span>`;
-
-  // Store current selection
-  const selection = window.getSelection();
-  const range = selection!.getRangeAt(0);
-
-  if (selection?.anchorNode?.nodeName == 'DIV') return
-
-  const selectedNode = range.commonAncestorContainer;
-  const selectedOffset = range.endOffset;
-
-  // Get the length of text before cursor
-  let textBeforeCursorLength = 0;
-  const iterator = document.createNodeIterator(editor, NodeFilter.SHOW_TEXT);
-  let currentNode;
-  while (currentNode = iterator.nextNode()) {
-    if (currentNode === selectedNode) {
-      textBeforeCursorLength += selectedOffset;
-      break;
-    }
-    textBeforeCursorLength += currentNode.textContent?.length || 0;
-  }
-
-  // Update editor content
-  editor.innerHTML = lines.join('<br>');
-
-  // Restore selection
-  const newIterator = document.createNodeIterator(editor, NodeFilter.SHOW_TEXT);
-  let newTextBeforeCursorLength = 0;
-  let newRange = document.createRange();
-  let newSelection = window.getSelection();
-  let newTextBeforeCursorNode;
-  let newNode;
-  while (newNode = newIterator.nextNode()) {
-    if (newTextBeforeCursorLength + (newNode.textContent?.length || 0) >= textBeforeCursorLength) {
-      newTextBeforeCursorNode = newNode;
-      break;
-    }
-    newTextBeforeCursorLength += (newNode.textContent?.length || 0);
-  }
-
-  if (newTextBeforeCursorNode) {
-    newRange.setStart(newTextBeforeCursorNode, textBeforeCursorLength - newTextBeforeCursorLength);
-    newRange.collapse(true);
-
-    newSelection!.removeAllRanges();
-    newSelection!.addRange(newRange);
-  }
-}
-
-
-defineExpose<{
-  get: () => [string, string],
-  focus: () => void
-  reset: () => void
-}>({
-  get,
-  focus,
-  reset
-})
 </script>
