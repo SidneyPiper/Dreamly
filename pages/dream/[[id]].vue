@@ -7,7 +7,7 @@
       <TextButton v-else @click="$router.back()">Cancel</TextButton>
 
       <!-- Date -->
-      <p class="text-xs mb-0.5 opacity-60 uppercase font-bold text-cloud">{{
+      <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
           new Date(dream.date).toLocaleDateString('en-us', {
             weekday: "long",
             month: "short",
@@ -19,7 +19,7 @@
       <PrimaryButton v-else @click="edit = true; focusEditor()">Edit</PrimaryButton>
     </div>
 
-    <div class="flex flex-col grow overflow-y-scroll gap-1.5 transition-all text-cloud">
+    <div class="flex flex-col grow overflow-y-scroll gap-1.5 transition-all">
 
       <!-- Chosen tags -->
       <TagList :editable="edit" :tags="selectedTags" class="px-4 flex-wrap" @click="unselect"/>

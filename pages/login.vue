@@ -13,7 +13,7 @@
         Login with GitHub
       </button>
 
-      <span class="w-4/5 mx-auto h-1 bg-gray-600 rounded-md"></span>
+      <span class="w-4/5 mx-auto h-1 bg-white dark:bg-gray-800 rounded-md"></span>
 
       <form class="flex flex-col gap-3"
             @submit.prevent="signIn('credentials', { name, password })">

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full gap-4 px-4 pt-4 text-cloud">
+  <div class="flex flex-col h-full gap-4 px-4 pt-4">
     <h1 class="text-2xl font-semibold">Profile</h1>
 
     <DataWithIcon :value="data?.user?.name">

@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" class="flex flex-col px-4 py-6 cursor-pointer gap-1.5">
+  <div class="flex flex-col px-4 py-6 cursor-pointer gap-1.5" @click="onClick">
     <!-- Date -->
     <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
         new Date(dream.date).toLocaleDateString('en-us', {
@@ -11,7 +11,7 @@
     </p>
 
     <!-- Taglist -->
-    <TagList :tags="dream.tags" :editable="true" class="flex-wrap" @click="tag => emit('selectedTag', tag)"/>
+    <TagList :editable="true" :tags="dream.tags" class="flex-wrap" @click="tag => emit('selectedTag', tag)"/>
 
     <!-- Title -->
     <h3 class="text-3xl font-semibold">{{ dream.title }}</h3>
@@ -22,8 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import {type DreamWithTags} from "~/prisma/types";
-import {type TagWithColor} from '~/prisma/types'
+import {type DreamWithTags, type TagWithColor} from "~/prisma/types";
 
 const props = defineProps<{
   dream: DreamWithTags

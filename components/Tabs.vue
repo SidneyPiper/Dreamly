@@ -1,29 +1,29 @@
 <template>
   <div class="flex bg-white dark:bg-stone-950 stroke-stone-950 dark:stroke-white">
-    <NuxtLink to="/home" class="grow py-10 flex items-center justify-center relative">
+    <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/home">
       <Transition>
         <BookSolid v-if="isActive('/home')" class="w-8 h-8 absolute"/>
         <BookOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
-    <NuxtLink to="/search" class="grow py-10 flex items-center justify-center relative">
+    <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/search">
       <Transition>
         <MagnifyingGlassSolid v-if="isActive('/search')" class="w-8 h-8 absolute"/>
         <MagnifyingGlassOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
-    <NuxtLink to="/dream" class="grow py-10 flex items-center justify-center relative">
-      <div class="flex absolute items-center justify-center bg-white rounded-lg p-1">
-        <PlusIcon class="w-8 h-8 stroke-stone-950"/>
+    <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/dream">
+      <div class="flex absolute items-center justify-center bg-stone-950 dark:bg-white rounded-lg p-1">
+        <PlusIcon class="w-8 h-8 stroke-white dark:stroke-stone-950"/>
       </div>
     </NuxtLink>
-    <NuxtLink to="/calendar" class="grow py-10 flex items-center justify-center relative">
+    <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/calendar">
       <Transition>
         <CalendarSolid v-if="isActive('/calendar')" class="w-8 h-8 absolute"/>
         <CalendarOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
-    <NuxtLink to="/profile" class="grow py-10 flex items-center justify-center relative">
+    <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/profile">
       <Transition>
         <UserSolid v-if="isActive('/profile')" class="w-8 h-8 absolute"/>
         <UserOutline v-else class="w-8 h-8 absolute"/>
@@ -32,16 +32,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import {BookOpenIcon as BookOutline} from '@heroicons/vue/24/outline';
-import {BookOpenIcon as BookSolid} from '@heroicons/vue/24/solid';
-import {CalendarDaysIcon as CalendarOutline} from '@heroicons/vue/24/outline';
-import {CalendarDaysIcon as CalendarSolid} from '@heroicons/vue/24/solid';
-import {UserIcon as UserOutline} from '@heroicons/vue/24/outline';
-import {UserIcon as UserSolid} from '@heroicons/vue/24/solid';
-import {MagnifyingGlassIcon as MagnifyingGlassOutline} from "@heroicons/vue/24/outline";
-import {MagnifyingGlassIcon as MagnifyingGlassSolid} from "@heroicons/vue/24/solid";
-import {PlusIcon} from '@heroicons/vue/24/outline';
+<script lang="ts" setup>
+import {
+  BookOpenIcon as BookOutline,
+  CalendarDaysIcon as CalendarOutline,
+  MagnifyingGlassIcon as MagnifyingGlassOutline,
+  PlusIcon,
+  UserIcon as UserOutline
+} from '@heroicons/vue/24/outline';
+import {
+  BookOpenIcon as BookSolid,
+  CalendarDaysIcon as CalendarSolid,
+  MagnifyingGlassIcon as MagnifyingGlassSolid,
+  UserIcon as UserSolid
+} from '@heroicons/vue/24/solid';
 
 function isActive(route: string): boolean {
   return useRoute().path == route
