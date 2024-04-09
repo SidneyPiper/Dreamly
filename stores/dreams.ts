@@ -27,7 +27,11 @@ export interface DreamMap {
  * A store for managing dreams.
  */
 export const useDreamsStore = defineStore('dreams', () => {
-    const dreams = ref<DreamMap>({})
+    const dreamsMap = ref<DreamMap>({})
+
+    const dreams = computed(() => {
+        return Object.values(dreamsMap.value).sort((a: Dream, b: Dream) => Math.sign(b.date.getTime() - a.date.getTime()))
+    })
 
     const {notify} = useNotificationsStore()
     const headers = useRequestHeaders(['cookie']) as HeadersInit
@@ -39,13 +43,14 @@ export const useDreamsStore = defineStore('dreams', () => {
      * @return {Dream} - The dream object with the specified id.
      */
     async function get(id: string): Promise<Dream> {
-        if (dreams.value[id]) return dreams.value[id]
+        if (dreamsMap.value[id]) return dreamsMap.value[id]
 
         return $fetch<DreamWithTags>('/api/dreams/' + id, {
             method: 'GET',
             headers: headers,
         }).then((response: DreamWithTags) => {
-            dreams.value[response.id] = response
+            dreamsMap.value[response.id] = response
+            dreamsMap.value[response.id].date = new Date(response.date)
             return response
         }).catch((error) => {
             console.log(error)
@@ -86,11 +91,12 @@ export const useDreamsStore = defineStore('dreams', () => {
         }).then((response: DreamWithTags[]) => {
             const mapped = response.reduce((accumulator: DreamMap, current: DreamWithTags) => {
                 accumulator[current.id] = current
+                accumulator[current.id].date = new Date(current.date)
                 return accumulator
             }, {} as DreamMap)
 
-            dreams.value = {
-                ...dreams.value,
+            dreamsMap.value = {
+                ...dreamsMap.value,
                 ...mapped
             }
             return response.length == count
@@ -118,7 +124,8 @@ export const useDreamsStore = defineStore('dreams', () => {
                 tags: tagIds
             },
         }).then((response: Response<DreamWithTags>) => {
-            dreams.value[response.data.data!.id] = response.data.data!
+            dreamsMap.value[response.data.data!.id] = response.data.data!
+            dreamsMap.value[response.data.data!.id].date = new Date(response.data.data!.date)
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
         }).catch((response: Response<DreamWithTags>) => {
@@ -146,7 +153,8 @@ export const useDreamsStore = defineStore('dreams', () => {
                 tags: tagIds
             },
         }).then((response: Response<DreamWithTags>) => {
-            dreams.value[response.data.data!.id] = response.data.data!
+            dreamsMap.value[response.data.data!.id] = response.data.data!
+            dreamsMap.value[response.data.data!.id].date = new Date(response.data.data!.date)
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
         }).catch((response) => {
@@ -168,7 +176,7 @@ export const useDreamsStore = defineStore('dreams', () => {
         return $fetch<Response<null>>('/api/dreams/' + id, {
             method: 'DELETE'
         }).then(response => {
-            delete dreams.value[id]
+            delete dreamsMap.value[id]
             notify(Level.SUCCESS, response.data.statusMessage)
             return response
         }).catch((response) => {
@@ -177,5 +185,21 @@ export const useDreamsStore = defineStore('dreams', () => {
         })
     }
 
-    return {dreams, get, empty, fetch, create, update, destroy}
+    async function search(term: string): Promise<DreamWithTags[]> {
+        return $fetch<DreamWithTags[]>('/api/dreams/search', {
+            method: 'GET',
+            headers: headers,
+            params: {
+                s: term
+            }
+        }).then((response: DreamWithTags[]) => {
+            return response
+        }).catch((error) => {
+            console.log(error)
+            notify(Level.DANGER, 'Couldn\'t load dreams')
+            return error
+        })
+    }
+
+    return {dreams, get, empty, fetch, create, update, destroy, search}
 })

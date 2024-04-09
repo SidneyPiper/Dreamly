@@ -22,10 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-import {type DreamWithTags, type TagWithColor} from "~/prisma/types";
+import type {TagWithColor} from "~/prisma/types";
+import type {Dream} from "~/stores/dreams"
 
 const props = defineProps<{
-  dream: DreamWithTags
+  dream: Dream
 }>()
 
 const emit = defineEmits<{

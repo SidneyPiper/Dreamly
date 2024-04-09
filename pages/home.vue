@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full">
     <div class="flex flex-col items-stretch">
       <InfiniteScroller :bottom="0" @trigger="fetchNewPage">
-        <Dream v-for="dream in dreamsStore.dreams" :key="dream.id" :dream="dream"
+        <Dream v-for="dream in dreamsStore.dreams" :key="dream.id!" :dream="dream"
                class="last:border-none border-b-4 border-b-white dark:border-b-stone-950"
                @selected-tag="handleTagClick"/>
       </InfiniteScroller>
@@ -35,6 +35,5 @@ const handleTagClick = (tag: TagWithColor) => {
 let page = 1
 const fetchNewPage = async () => {
   if (await dreamsStore.fetch(page)) page++
-  console.log(page)
 }
 </script>
