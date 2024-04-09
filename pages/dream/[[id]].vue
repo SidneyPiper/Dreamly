@@ -91,7 +91,7 @@ const save = async () => {
 }
 
 const focusEditor = () => {
-  editorRef.value!.focus()
+  editorRef.value!.focusContent()
 }
 
 const select = (tag: TagWithColor) => {

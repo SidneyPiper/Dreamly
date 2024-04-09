@@ -8,7 +8,7 @@
          @keydown.enter.prevent="handleInputEnter"
          @input="computeTitleEmpty">{{ dream?.title }}
     </div>
-    <textarea ref="contentRef" :readonly="(titleEmpty && editable)"
+    <textarea ref="contentRef" :readonly="(titleEmpty || !editable)"
               class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
               @keydown.up="up"
               @keydown.left="left"
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import type {Dream} from "~/stores/dreams";
 
-defineProps<{
+const props = defineProps<{
   dream?: Dream,
   editable?: boolean
 }>()
@@ -32,6 +32,7 @@ const titleEmpty = ref<boolean>(true)
 onMounted(() => {
   titleRef.value?.focus()
   computeTitleEmpty()
+  console.log((titleEmpty.value && props.editable))
 })
 
 const computeTitleEmpty = () => {
@@ -107,4 +108,23 @@ const setCursorPosition = (contentEditableElement: HTMLElement, position: number
   selection!.removeAllRanges();
   selection!.addRange(range);
 }
+
+const get = () => {
+  return [titleRef.value?.innerText!, contentRef.value?.value!]
+}
+
+const reset = () => {
+  titleRef.value!.innerText = props.dream!.title
+  contentRef.value!.value = props.dream!.content
+}
+
+defineExpose<{
+  get: () => string[],
+  focusContent: () => void
+  reset: () => void
+}>({
+  get,
+  focusContent,
+  reset
+})
 </script>
