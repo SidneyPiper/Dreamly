@@ -85,9 +85,8 @@ const save = async () => {
   dream.value.content = content
   dream.value.tags = selectedTags.value
 
-  dreamsStore.update(dream.value).then(() => {
-    navigateTo('/home')
-  })
+  await dreamsStore.update(dream.value)
+  navigateTo('/home')
 }
 
 const focusEditor = () => {

@@ -1,10 +1,14 @@
 <template>
-  <div class="flex flex-col h-full gap-4 px-4 pt-4 text-cloud">
-    <h1 class="text-2xl font-semibold">Calendar</h1>
+  <div class="flex flex-col h-full gap-4">
+    <Calendar/>
+    <DailyTracker/>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import DailyTracker from "~/components/DailyTracker.vue";
+import Calendar from "~/components/Calendar.vue";
+
 definePageMeta({
   middleware: 'auth',
   layout: 'default',

@@ -4,7 +4,8 @@
     <slot/>
   </NuxtLink>
   <button v-else
-          class="flex items-center bg-primary px-6 py-1 rounded-md text-white shadow-md transition-all disabled:saturate-[25%]">
+          class="flex items-center bg-primary px-6 py-1 rounded-md text-white shadow-md transition-all disabled:saturate-[25%]"
+          type="submit">
     <slot/>
   </button>
 </template>

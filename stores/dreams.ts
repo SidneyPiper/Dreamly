@@ -4,6 +4,7 @@ import {useNotificationsStore} from "~/stores/notifications";
 
 /**
  * Represents a Dream.
+ *
  * @interface
  * @property {string | null} id - The unique identifier of the dream.
  * @property {string} title - The title of the dream.
@@ -185,6 +186,11 @@ export const useDreamsStore = defineStore('dreams', () => {
         })
     }
 
+    /**
+     * Searches for a dream using a keyword. Uses Levenshtein distance in the backend.
+     *
+     * @param {string} term - The search term
+     */
     async function search(term: string): Promise<DreamWithTags[]> {
         return $fetch<DreamWithTags[]>('/api/dreams/search', {
             method: 'GET',

@@ -10,7 +10,7 @@
       }}
     </p>
 
-    <!-- Taglist -->
+    <!-- TagList -->
     <TagList :editable="true" :tags="dream.tags" class="flex-wrap" @click="tag => emit('selectedTag', tag)"/>
 
     <!-- Title -->

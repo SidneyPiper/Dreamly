@@ -43,10 +43,11 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  accounts Account[]
-  sessions Session[]
-  dreams   Dream[]
-  tags     Tag[]
+  accounts    Account[]
+  sessions    Session[]
+  dreams      Dream[]
+  tags        Tag[]
+  trackerData TrackerData[]
 }
 
 model VerificationToken {
@@ -86,4 +87,13 @@ model Color {
   hex String
 
   Tag Tag[]
+}
+
+model TrackerData {
+  id     String   @id @default(cuid())
+  userId String
+  date   DateTime
+  data   Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -2,7 +2,7 @@
   <div class="flex bg-white dark:bg-stone-950 stroke-stone-950 dark:stroke-white">
     <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/home">
       <Transition>
-        <BookSolid v-if="isActive('/home')" class="w-8 h-8 absolute"/>
+        <BookSolid v-if="isActive('/home')" class="w-8 h-8 absolute stroke-0"/>
         <BookOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
@@ -19,13 +19,13 @@
     </NuxtLink>
     <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/calendar">
       <Transition>
-        <CalendarSolid v-if="isActive('/calendar')" class="w-8 h-8 absolute"/>
+        <CalendarSolid v-if="isActive('/calendar')" class="w-8 h-8 absolute stroke-0"/>
         <CalendarOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
     <NuxtLink class="grow py-10 flex items-center justify-center relative" to="/profile">
       <Transition>
-        <UserSolid v-if="isActive('/profile')" class="w-8 h-8 absolute"/>
+        <UserSolid v-if="isActive('/profile')" class="w-8 h-8 absolute stroke-0"/>
         <UserOutline v-else class="w-8 h-8 absolute"/>
       </Transition>
     </NuxtLink>
