@@ -26,6 +26,17 @@ export type TagWithColor = Prisma.TagGetPayload<typeof tagWithColor>
 const color = Prisma.validator<Prisma.ColorDefaultArgs>()({})
 export type Color = Prisma.ColorGetPayload<typeof color>
 
+/** TrackerData **/
+const trackerData = Prisma.validator<Prisma.TrackerDataDefaultArgs>()({
+    select: {
+        id: true,
+        date: true,
+        quality: true,
+        duration: true
+    }
+})
+export type TrackerData = Prisma.TrackerDataGetPayload<typeof trackerData>
+
 /** DreamWithTags **/
 const dreamWithTags = Prisma.validator<Prisma.DreamDefaultArgs>()({
     select: {
