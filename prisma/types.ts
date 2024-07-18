@@ -37,6 +37,12 @@ const trackerData = Prisma.validator<Prisma.TrackerDataDefaultArgs>()({
 })
 export type TrackerData = Prisma.TrackerDataGetPayload<typeof trackerData>
 
+/** Day **/
+export interface Day {
+    dreams: DreamWithTags[],
+    tracker: TrackerData | null
+}
+
 /** DreamWithTags **/
 const dreamWithTags = Prisma.validator<Prisma.DreamDefaultArgs>()({
     select: {

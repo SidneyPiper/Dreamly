@@ -24,6 +24,10 @@ const selectedTags = ref<TagWithColor[]>([])
 
 const dreamsStore = useDreamsStore()
 
+onMounted(async () => {
+  await fetchNewPage()
+})
+
 const handleTagClick = (tag: TagWithColor) => {
   if (selectedTags.value.includes(tag)) {
     selectedTags.value = selectedTags.value.filter(x => x != tag)

@@ -1,14 +1,13 @@
 <template>
-  <div class="flex flex-col h-full gap-4">
-    <Calendar/>
+  <div class="flex flex-col h-full relative">
+    <Fader class="text-stone-900" vertical>
+      <Calendar/>
+    </Fader>
     <DailyTracker/>
   </div>
 </template>
 
 <script lang="ts" setup>
-import DailyTracker from "~/components/DailyTracker.vue";
-import Calendar from "~/components/Calendar.vue";
-
 definePageMeta({
   middleware: 'auth',
   layout: 'default',

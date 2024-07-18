@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col grow overflow-y-auto gap-4 p-4">
+  <div class="flex flex-col h-full overflow-y-auto gap-4 p-4 text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
     <div v-for="d in window" :key="d.toMillis()" class="flex flex-col gap-1">
       <div class="font-semibold flex items-center justify-between gap-1">
         <p class="text-stone-400">{{ d.toFormat("ccc, dd. LLL") }}</p>
