@@ -23,107 +23,69 @@ import {MinusIcon, PlusIcon} from '@heroicons/vue/24/outline'
 import {vMaska} from "maska/vue"
 import type {MaskaDetail} from "maska";
 
+/* Whole component works on minutes */
 const props = withDefaults(defineProps<{
-  hours?: number
-  minutes?: number
   min?: number
   max?: number
   step?: number
 }>(), {
-  hours: 0,
-  minutes: 0,
   min: 0,
-  max: 48,
+  max: 48 * 60,
   step: 30
 })
 
-const hours = ref(props.hours)
-const minutes = ref(props.minutes)
-const input = ref(hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0'))
+/* Stores the time in minutes */
+const time = defineModel<number>({default: 8 * 60})
+
+/* Reference to input value */
+const input = ref<string>('00:00')
+
+const constrainTime = () => {
+  time.value = Math.min(props.max, Math.max(props.min, time.value))
+}
+
+const updateDisplay = () => {
+  const hours = Math.floor(time.value / 60)
+  const minutes = time.value % 60
+  input.value = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
+}
+
+watch(time, () => {
+  constrainTime()
+  updateDisplay()
+}, {immediate: true})
 
 const increment = () => {
-  minutes.value += props.step
-  hours.value += Math.floor(minutes.value / 60)
-  minutes.value %= 60
-
-  if (hours.value === props.max && minutes.value > 0) {
-    hours.value = props.max
-    minutes.value = 0
-  }
-
-  if (hours.value > props.max) {
-    hours.value = props.max
-    minutes.value = 0
-  }
-
-  input.value = hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0')
+  time.value += props.step
 }
 
 const decrement = () => {
-  if (hours.value === props.min && minutes.value - props.step < 0) {
-    hours.value = props.min
-    minutes.value = 0
-    return
-  }
-  minutes.value -= props.step // 8 : -42
-  hours.value += Math.floor(minutes.value / 60) // 7 : -42
-  minutes.value = ((minutes.value % 60) + 60) % 60
-  hours.value = Math.max(props.min, hours.value)
-
-  input.value = hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0')
-}
-
-const reset = () => {
-  hours.value = props.hours
-  minutes.value = props.minutes
+  time.value -= props.step
 }
 
 const setValues = (e: CustomEvent<MaskaDetail>) => {
   if (!e.detail.completed) return
 
   const [newHours, newMinutes] = e.detail.masked.split(':').map(Number)
-
-  hours.value = Math.min(props.max, Math.max(props.min, newHours))
-  minutes.value = Math.min(59, Math.max(0, newMinutes))
-
-  if (hours.value === props.max && minutes.value > 0) {
-    hours.value = props.max
-    minutes.value = 0
-  }
-
-  input.value = hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0')
+  time.value = newHours * 60 + newMinutes
 }
 
 const fixTime = () => {
   if (input.value === '') {
-    input.value = hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0')
+    updateDisplay()
     return
   }
 
   if (!input.value.includes(':')) {
-    hours.value = Math.min(props.max, Math.max(props.min, parseInt(input.value)))
-    minutes.value = 0
-    input.value = Math.min(props.max, Math.max(props.min, hours.value)).toString().padStart(2, '0') + ':00'
+    time.value = Math.min(props.max, Math.max(props.min, parseInt(input.value))) * 60
   } else {
     const [newHours, newMinutes] = input.value.split(':').map(Number)
-    console.log(newHours, newMinutes)
-    hours.value = Math.min(props.max, Math.max(props.min, newHours))
-    minutes.value = Math.min(59, Math.max(0, newMinutes))
-
-    if (hours.value === props.max && minutes.value > 0) {
-      hours.value = props.max
-      minutes.value = 0
-    }
-
-    input.value = hours.value.toString().padStart(2, '0') + ':' + minutes.value.toString().padStart(2, '0')
+    time.value = newHours * 60 + newMinutes
   }
 }
 
 defineExpose({
-  hours,
-  minutes,
   increment,
   decrement,
-  reset
 })
 </script>

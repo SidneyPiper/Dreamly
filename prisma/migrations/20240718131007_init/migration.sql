@@ -75,6 +75,17 @@ CREATE TABLE "Color" (
 );
 
 -- CreateTable
+CREATE TABLE "TrackerData" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "quality" INTEGER,
+    "sleep" INTEGER,
+
+    CONSTRAINT "TrackerData_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_DreamToTag" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -118,6 +129,9 @@ ALTER TABLE "Tag" ADD CONSTRAINT "Tag_userId_fkey" FOREIGN KEY ("userId") REFERE
 
 -- AddForeignKey
 ALTER TABLE "Tag" ADD CONSTRAINT "Tag_colorId_fkey" FOREIGN KEY ("colorId") REFERENCES "Color"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TrackerData" ADD CONSTRAINT "TrackerData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_DreamToTag" ADD CONSTRAINT "_DreamToTag_A_fkey" FOREIGN KEY ("A") REFERENCES "Dream"("id") ON DELETE CASCADE ON UPDATE CASCADE;

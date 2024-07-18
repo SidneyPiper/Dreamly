@@ -90,10 +90,11 @@ model Color {
 }
 
 model TrackerData {
-  id     String   @id @default(cuid())
-  userId String
-  date   DateTime
-  data   Json
+  id      String   @id @default(cuid())
+  userId  String
+  date    DateTime
+  quality Int?
+  sleep   Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

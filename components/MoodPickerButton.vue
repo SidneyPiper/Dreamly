@@ -1,6 +1,6 @@
 <template>
   <button :class="{'grow-[1.5]': grow}"
-          class="flex items-center grow justify-center transition-all h-10 rounded-md relative overflow-hidden">
+          class="flex items-center grow justify-center transition-all h-11 rounded-md relative overflow-hidden">
     <Transition name="bfade">
       <CheckIcon v-if="highlight"
                  class="w-6 h-6 text-stone-950 stroke-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform-gpu"/>

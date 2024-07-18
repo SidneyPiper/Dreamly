@@ -17,12 +17,16 @@
 
     <h2 class="mt-3 text-lg font-semibold">How long did you sleep today?</h2>
     <div class="flex items-center justify-between">
-      <HourSelect :hours="8" :minutes="0" :step="30"/>
+      <HourSelect v-model:time="time" :step="30"/>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+/* Initially 8h */
+const time = ref<number>(60 * 8)
+
+/* Initially not chosen */
 const mood = ref<null | 1 | 2 | 3 | 4 | 5>(null)
 
 const setMood = (value: 1 | 2 | 3 | 4 | 5) => {

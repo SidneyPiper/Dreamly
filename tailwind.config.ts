@@ -23,6 +23,11 @@ export default {
             }
         },
     },
+    safelist: [
+        {
+            pattern: /(bg|text|border|shadow)(-t|-r|-b|-l)?-traffic-(100|200|300|400|500)/
+        }
+    ],
     plugins: [
         require('@tailwindcss/forms')
     ],
