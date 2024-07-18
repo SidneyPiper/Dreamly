@@ -13,15 +13,27 @@ export default defineNuxtConfig({
     sourcemap: true,
 
     modules: [
-        '@sidebase/nuxt-auth',
         '@nuxtjs/tailwindcss',
         '@nuxtjs/google-fonts',
         '@pinia/nuxt',
+        "@hebilicious/authjs-nuxt"
     ],
 
+    authJs: {
+        verifyClientOnEveryRequest: true,
+        guestRedirectTo: "/login",
+        authenticatedRedirectTo: "/home",
+        baseUrl: process.env.NUXT_NEXTAUTH_URL
+    },
+
     runtimeConfig: {
-        githubClientId: '',
-        githubClientSecret: ''
+        authJs: {
+            secret: process.env.NUXT_NEXTAUTH_SECRET // You can generate one with `openssl rand -base64 32`
+        },
+        github: {
+            clientId: process.env.NUXT_GITHUB_CLIENT_ID,
+            clientSecret: process.env.NUXT_GITHUB_CLIENT_SECRET
+        }
     },
 
     app: {
@@ -39,14 +51,6 @@ export default defineNuxtConfig({
                 {name: 'theme-color', content: '#ffffff'}
             ]
         }
-    },
-
-    auth: {
-        isEnabled: true,
-        baseURL: process.env.AUTH_ORIGIN,
-        provider: {
-            type: 'authjs'
-        },
     },
 
     googleFonts: {

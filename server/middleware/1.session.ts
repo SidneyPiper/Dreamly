@@ -1,5 +1,6 @@
 import {SessionData} from "h3";
 import {getServerSession} from "#auth";
+import {authOptions} from "~/server/api/auth/[...]";
 
 declare module 'h3' {
     interface H3EventContext {
@@ -8,5 +9,5 @@ declare module 'h3' {
 }
 
 export default defineEventHandler(async (event): Promise<void> => {
-    event.context.session = await getServerSession(event)
+    event.context.session = await getServerSession(event, authOptions)
 })

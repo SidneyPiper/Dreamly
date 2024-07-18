@@ -1,3 +1,4 @@
-import { getToken } from '#auth'
+import {getServerToken} from '#auth'
+import {authOptions} from "~/server/api/auth/[...]";
 
-export default defineEventHandler(event => getToken({ event }))
+export default defineEventHandler(event => getServerToken(event, authOptions))

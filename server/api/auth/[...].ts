@@ -1,15 +1,18 @@
 // file: ~/server/api/auth/[...].ts
-import GithubProvider from 'next-auth/providers/github'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import {NuxtAuthHandler} from '#auth'
 import {PrismaAdapter} from '@auth/prisma-adapter'
 import {PrismaClient} from '@prisma/client'
 import {compare} from "bcrypt-ts";
+import GithubProvider from "@auth/core/providers/github"
+import CredentialsProvider from "@auth/core/providers/credentials"
+import {AuthConfig} from "@auth/core";
+import {NuxtAuthHandler} from "#auth";
 
 const prisma = new PrismaClient()
 
-export default NuxtAuthHandler({
-    secret: 'my-secret',
+const runtimeConfig = useRuntimeConfig()
+
+export const authOptions: AuthConfig = {
+    secret: runtimeConfig.authJs.secret,
     pages: {
         signIn: '/login'
     },
@@ -18,7 +21,6 @@ export default NuxtAuthHandler({
     },
     adapter: PrismaAdapter(prisma) as any,
     callbacks: {
-        // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
         jwt: async ({token, user}) => {
             const isSignIn = !!user;
             if (isSignIn) {
@@ -26,24 +28,21 @@ export default NuxtAuthHandler({
             }
             return Promise.resolve(token);
         },
-        // Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
         session: async ({session, token}) => {
             (session as any).user.id = token.id
             return Promise.resolve(session)
         },
     },
     providers: [
-        // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
-        GithubProvider.default({
-            clientId: useRuntimeConfig().githubClientId,
-            clientSecret: useRuntimeConfig().githubClientSecret,
+        GithubProvider({
+            clientId: runtimeConfig.github.clientId,
+            clientSecret: runtimeConfig.github.clientSecret
         }),
-        // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
-        CredentialsProvider.default({
-            async authorize(credentials: any) {
+        CredentialsProvider({
+            async authorize(credentials) {
                 const user = await prisma.user.findFirst({
                     where: {
-                        OR: [{name: credentials.name}, {email: credentials.name}]
+                        OR: [{name: credentials.username!}, {email: credentials.username!}]
                     },
                     select: {
                         id: true,
@@ -55,17 +54,19 @@ export default NuxtAuthHandler({
                 })
 
                 if (!user || !user.password) {
-                    return false
+                    return null
                 }
 
-                const valid = await compare(credentials.password, user?.password as string)
+                const valid = await compare(credentials.password as string, user?.password as string)
 
                 if (valid) {
                     return user
                 } else {
-                    return false
+                    return null
                 }
             }
         })
-    ],
-})
+    ]
+}
+
+export default NuxtAuthHandler(authOptions, runtimeConfig)
