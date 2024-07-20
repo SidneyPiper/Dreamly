@@ -11,11 +11,11 @@ export default {
                 'primary-light': '#81C3D7',
                 'cloud': '#E9ECD6',
                 'traffic': {
-                    '100': '#a5d46a',
-                    '200': '#ffff80',
+                    '500': '#a5d46a',
+                    '400': '#ffff80',
                     '300': '#ffdf80',
-                    '400': '#ffc080',
-                    '500': '#ffa080'
+                    '200': '#ffc080',
+                    '100': '#ffa080'
                 }
             },
             fontFamily: {

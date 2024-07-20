@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex flex-col items-stretch">
-      <InfiniteScroller :bottom="0" @trigger="fetchNewPage">
+      <InfiniteScroller :bottom="0" @bottom="fetchNewPage">
         <Dream v-for="dream in dreamsStore.dreams" :key="dream.id!" :dream="dream"
                class="last:border-none border-b-4 border-b-white dark:border-b-stone-950"
                @selected-tag="handleTagClick"/>

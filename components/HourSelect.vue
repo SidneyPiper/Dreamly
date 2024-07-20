@@ -50,7 +50,8 @@ const updateDisplay = () => {
   input.value = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
 }
 
-watch(time, () => {
+watch(time, (newTime) => {
+  console.log(newTime)
   constrainTime()
   updateDisplay()
 }, {immediate: true})

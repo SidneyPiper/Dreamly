@@ -1,6 +1,8 @@
 services:
   db:
-    image: postgres:16-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile-Postgres
     restart: always
     shm_size: 128mb
     environment:
@@ -8,9 +10,11 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: dreamly
     volumes:
+      - ./postgres.conf:/etc/postgresql/postgresql.conf
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
 volumes:
   pgdata:
+  meilidata:

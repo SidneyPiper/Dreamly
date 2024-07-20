@@ -14,10 +14,10 @@
     <CheckCircleIcon v-if="props.level == 'success'" aria-hidden="true"
                      class="flex-shrink-0 inline w-4 h-4 me-3"/>
     <span class="sr-only">{{ props.level }} alert</span>
-    <div class="shrink-0">
+    <p class="">
       <span v-if="props.title" class="font-medium">{{ props.title }}</span>
       <span v-if="props.message">{{ props.message }}</span>
-    </div>
+    </p>
   </div>
 </template>
 

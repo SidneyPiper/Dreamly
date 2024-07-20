@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+import {resolve} from 'path'
+
 export default defineNuxtConfig({
     css: ['./assets/css/transitions.css'],
+
+    alias: {
+        'types': resolve(__dirname, './prisma/types'),
+        'stores': resolve(__dirname, './stores'),
+    },
 
     devtools: {
         enabled: true,

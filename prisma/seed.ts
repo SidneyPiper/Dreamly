@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 import {genSalt, hash} from "bcrypt-ts";
+import {DateTime} from "luxon";
 
 const prisma = new PrismaClient()
 
@@ -83,7 +84,29 @@ async function main() {
         })
     }
 
+    const start = DateTime.now().startOf('day')
 
+    const trackerData = []
+    for (let d = start; d > start.minus({month: 6}); d = d.minus({days: 1})) {
+        const minQuality = 1
+        const maxQuality = 5
+        const minDuration = 6
+        const maxDuration = 12
+
+        const quality = Math.floor(Math.random() * maxQuality) + minQuality
+        const duration = (Math.floor(Math.random() * (maxDuration - minDuration)) + (minDuration * 2)) * 30
+
+        trackerData.push({
+            userId: user.id,
+            date: d.toJSDate(),
+            quality,
+            duration
+        })
+    }
+
+    await prisma.trackerData.createMany({
+        data: trackerData
+    })
 }
 
 main()

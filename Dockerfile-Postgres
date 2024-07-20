@@ -1,0 +1,14 @@
+FROM postgres:16.3-bookworm
+
+LABEL maintainer="John Wagner, Sidney Piper"
+
+RUN apt-get update \
+      && apt-cache showpkg postgresql-16-wal2json \
+      && apt-get install -y --no-install-recommends postgresql-16-wal2json \
+      && rm -rf /var/lib/apt/lists/*
+
+# Copy the custom configuration file to the expected location
+COPY postgres.conf /etc/postgresql/postgresql.conf
+
+# Ensure the PostgreSQL data directory is initialized with the custom configuration
+CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]

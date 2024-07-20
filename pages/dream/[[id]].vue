@@ -31,7 +31,7 @@
     <!-- Available tags -->
     <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
       <TagCreate @close="focusEditor"/>
-      <Fader>
+      <Fader class="text-stone-950">
         <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>
     </div>

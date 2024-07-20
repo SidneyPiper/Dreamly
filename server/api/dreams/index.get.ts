@@ -3,10 +3,11 @@ import {DateTime} from "luxon";
 
 export default defineEventHandler(async (event): Promise<DreamWithTags[]> => {
     const url = getRequestURL(event)
+
     let page = Math.max(parseInt(url.searchParams.get('page') ?? '1'), 1)
     let count = Math.min(parseInt(url.searchParams.get('count') ?? '10'), 10)
 
-    let to = DateTime.now().startOf('day')
+    let to = DateTime.now().endOf('day')
     let from = to.minus({year: 100})
 
     if (url.searchParams.has('from')) {

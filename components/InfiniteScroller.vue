@@ -1,25 +1,37 @@
 <template>
   <div class="relative">
+    <span ref="top" :style="{top: props.top + 'px'}" class="absolute"></span>
     <slot/>
-    <span ref="trigger" class="absolute" :style="{bottom: props.bottom + 'px'}"></span>
+    <span ref="bottom" :style="{bottom: props.bottom + 'px'}" class="absolute"></span>
   </div>
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-  bottom: number
-}>()
+<script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  top?: number
+  bottom?: number
+}>(), {
+  top: 0,
+  bottom: 0
+})
 
 const emit = defineEmits<{
-  (e: 'trigger'): void
+  (e: 'top'): void
+  (e: 'bottom'): void
 }>()
 
-const trigger = ref<HTMLSpanElement>()
+const top = ref<HTMLSpanElement>()
+const bottom = ref<HTMLSpanElement>()
 
 onMounted(() => {
-  const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-    if (entries[0].isIntersecting) emit('trigger')
+  const observer_top = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+    if (entries[0].isIntersecting) emit('top')
   })
-  observer.observe(trigger.value!)
+  observer_top.observe(top.value!)
+
+  const observer_bot = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+    if (entries[0].isIntersecting) emit('bottom')
+  })
+  observer_bot.observe(bottom.value!)
 })
 </script>

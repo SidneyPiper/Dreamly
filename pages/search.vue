@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col h-full gap-4 px-4 pt-4 text-cloud">
+  <div class="flex flex-col h-full gap-4 pt-4 text-cloud">
+
     <div class="flex items-center gap-2 bg-stone-950 rounded-full px-5 py-1">
       <MagnifyingGlassIcon class="w-6 h-6"/>
       <input v-model="searchTerm" class="grow bg-transparent border-none focus:ring-0 text-xl" placeholder="Search..."
@@ -12,7 +13,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {MagnifyingGlassIcon} from '@heroicons/vue/24/solid';
 import type {DreamWithTags} from "~/prisma/types";
 

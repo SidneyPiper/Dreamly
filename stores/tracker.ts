@@ -55,7 +55,7 @@ export const useTrackerStore = defineStore('tracker', () => {
                 return trackerMap.value[id]
             }
         }
-        console.log(DateTime.now().startOf('day').toISODate())
+
         return $fetch<TrackerData[]>('/api/tracker/', {
             method: 'GET',
             headers: headers,
@@ -64,7 +64,6 @@ export const useTrackerStore = defineStore('tracker', () => {
                 to: DateTime.now().endOf('day').toISODate()
             }
         }).then((response: TrackerData[]) => {
-            console.log()
             if (response.length == 0) return null
 
             trackerMap.value[response[0].id] = response[0]
@@ -78,10 +77,45 @@ export const useTrackerStore = defineStore('tracker', () => {
     }
 
     /**
+     * Returns the trackers for a specific time period.
+     *
+     * @return {TrackerData[]} - The tracker objects from the range.
+     */
+    async function between(start: DateTime, end: DateTime): Promise<TrackerData[]> {
+        return $fetch<TrackerData[]>('/api/tracker/', {
+            method: 'GET',
+            headers: headers,
+            params: {
+                from: start.toISODate(),
+                to: end.toISODate()
+            }
+        }).then((response: TrackerData[]) => {
+            const mapped = response.reduce((accumulator: TrackerMap, current: TrackerData) => {
+
+                accumulator[current.id] = current
+                accumulator[current.id].date = new Date(current.date)
+                return accumulator
+
+            }, {} as TrackerMap)
+
+            trackerMap.value = {
+                ...trackerMap.value,
+                ...mapped
+            }
+
+            return response
+        }).catch((error) => {
+            console.log(error)
+            notify(Level.DANGER, 'Something went wrong getting the tracker data.')
+            return []
+        })
+    }
+
+    /**
      * Creates a new Tracker object with the provided initial values.
      *
      * @param {Partial<TrackerData>?} initial - The initial values to set for the Tracker object.
-     * @returns {TrackerData} - A new Tracker object with the provided initial values.
+     * @returns {Partial<TrackerData>} - A new Tracker object with the provided initial values.
      */
     function empty(initial?: Partial<TrackerData>): Partial<TrackerData> {
         return {
@@ -89,7 +123,7 @@ export const useTrackerStore = defineStore('tracker', () => {
             date: initial?.date || new Date(),
             quality: initial?.quality || null,
             duration: initial?.duration || null
-        }
+        } as Partial<TrackerData>
     }
 
     /**
@@ -190,5 +224,5 @@ export const useTrackerStore = defineStore('tracker', () => {
         })
     }
 
-    return {tracker, get, today, empty, fetch, create, update, destroy}
+    return {tracker, get, today, between, empty, fetch, create, update, destroy}
 })
