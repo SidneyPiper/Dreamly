@@ -3,11 +3,17 @@
     <Fader class="text-stone-900" vertical>
       <Calendar/>
     </Fader>
-    <DailyTracker/>
+    <Transition name="expand">
+      <div v-if="showTracker">
+        <DailyTracker @save="showTracker = false" @today-found="showTracker = false"/>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script lang="ts" setup>
+const showTracker = ref(false)
+
 definePageMeta({
   middleware: 'auth',
   layout: 'default',

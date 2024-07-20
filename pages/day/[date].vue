@@ -1,8 +1,21 @@
 <template>
   <div class="flex flex-col h-full relative">
-    <h1 class="text-2xl font-semibold shrink-0 px-4 pt-4 pb-2">
-      {{ date.day + getNumberSuffix(date.day) + date.toFormat(' LLLL yyyy') }}</h1>
+    <div class="flex items-center justify-between p-4">
+      <!-- Back button with date -->
+      <TextButton class="flex items-center gap-2 font-semibold text-xl" @click="back">
+        <ChevronLeftIcon class="w-6 h-6"/>
+        <p class="-transform-y-[1px]">{{ date.day + getNumberSuffix(date.day) + date.toFormat(' LLLL yyyy') }}</p>
+      </TextButton>
 
+      <!-- Tracker button -->
+      <PrimaryButton :class="'bg-traffic-' + (tracker?.quality ?? 0) * 100"
+                     class="!text-stone-900 font-semibold"
+                     @click="trackerOpen = !trackerOpen">
+        {{ tracker?.duration ? `${Math.floor((tracker?.duration) / 60)}h ${tracker?.duration % 60}m` : 'Tracker' }}
+      </PrimaryButton>
+    </div>
+
+    <!-- Dreams -->
     <Fader class="grow text-stone-900" vertical>
       <div class="h-full overflow-y-auto text-white">
         <Dream v-for="dream in dreams" :key="dream.id!" :dream="dream" :short-desc="true" :show-date="false"
@@ -10,14 +23,23 @@
       </div>
     </Fader>
 
-    <!-- TODO - prop tracker not working ? idk, idc. -->
-    <DailyTracker :tracker="tracker" class="grow" show-always/>
+    <!-- TODO - prop tracker not working? idk, idc. -->
+    <Transition name="expand">
+      <div v-if="trackerOpen">
+        <DailyTracker :tracker="tracker"
+                      class="grow"
+                      @save="handleTrackerUpdate"/>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {DateTime} from "luxon";
 import type {Day, DreamWithTags, TrackerData} from "types";
+import {ChevronLeftIcon} from "@heroicons/vue/24/solid";
+
+const {back} = useRouter()
 
 definePageMeta({
   middleware: 'auth',
@@ -31,6 +53,7 @@ const date = ref<DateTime>(DateTime.now())
 
 const dreams = ref<DreamWithTags[]>([])
 const tracker = ref<TrackerData | null>(null)
+const trackerOpen = ref<boolean>(false)
 
 if ('date' in route.params && route.params.date) {
   date.value = DateTime.fromISO(route.params.date)
@@ -43,6 +66,11 @@ if ('date' in route.params && route.params.date) {
     tracker.value = data.tracker
     console.log(tracker.value)
   })
+}
+
+const handleTrackerUpdate = (updatedTracker: TrackerData | null) => {
+  trackerOpen.value = false
+  tracker.value = updatedTracker
 }
 
 const getNumberSuffix = (num: number): ('st' | 'nd' | 'rd' | 'th') => {

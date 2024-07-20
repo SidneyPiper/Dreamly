@@ -35,40 +35,40 @@ const props = withDefaults(defineProps<{
 })
 
 /* Stores the time in minutes */
-const time = defineModel<number>({default: 8 * 60})
+const duration = defineModel<number>({default: 8 * 60})
 
 /* Reference to input value */
 const input = ref<string>('00:00')
 
 const constrainTime = () => {
-  time.value = Math.min(props.max, Math.max(props.min, time.value))
+  duration.value = Math.min(props.max, Math.max(props.min, duration.value))
 }
 
 const updateDisplay = () => {
-  const hours = Math.floor(time.value / 60)
-  const minutes = time.value % 60
+  const hours = Math.floor(duration.value / 60)
+  const minutes = duration.value % 60
   input.value = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
 }
 
-watch(time, (newTime) => {
-  console.log(newTime)
+watch(duration, (newTime) => {
+  console.log("HourSelect/change: " + newTime)
   constrainTime()
   updateDisplay()
 }, {immediate: true})
 
 const increment = () => {
-  time.value += props.step
+  duration.value += props.step
 }
 
 const decrement = () => {
-  time.value -= props.step
+  duration.value -= props.step
 }
 
 const setValues = (e: CustomEvent<MaskaDetail>) => {
   if (!e.detail.completed) return
 
   const [newHours, newMinutes] = e.detail.masked.split(':').map(Number)
-  time.value = newHours * 60 + newMinutes
+  duration.value = newHours * 60 + newMinutes
 }
 
 const fixTime = () => {
@@ -78,10 +78,10 @@ const fixTime = () => {
   }
 
   if (!input.value.includes(':')) {
-    time.value = Math.min(props.max, Math.max(props.min, parseInt(input.value))) * 60
+    duration.value = Math.min(props.max, Math.max(props.min, parseInt(input.value))) * 60
   } else {
     const [newHours, newMinutes] = input.value.split(':').map(Number)
-    time.value = newHours * 60 + newMinutes
+    duration.value = newHours * 60 + newMinutes
   }
 }
 

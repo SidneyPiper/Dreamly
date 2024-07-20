@@ -7,7 +7,7 @@
         <p class="text-stone-400 font-semibold">{{ DateTime.now().minus({month: i}).toFormat("LLLL y") }}</p>
 
         <!-- Calendar month -->
-        <div class="grid grid-cols-7 bg-stone-800 rounded-lg overflow-hidden p-1.5">
+        <div class="grid grid-cols-7 bg-stone-950 rounded-lg overflow-hidden p-1.5">
           <!-- Weekday names -->
           <div v-for="weekday in Info.weekdays('short')">
             <p class="text-stone-400 text-center text-sm font-semibold py-1">{{ weekday }}</p>
@@ -15,7 +15,7 @@
 
           <!-- Skip empty days on start of month -->
           <div v-for="skip in DateTime.fromJSDate(month[0].date!).weekday - 1" :key="'empty_start_' + skip"
-               class="bg-stone-800"></div>
+               class="bg-stone-950"></div>
 
           <!-- Actual days -->
           <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
@@ -50,7 +50,7 @@
 
           <!-- Skip empty days on end of month -->
           <div v-for="skip in 7 - DateTime.fromJSDate(month[month.length - 1].date!).weekday" :key="'empty_end_' + skip"
-               class="bg-stone-800"></div>
+               class="bg-stone-950"></div>
         </div>
       </div>
     </InfiniteScroller>

@@ -1,10 +1,9 @@
 <template>
-    <h1>Public</h1>
-    <NuxtLink to='/login'>Login</NuxtLink>
+  <StaticHeader/>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 definePageMeta({
-    layout: false
+  layout: "fullscreen"
 })
 </script>
