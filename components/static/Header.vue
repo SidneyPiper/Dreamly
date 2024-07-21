@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-6 text-stone-900 dark:text-cloud max-w-7xl mx-auto w-full">
+      class="flex items-center justify-between py-6 text-stone-900 dark:text-cloud max-w-7xl mx-auto w-full">
     <!-- Logo and Desktop Menu -->
     <div class="flex items-center gap-12">
       <NuxtLink class="flex items-center gap-3" to="/">

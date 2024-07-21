@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-col h-full gap-3 pt-4 text-cloud overflow-y-hidden">
 
-    <div class="flex items-center gap-2 bg-stone-950 rounded-full mx-4 px-4 py-1">
+    <div class="flex items-center gap-2 bg-stone-950 rounded-full mx-4 px-4 py-1 overflow-hidden">
       <MagnifyingGlassIcon class="w-6 h-6 shrink-0"/>
-      <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl" placeholder="Search..."
+      <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl"
+             placeholder="Search..."
              @input="search">
     </div>
 

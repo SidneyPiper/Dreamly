@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div ref="wrapper" class="relative">
     <span ref="top" :style="{top: props.top + 'px'}" class="absolute"></span>
     <slot/>
     <span ref="bottom" :style="{bottom: props.bottom + 'px'}" class="absolute"></span>
@@ -23,6 +23,10 @@ const emit = defineEmits<{
 const top = ref<HTMLSpanElement>()
 const bottom = ref<HTMLSpanElement>()
 
+const isScrollable = ref<boolean>(false)
+
+defineExpose({isScrollable})
+
 onMounted(() => {
   const observer_top = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
     if (entries[0].isIntersecting) emit('top')
@@ -30,7 +34,10 @@ onMounted(() => {
   observer_top.observe(top.value!)
 
   const observer_bot = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-    if (entries[0].isIntersecting) emit('bottom')
+    isScrollable.value = !entries[0].isIntersecting
+    if (entries[0].isIntersecting) {
+      emit('bottom')
+    }
   })
   observer_bot.observe(bottom.value!)
 })
