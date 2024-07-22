@@ -23,14 +23,11 @@
       </div>
     </Fader>
 
-    <!-- TODO - prop tracker not working? idk, idc. -->
-    <Transition name="expand">
-      <div v-if="trackerOpen">
-        <DailyTracker :tracker="tracker"
-                      class="grow"
-                      @save="handleTrackerUpdate"/>
-      </div>
-    </Transition>
+    <!-- Tracker -->
+    <DailyTracker :show-always="trackerOpen"
+                  :tracker="tracker"
+                  class="grow"
+                  @save="handleTrackerUpdate"/>
   </div>
 </template>
 
@@ -64,7 +61,6 @@ if ('date' in route.params && route.params.date) {
   }).then((data) => {
     dreams.value = data.dreams
     tracker.value = data.tracker
-    console.log(tracker.value)
   })
 }
 

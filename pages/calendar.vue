@@ -1,18 +1,24 @@
 <template>
   <div class="flex flex-col h-full relative">
     <Fader class="text-stone-900" vertical>
-      <Calendar/>
+      <Calendar ref="calendar"/>
     </Fader>
-    <Transition name="expand">
-      <div v-if="showTracker">
-        <DailyTracker @save="showTracker = false" @today-found="showTracker = false"/>
-      </div>
-    </Transition>
+
+    <DailyTracker @save="handleTrackerSave"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-const showTracker = ref(false)
+import type {TrackerData} from "types";
+import type {Calendar} from "#components";
+
+const calendar = ref<typeof Calendar | null>()
+
+const handleTrackerSave = (tracker: TrackerData | null) => {
+  if (tracker) {
+    calendar.value?.updateDay(tracker)
+  }
+}
 
 definePageMeta({
   middleware: 'auth',

@@ -110,6 +110,18 @@ const hitBottom = async () => {
   while (!scroller.value?.isScrollable) await fetchOlder({month: 0})
 }
 
+const updateDay = (tracker: TrackerData) => {
+  const date = DateTime.fromJSDate(tracker.date)
+  if (date > DateTime.now()) return
+  if (date < DateTime.now().minus({month: months.value.length})) return
+
+  const index = Math.floor(Math.abs(date.startOf('month').diffNow().as('months')))
+  if (!months.value[index]) months.value[index] = []
+  months.value[index][date.day - 1] = tracker
+}
+
+defineExpose({updateDay})
+
 onMounted(async () => {
   while (!scroller.value?.isScrollable) {
     await fetchOlder({month: 0})
