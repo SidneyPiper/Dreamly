@@ -26,7 +26,7 @@
                       :to="'/day/' + DateTime.fromJSDate(data.date!).toISODate()"
                       class="flex flex-col grow justify-center items-center text-stone-950 p-1 relative ">
               <svg :style="{width: width + 'px', height: width + 'px'}"
-                   class="-rotate-90 flex items-center justify-center -translate-y-[1px] transition-all">
+                   class="-rotate-90 flex items-center justify-center transition-all">
                 <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight" class="text-stone-700"
                         fill="transparent"
                         stroke="currentColor"/>

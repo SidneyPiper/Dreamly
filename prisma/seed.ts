@@ -84,7 +84,7 @@ async function main() {
         })
     }
 
-    const start = DateTime.now().startOf('day')
+    const start = DateTime.now().minus({day: 1}).startOf('day')
 
     const trackerData = []
     for (let d = start; d > start.minus({year: 2}); d = d.minus({days: 1})) {

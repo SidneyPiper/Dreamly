@@ -19,7 +19,8 @@ export default {
                 }
             },
             fontFamily: {
-                'sans': ['Inter', ...defaultTheme.fontFamily.sans]
+                'sans': ['Inter', ...defaultTheme.fontFamily.sans],
+                'mono': ['Chivo Mono', ...defaultTheme.fontFamily.sans],
             },
             transitionTimingFunction: {
                 'out-bounce': 'cubic-bezier(0.840, -0.060, 0.020, 1.415)',

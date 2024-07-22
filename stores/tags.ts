@@ -80,7 +80,16 @@ export const useTagsStore = defineStore('tags', () => {
      * @param {TagWithColor} tag - The tag object that contains the color information.
      * @return {Promise<Response>} A promise that resolves with the response from the API call.
      */
-    async function create(tag: TagWithColor): Promise<Response<null>> {
+    async function create(tag: Partial<TagWithColor>): Promise<Response<null>> {
+        if (!tag.label || !tag.color) {
+            return {
+                data: {
+                    status: 400,
+                    statusMessage: 'Missing label or color'
+                }
+            }
+        }
+
         return $fetch<Response<null>>('/api/tags', {
             method: 'POST',
             body: tag

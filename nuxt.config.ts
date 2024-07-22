@@ -59,7 +59,8 @@ export default defineNuxtConfig({
 
     googleFonts: {
         families: {
-            Inter: [300, 400, 500, 600, 700]
+            Inter: [300, 400, 500, 600, 700],
+            'Chivo Mono': [400, 500, 600]
         }
     },
 
