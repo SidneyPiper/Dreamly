@@ -19,6 +19,7 @@
     "@prisma/client": "latest",
     "@types/luxon": "^3.4.2",
     "bcrypt-ts": "^5.0.2",
+    "click-outside-vue3": "^4.0.1",
     "luxon": "^3.4.4",
     "maska": "^3.0.0",
     "next-auth": "4.21.1",
@@ -26,6 +27,7 @@
     "simplex-noise": "^4.0.2",
     "tsx": "^4.7.1",
     "uuid": "^9.0.1",
+    "v-click-outside": "^3.2.0",
     "validate.js": "^0.13.1",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"

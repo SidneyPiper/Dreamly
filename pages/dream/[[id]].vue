@@ -1,25 +1,37 @@
 <template>
-  <div class="flex flex-col grow pt-4 gap-4 h-full">
+  <div class="flex flex-col grow pt-4 h-full">
 
     <!-- Top bar -->
     <div class="flex justify-between items-center px-4">
       <TextButton v-if="!create && edit" @click="editOff">Cancel</TextButton>
       <TextButton v-else @click="$router.back()">Cancel</TextButton>
 
-      <!-- Date -->
-      <p class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
-          new Date(dream.date).toLocaleDateString('en-us', {
-            weekday: "long",
-            month: "short",
-            day: "numeric"
-          })
-        }}
-      </p>
-      <PrimaryButton v-if="edit" @click="save">Save</PrimaryButton>
-      <PrimaryButton v-else @click="edit = true; focusEditor()">Edit</PrimaryButton>
+
+      <div class="grow relative flex items-center justify-center">
+        <Transition name="fade">
+          <SecondaryButton v-if="!create && edit" @click="confirm = dream" class="border-red-600">Delete
+          </SecondaryButton>
+          <!-- Date -->
+          <p v-else class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
+              new Date(dream.date).toLocaleDateString('en-us', {
+                weekday: "long",
+                month: "short",
+                day: "numeric"
+              })
+            }}
+          </p>
+        </Transition>
+      </div>
+
+      <PrimaryButton v-if="edit" @click="save">
+        <p class="w-9">Save</p>
+      </PrimaryButton>
+      <PrimaryButton v-else @click="edit = true; focusEditor()">
+        <p class="w-9">Edit</p>
+      </PrimaryButton>
     </div>
 
-    <div class="flex flex-col grow overflow-y-scroll gap-1.5 transition-all">
+    <div class="flex flex-col grow overflow-y-scroll gap-1.5 transition-all pt-4">
 
       <!-- Chosen tags -->
       <TagList :editable="edit" :tags="selectedTags" class="px-4 flex-wrap" @click="unselect"/>
@@ -27,6 +39,23 @@
       <!-- Editor -->
       <Editor ref="editorRef" :dream="dream" :editable="edit"/>
     </div>
+
+    <Transition name="expand">
+      <div v-if="confirm" class="mt-auto" v-click-outside="() => confirm = null">
+        <div>
+          <div class="flex p-4 bg-stone-800 flex-col gap-3">
+            <h3 class="text-lg font-semibold">Are you sure?</h3>
+            <p>This tag will be deleted and removed from all you dreams. This action is irreversible!</p>
+            <div class="flex items-center gap-3 grow justify-between flex-wrap">
+              <div class="flex gap-x-2 gap-y-3 items-stretch shrink-0 grow">
+                <SecondaryButton @click="confirm = null" class="grow justify-center">Cancel</SecondaryButton>
+                <PrimaryButton @click="deleteDream" class="bg-red-600 grow justify-center">Confirm</PrimaryButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Available tags -->
     <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
@@ -53,6 +82,9 @@ definePageMeta({
 const route = useRoute()
 const dreamsStore = useDreamsStore()
 const tagsStore = useTagsStore()
+
+const {back} = useRouter()
+const confirm = ref<Dream | null>(null)
 
 const dream = ref<Dream>(dreamsStore.empty())
 const selectedTags = ref<TagWithColor[]>([])
@@ -108,5 +140,10 @@ const editOff = async () => {
 
   selectedTags.value = [...dream.value.tags]
   editorRef.value?.reset()
+}
+
+const deleteDream = async () => {
+  await dreamsStore.destroy(dream.value)
+  back()
 }
 </script>
