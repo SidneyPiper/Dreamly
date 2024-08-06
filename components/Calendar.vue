@@ -25,7 +25,7 @@
             <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
                       :to="'/day/' + DateTime.fromJSDate(data.date!).toISODate()"
                       class="flex flex-col grow justify-center items-center text-stone-950 p-1 relative"
-                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-cloud rounded-lg' : ''">
+                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-white rounded-lg' : ''">
               <svg :style="{width: width + 'px', height: width + 'px'}"
                    class="-rotate-90 flex items-center justify-center transition-all">
                 <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight" class="text-stone-700"

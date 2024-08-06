@@ -10,7 +10,7 @@
       <!-- Tracker button -->
       <PrimaryButton :class="'bg-traffic-' + (tracker?.quality ?? 0) * 100"
                      class="!text-stone-900 font-semibold"
-                     @click="trackerOpen = !trackerOpen">
+                     @click="dailyTracker?.toggle()">
         {{ tracker?.duration ? `${Math.floor((tracker?.duration) / 60)}h ${tracker?.duration % 60}m` : 'Tracker' }}
       </PrimaryButton>
     </div>
@@ -24,7 +24,7 @@
     </Fader>
 
     <!-- Tracker -->
-    <DailyTracker :show-always="trackerOpen"
+    <DailyTracker ref="dailyTracker"
                   :tracker="tracker"
                   class="grow"
                   @save="handleTrackerUpdate"/>
@@ -35,6 +35,7 @@
 import {DateTime} from "luxon";
 import type {Day, DreamWithTags, TrackerData} from "types";
 import {ChevronLeftIcon} from "@heroicons/vue/24/solid";
+import type {DailyTracker} from "#components";
 
 const {back} = useRouter()
 
@@ -50,7 +51,7 @@ const date = ref<DateTime>(DateTime.now())
 
 const dreams = ref<DreamWithTags[]>([])
 const tracker = ref<TrackerData | null>(null)
-const trackerOpen = ref<boolean>(false)
+const dailyTracker = ref<typeof DailyTracker>()
 
 if ('date' in route.params && route.params.date) {
   date.value = DateTime.fromISO(route.params.date)
@@ -65,7 +66,7 @@ if ('date' in route.params && route.params.date) {
 }
 
 const handleTrackerUpdate = (updatedTracker: TrackerData | null) => {
-  trackerOpen.value = false
+  dailyTracker.value?.hideTracker()
   tracker.value = updatedTracker
 }
 

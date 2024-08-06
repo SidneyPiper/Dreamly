@@ -1,11 +1,17 @@
 <template>
   <div class="flex flex-col h-full gap-3 pt-4 text-cloud overflow-y-hidden">
 
-    <div class="flex items-center gap-2 bg-stone-950 rounded-full mx-4 px-4 py-1 overflow-hidden">
-      <MagnifyingGlassIcon class="w-6 h-6 shrink-0"/>
-      <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl"
-             placeholder="Search..."
-             @input="search">
+    <div class="flex flex-col items-stretch rounded-3xl mx-4 px-4 py-2 bg-stone-950">
+      <div class="flex items-stretch">
+        <MagnifyingGlassIcon class="w-6 h-6 shrink-0 my-auto"/>
+        <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl grow py-0"
+               placeholder="Search..."
+               @input="search">
+        <IconButton class="flex items-center justify-center aspect-square" @click="tagDropdown?.toggle">
+          <FunnelIcon class="w-6 h-6 stroke-[1.5px] stroke-stone-950 dark:stroke-white"/>
+        </IconButton>
+      </div>
+      <TagDropdown ref="tagDropdown" v-model="filteredTags" @update="search"/>
     </div>
 
     <Fader class="grow text-stone-900" vertical>
@@ -18,8 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-import {MagnifyingGlassIcon} from '@heroicons/vue/24/solid';
+import {MagnifyingGlassIcon, FunnelIcon} from '@heroicons/vue/24/outline';
 import type {DreamWithTags} from "~/prisma/types";
+import type {TagDropdown} from "#components";
 
 definePageMeta({
   middleware: 'auth',
@@ -32,13 +39,18 @@ const dreamsStore = useDreamsStore()
 
 const results = ref<DreamWithTags[]>([])
 const searchTerm = ref<string>('')
+const filteredTags = ref<string[]>([])
+
+const tagDropdown = ref<typeof TagDropdown>()
+
+
+onMounted(async () => {
+  await search()
+})
 
 const search = async () => {
-  if (searchTerm.value == '') {
-    results.value = []
-  } else {
-    results.value = await dreamsStore.search(searchTerm.value)
-  }
+  console.log(filteredTags.value)
+  results.value = await dreamsStore.search(searchTerm.value, filteredTags.value.join(":"))
 }
 
 </script>

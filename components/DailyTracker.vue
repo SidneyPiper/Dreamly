@@ -1,10 +1,10 @@
 <template>
   <Transition name="expand">
-    <div v-if="props.showAlways || show">
+    <div v-if="show">
       <div>
         <div class="flex flex-col gap-3 p-4 shadow-lg bg-stone-800">
           <div>
-            <h2 class="text-lg font-semibold">How did you sleep today?</h2>
+            <h2 class="text-lg font-semibold">How did you sleep?</h2>
             <div class="flex items-center gap-2 mt-2">
               <MoodPickerButton :grow="quality === 1 || quality == null"
                                 :highlight="quality === 1"
@@ -29,7 +29,7 @@
             </div>
           </div>
           <div>
-            <h2 class="text-lg font-semibold">How long did you sleep today?</h2>
+            <h2 class="text-lg font-semibold">How long did you sleep?</h2>
             <div class="flex items-center justify-between">
               <HourSelect v-model="duration" :step="30"/>
             </div>
@@ -52,33 +52,22 @@ import {useTrackerStore} from "stores/tracker";
 const {create, update, today} = useTrackerStore()
 
 const props = defineProps<{
-  tracker?: Partial<TrackerData>
-  showAlways?: boolean
+  tracker?: Partial<TrackerData> | null
 }>()
 
 /* The tracker object */
 const id = ref<string | null>(props.tracker?.id ?? null)
 const duration = ref<number>(props.tracker?.duration ?? 8 * 60)
-const quality = ref<number | null>(props.tracker?.quality ?? null)
+const quality = ref<number | null>(props.tracker?.quality ?? 3)
 
 /* Show-n-hide */
-const show = ref(props.showAlways ?? false)
+const show = ref<boolean>(false)
 
 const emit = defineEmits<{
   (e: 'save', updatedTracker: TrackerData | null): void
   (e: 'today-found'): void
   (e: 'today-not-found'): void
 }>()
-
-onMounted(async () => {
-  if (await today()) {
-    show.value = props.showAlways
-    emit('today-found')
-  } else {
-    show.value = true
-    emit('today-not-found')
-  }
-})
 
 const save = async () => {
   let updatedTracker: TrackerData | null
@@ -101,4 +90,11 @@ const save = async () => {
   emit('save', updatedTracker)
 }
 
+const showTracker = () => show.value = true
+
+const hideTracker = () => show.value = false
+
+const toggle = () => show.value = !show.value
+
+defineExpose({showTracker, hideTracker, toggle})
 </script>
