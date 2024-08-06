@@ -24,7 +24,8 @@
             <!-- Actual days -->
             <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
                       :to="'/day/' + DateTime.fromJSDate(data.date!).toISODate()"
-                      class="flex flex-col grow justify-center items-center text-stone-950 p-1 relative ">
+                      class="flex flex-col grow justify-center items-center text-stone-950 p-1 relative"
+                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-cloud rounded-lg' : ''">
               <svg :style="{width: width + 'px', height: width + 'px'}"
                    class="-rotate-90 flex items-center justify-center transition-all">
                 <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight" class="text-stone-700"
@@ -43,7 +44,8 @@
                         stroke="currentColor">
                 </circle>
               </svg>
-              <p class="font-mono text-cloud text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+              <p class="font-mono text-cloud text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+                 :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'text-stone-950' : ''">
                 {{ DateTime.fromJSDate(data.date!).toFormat('dd') }}
               </p>
             </NuxtLink>
