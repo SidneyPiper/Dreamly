@@ -14,7 +14,8 @@
     <h3 class="text-3xl font-semibold">{{ dream.title }}</h3>
 
     <!-- TagList -->
-    <TagList :editable="true" :tags="dream.tags" class="flex-wrap" @click="tag => emit('selectedTag', tag)"/>
+    <TagList :editable="true" :tags="dream.tags" class="flex-wrap"
+             @click="(tag: TagWithColor) => emit('selectedTag', tag)"/>
 
     <!-- Content -->
     <p :class="shortDesc ? 'line-clamp-3' : 'line-clamp-5'">{{ dream.content }}</p>
@@ -32,6 +33,10 @@ const props = withDefaults(defineProps<{
 }>(), {
   showDate: true,
   shortDesc: false
+})
+
+onMounted(() => {
+  console.log(props.dream)
 })
 
 const emit = defineEmits<{
