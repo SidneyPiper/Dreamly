@@ -24,8 +24,14 @@ export default defineNuxtConfig({
         '@sidebase/nuxt-auth',
         '@nuxtjs/tailwindcss',
         '@nuxtjs/google-fonts',
-        '@pinia/nuxt',
+        '@nuxtjs/color-mode',
+        '@pinia/nuxt'
     ],
+
+    colorMode: {
+        fallback: 'dark',
+        classSuffix: ''
+    },
 
     runtimeConfig: {
         githubClientId: '',

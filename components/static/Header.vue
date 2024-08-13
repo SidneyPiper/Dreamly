@@ -39,4 +39,5 @@
 <script lang="ts" setup>
 import Logo from '~/assets/images/logo.png'
 import Wrapper from "~/components/static/Wrapper.vue";
+import {Bars3Icon as MenuIcon} from '@heroicons/vue/24/outline';
 </script>

@@ -3,7 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [],
-    darkMode: 'media',
+    darkMode: 'selector',
     theme: {
         extend: {
             colors: {
