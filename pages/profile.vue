@@ -16,18 +16,9 @@
 
       <!-- Stats -->
       <div class="grid grid-cols-3 gap-4">
-        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
-          <p class="text-2xl">{{ dreamCount }}</p>
-          <p class="text-lg">Dreams</p>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
-          <p class="text-2xl">{{ Number(avgTime! / 60).toFixed(1) }}h</p>
-          <p class="text-lg">Ø Time</p>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
-          <p class="text-2xl">{{ Number(avgQuality! * 20).toFixed(0) }}%</p>
-          <p class="text-lg">Ø Quality</p>
-        </div>
+        <StatWidget :value="dreamCount" title="Dreams"/>
+        <StatWidget :value="Number(avgTime! / 60).toFixed(1)" title="Ø Time"/>
+        <StatWidget :value="Number(avgQuality! * 20).toFixed(0)" title="Ø Quality"/>
       </div>
     </div>
 
@@ -35,18 +26,18 @@
     <!-- Buttons -->
     <div class="flex flex-col grow gap-4 py-4">
       <LabelContainer label="User Settings">
-        <NuxtLink class="flex flex-row gap-4 items-center py-4" to="/change/username">
+        <IconButton to="/change/username">
           <AtSymbolIcon class="w-5 h-5"/>
           Change Username
-        </NuxtLink>
-        <NuxtLink class="flex flex-row gap-4 items-center py-4">
+        </IconButton>
+        <IconButton to="/change/email">
           <EnvelopeIcon class="w-5 h-5"/>
-          <p>Change Email</p>
-        </NuxtLink>
-        <NuxtLink class="flex flex-row gap-4 items-center py-4">
+          Change Email
+        </IconButton>
+        <IconButton to="/change/password">
           <KeyIcon class="w-5 h-5"/>
-          <p>Change Password</p>
-        </NuxtLink>
+          Change Password
+        </IconButton>
       </LabelContainer>
 
       <LabelContainer label="Theme">
@@ -94,6 +85,7 @@ import {
   MoonIcon,
   SunIcon
 } from "@heroicons/vue/24/outline";
+import StatWidget from "~/components/StatWidget.vue";
 
 definePageMeta({
   middleware: 'auth',
