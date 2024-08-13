@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full relative">
-    <Fader class="text-stone-900" vertical>
+    <Fader class="text-cloud dark:text-stone-900" vertical>
       <Calendar ref="calendar"/>
     </Fader>
 

@@ -7,28 +7,30 @@
                       @bottom="hitBottom">
       <div v-for="(month, i) in months" :key="i" class="flex flex-col gap-1 h-full">
         <!-- Month name -->
-        <p class="text-stone-400 font-semibold">{{ DateTime.now().minus({month: i}).toFormat("LLLL y") }}</p>
+        <p class="text-stone-600 dark:text-stone-400 font-semibold">
+          {{ DateTime.now().minus({month: i}).toFormat("LLLL y") }}</p>
 
         <!-- Calendar month -->
-        <div class="bg-stone-950 rounded-lg overflow-hidden p-1.5 grow">
+        <div class="bg-white dark:bg-stone-950 rounded-lg overflow-hidden p-1.5 grow">
           <div class="grid grid-cols-7">
             <!-- Weekday names -->
             <div v-for="weekday in Info.weekdays('short')">
-              <p class="text-stone-400 text-center text-sm font-semibold py-1">{{ weekday }}</p>
+              <p class="text-stone-600 dark:text-stone-400 text-center text-sm font-semibold py-1">{{ weekday }}</p>
             </div>
 
             <!-- Skip empty days on start of month -->
             <div v-for="skip in DateTime.fromJSDate(month[0].date!).weekday - 1" :key="'empty_start_' + skip"
-                 class="bg-stone-950"></div>
+                 class="bg-white dark:bg-stone-950"></div>
 
             <!-- Actual days -->
             <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
+                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-white rounded-lg' : ''"
                       :to="'/day/' + DateTime.fromJSDate(data.date!).toISODate()"
-                      class="flex flex-col grow justify-center items-center text-stone-950 p-1 relative"
-                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-white rounded-lg' : ''">
+                      class="flex flex-col grow justify-center items-center text-cloud dark:text-stone-950 p-1 relative">
               <svg :style="{width: width + 'px', height: width + 'px'}"
                    class="-rotate-90 flex items-center justify-center transition-all">
-                <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight" class="text-stone-700"
+                <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight"
+                        class="texrt-cloud dark:text-stone-700"
                         fill="transparent"
                         stroke="currentColor"/>
 
@@ -38,14 +40,14 @@
                         :r="radius"
                         :stroke-dasharray="circ"
                         :stroke-dashoffset="data.duration ? circ - (Math.min(data.duration, 12 * 60) / (12 * 60)) * circ : circ"
-                        :stroke-width="strokeWeight"
+                        :stroke-width="strokeWeight + 0.7"
                         class="transition-all duration-1000 ease-in-out"
                         fill="transparent"
                         stroke="currentColor">
                 </circle>
               </svg>
-              <p class="font-mono text-cloud text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
-                 :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'text-stone-950' : ''">
+              <p :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'text-stone-950' : ''"
+                 class="font-mono text-stone-800 dark:text-cloud text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
                 {{ DateTime.fromJSDate(data.date!).toFormat('dd') }}
               </p>
             </NuxtLink>
@@ -53,7 +55,7 @@
             <!-- Skip empty days on end of month -->
             <div v-for="skip in 7 - DateTime.fromJSDate(month[month.length - 1].date!).weekday"
                  :key="'empty_end_' + skip"
-                 class="bg-stone-950"></div>
+                 class="bg-white dark:bg-stone-950"></div>
           </div>
         </div>
       </div>

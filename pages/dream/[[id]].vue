@@ -9,7 +9,7 @@
 
       <div class="grow relative flex items-center justify-center">
         <Transition name="fade">
-          <SecondaryButton v-if="!create && edit" @click="confirm = dream" class="border-red-600 text-red-600">Delete
+          <SecondaryButton v-if="!create && edit" class="border-red-600 text-red-600" @click="confirm = dream">Delete
           </SecondaryButton>
           <!-- Date -->
           <p v-else class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
@@ -41,15 +41,15 @@
     </div>
 
     <Transition name="expand">
-      <div v-if="confirm" class="mt-auto" v-click-outside="() => confirm = null">
+      <div v-if="confirm" v-click-outside="() => confirm = null" class="mt-auto">
         <div>
-          <div class="flex p-4 bg-stone-800 flex-col gap-3">
+          <div class="flex p-4 bg-white dark:bg-stone-800 flex-col gap-3">
             <h3 class="text-lg font-semibold">Are you sure?</h3>
             <p>This tag will be deleted and removed from all you dreams. This action is irreversible!</p>
             <div class="flex items-center gap-3 grow justify-between flex-wrap">
               <div class="flex gap-x-2 gap-y-3 items-stretch shrink-0 grow">
-                <SecondaryButton @click="confirm = null" class="grow justify-center">Cancel</SecondaryButton>
-                <PrimaryButton @click="deleteDream" class="bg-red-600 grow justify-center">Confirm</PrimaryButton>
+                <SecondaryButton class="grow justify-center" @click="confirm = null">Cancel</SecondaryButton>
+                <PrimaryButton class="bg-red-600 grow justify-center" @click="deleteDream">Confirm</PrimaryButton>
               </div>
             </div>
           </div>

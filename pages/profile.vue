@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full gap-4 py-4 px-4 justify-between">
     <div class="flex flex-col gap-10">
-      <IconButton @click="signOut({ callbackUrl: '/login' })" class="ml-auto px-2">
+      <IconButton class="ml-auto px-2" @click="signOut({ callbackUrl: '/login' })">
         <ArrowRightEndOnRectangleIcon class="w-8 h-8"/>
       </IconButton>
 
@@ -16,15 +16,15 @@
 
       <!-- Stats -->
       <div class="grid grid-cols-3 gap-4">
-        <div class="rounded-xl bg-stone-950 text-center grow p-2">
+        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
           <p class="text-2xl">{{ dreamCount }}</p>
           <p class="text-lg">Dreams</p>
         </div>
-        <div class="rounded-xl bg-stone-950 text-center grow p-2">
+        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
           <p class="text-2xl">{{ Number(avgTime! / 60).toFixed(1) }}h</p>
           <p class="text-lg">Ø Time</p>
         </div>
-        <div class="rounded-xl bg-stone-950 text-center grow p-2">
+        <div class="rounded-xl bg-white dark:bg-stone-950 text-center grow p-2">
           <p class="text-2xl">{{ Number(avgQuality! * 20).toFixed(0) }}%</p>
           <p class="text-lg">Ø Quality</p>
         </div>
@@ -34,13 +34,12 @@
 
     <!-- Buttons -->
     <div class="flex flex-col grow gap-4 py-4">
-      <div class="flex flex-col bg-stone-950 px-4 pt-4 rounded-xl">
-        <div class="text-xl font-bold">User Settings</div>
-        <NuxtLink class="flex flex-row gap-4 items-center border-b py-4 border-stone-800" to="/change/username">
+      <LabelContainer label="User Settings">
+        <NuxtLink class="flex flex-row gap-4 items-center py-4" to="/change/username">
           <AtSymbolIcon class="w-5 h-5"/>
           Change Username
         </NuxtLink>
-        <NuxtLink class="flex flex-row gap-4 items-center border-b py-4 border-stone-800">
+        <NuxtLink class="flex flex-row gap-4 items-center py-4">
           <EnvelopeIcon class="w-5 h-5"/>
           <p>Change Email</p>
         </NuxtLink>
@@ -48,26 +47,34 @@
           <KeyIcon class="w-5 h-5"/>
           <p>Change Password</p>
         </NuxtLink>
-      </div>
+      </LabelContainer>
 
-      <div class="flex flex-col bg-stone-950 px-4 pt-4 rounded-xl">
-        <div class="text-xl font-bold">Theme</div>
-        <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
+      <LabelContainer label="Theme">
+        <button class="flex items-center justify-between pr-2 py-4"
                 @click="$colorMode.preference = 'system'">
-          System
-          <CheckIcon v-if="$colorMode.preference == 'system'" class="w-5 h-5"/>
+          <span class="flex items-center gap-4">
+            <ComputerDesktopIcon class="w-5 h-5"/>
+            System
+          </span>
+          <CheckIcon v-show="$colorMode.preference == 'system'" class="w-5 h-5"/>
         </button>
-        <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
+        <button class="flex items-center justify-between pr-2 py-4"
                 @click="$colorMode.preference = 'dark'">
-          Dark
-          <CheckIcon v-if="$colorMode.preference == 'dark'" class="w-5 h-5"/>
+          <span class="flex items-center gap-4">
+            <MoonIcon class="w-5 h-5"/>
+            Dark
+          </span>
+          <CheckIcon v-show="$colorMode.preference == 'dark'" class="w-5 h-5"/>
         </button>
-        <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
+        <button class="flex items-center justify-between pr-2 py-4"
                 @click="$colorMode.preference = 'light'">
-          Light
-          <CheckIcon v-if="$colorMode.preference == 'light'" class="w-5 h-5"/>
+          <span class="flex items-center gap-4">
+            <SunIcon class="w-5 h-5"/>
+            Light
+          </span>
+          <CheckIcon v-show="$colorMode.preference == 'light'" class="w-5 h-5"/>
         </button>
-      </div>
+      </LabelContainer>
 
       <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4">
         Delete Account
@@ -78,7 +85,15 @@
 
 <script lang="ts" setup>
 import {CheckIcon, UserIcon} from "@heroicons/vue/24/solid";
-import {AtSymbolIcon, EnvelopeIcon, KeyIcon, ArrowRightEndOnRectangleIcon} from "@heroicons/vue/24/outline";
+import {
+  ArrowRightEndOnRectangleIcon,
+  AtSymbolIcon,
+  ComputerDesktopIcon,
+  EnvelopeIcon,
+  KeyIcon,
+  MoonIcon,
+  SunIcon
+} from "@heroicons/vue/24/outline";
 
 definePageMeta({
   middleware: 'auth',

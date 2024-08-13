@@ -47,7 +47,7 @@
       <Transition name="expand">
         <div v-if="confirm" v-click-outside="() => confirm = null" class="mt-auto">
           <div>
-            <div class="flex p-4 bg-stone-800 flex-col gap-3">
+            <div class="flex p-4 bg-white dark:bg-stone-800 flex-col gap-3">
               <h3 class="text-lg font-semibold">Are you sure?</h3>
               <p>This tag will be deleted and removed from all you dreams. This action is irreversible!</p>
               <div class="flex items-center gap-3 grow justify-between flex-wrap">
