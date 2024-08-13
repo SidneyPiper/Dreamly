@@ -60,7 +60,7 @@
     <!-- Available tags -->
     <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
       <TagCreate @close="focusEditor"/>
-      <Fader class="text-stone-950">
+      <Fader class="text-white dark:text-stone-950">
         <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>
     </div>
@@ -73,10 +73,20 @@ import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
 
+const viewport = useViewport()
+
+if (!viewport.isLessThan('lg')) setPageLayout('default')
+else setPageLayout('fullscreen')
+
+watch(viewport.breakpoint, () => {
+  if (!viewport.isLessThan('lg')) setPageLayout('default')
+  else setPageLayout('fullscreen')
+})
+
 definePageMeta({
   middleware: 'auth',
   layout: 'fullscreen',
-  layoutTransition: {name: 'slide-up'}
+  layoutTransition: {name: 'slide-up'},
 })
 
 const route = useRoute()

@@ -26,6 +26,7 @@
     "next-auth": "4.21.1",
     "nuxt": "^3.12.3",
     "nuxt-storage": "^1.2.2",
+    "nuxt-viewport": "latest",
     "simplex-noise": "^4.0.2",
     "tsx": "^4.7.1",
     "uuid": "^9.0.1",

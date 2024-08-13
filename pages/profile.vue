@@ -22,66 +22,73 @@
       </div>
     </div>
 
+    <!-- User Settings -->
+    <LabelContainer label="User Settings">
+      <IconButton to="/change/username">
+        <AtSymbolIcon class="w-5 h-5"/>
+        Change Username
+      </IconButton>
+      <IconButton to="/change/email">
+        <EnvelopeIcon class="w-5 h-5"/>
+        Change Email
+      </IconButton>
+      <IconButton to="/change/password">
+        <KeyIcon class="w-5 h-5"/>
+        Change Password
+      </IconButton>
+    </LabelContainer>
 
-    <!-- Buttons -->
-    <div class="flex flex-col grow gap-4 py-4">
-      <LabelContainer label="User Settings">
-        <IconButton to="/change/username">
-          <AtSymbolIcon class="w-5 h-5"/>
-          Change Username
-        </IconButton>
-        <IconButton to="/change/email">
-          <EnvelopeIcon class="w-5 h-5"/>
-          Change Email
-        </IconButton>
-        <IconButton to="/change/password">
-          <KeyIcon class="w-5 h-5"/>
-          Change Password
-        </IconButton>
-      </LabelContainer>
+    <!-- Theme -->
+    <LabelContainer label="Theme">
+      <IconButton :selected="$colorMode.preference == 'system'"
+                  class="flex items-center justify-between pr-2 py-4" @click="$colorMode.preference = 'system'">
+        <ComputerDesktopIcon class="w-5 h-5"/>
+        System
+      </IconButton>
+      <IconButton :selected="$colorMode.preference == 'dark'" class="flex items-center justify-between pr-2 py-4"
+                  @click="$colorMode.preference = 'dark'">
+        <MoonIcon class="w-5 h-5"/>
+        Dark
+      </IconButton>
+      <IconButton :selected="$colorMode.preference == 'light'" class="flex items-center justify-between pr-2 py-4"
+                  @click="$colorMode.preference = 'light'">
+        <SunIcon class="w-5 h-5"/>
+        Light
+      </IconButton>
+    </LabelContainer>
 
-      <LabelContainer label="Theme">
-        <button class="flex items-center justify-between pr-2 py-4"
-                @click="$colorMode.preference = 'system'">
-          <span class="flex items-center gap-4">
-            <ComputerDesktopIcon class="w-5 h-5"/>
-            System
-          </span>
-          <CheckIcon v-show="$colorMode.preference == 'system'" class="w-5 h-5"/>
-        </button>
-        <button class="flex items-center justify-between pr-2 py-4"
-                @click="$colorMode.preference = 'dark'">
-          <span class="flex items-center gap-4">
-            <MoonIcon class="w-5 h-5"/>
-            Dark
-          </span>
-          <CheckIcon v-show="$colorMode.preference == 'dark'" class="w-5 h-5"/>
-        </button>
-        <button class="flex items-center justify-between pr-2 py-4"
-                @click="$colorMode.preference = 'light'">
-          <span class="flex items-center gap-4">
-            <SunIcon class="w-5 h-5"/>
-            Light
-          </span>
-          <CheckIcon v-show="$colorMode.preference == 'light'" class="w-5 h-5"/>
-        </button>
-      </LabelContainer>
+    <LabelContainer label="Information">
+      <IconButton to="/about">
+        <IdentificationIcon class="w-5 h-5"/>
+        About
+      </IconButton>
+      <IconButton to="/privacy">
+        <LifebuoyIcon class="w-5 h-5"/>
+        Help
+      </IconButton>
+      <IconButton to="/terms">
+        <BanknotesIcon class="w-5 h-5"/>
+        Donate
+      </IconButton>
+    </LabelContainer>
 
-      <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4">
-        Delete Account
-      </PrimaryButton>
-    </div>
+    <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4 rounded-xl">
+      Delete Account
+    </PrimaryButton>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {CheckIcon, UserIcon} from "@heroicons/vue/24/solid";
+import {UserIcon} from "@heroicons/vue/24/solid";
 import {
   ArrowRightEndOnRectangleIcon,
   AtSymbolIcon,
+  BanknotesIcon,
   ComputerDesktopIcon,
   EnvelopeIcon,
+  IdentificationIcon,
   KeyIcon,
+  LifebuoyIcon,
   MoonIcon,
   SunIcon
 } from "@heroicons/vue/24/outline";

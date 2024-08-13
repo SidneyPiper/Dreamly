@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col grow group w-full gap-1.5" @click="click">
     <div ref="titleRef"
-         class="text-3xl resize-none break-words pt-0 text-wrap px-4 font-bold pb-0 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent"
-         :contenteditable="editable" tabindex="0" type="text"
+         :contenteditable="editable"
+         class="text-3xl resize-none break-words pt-0 text-wrap px-4 font-bold pb-0 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent" tabindex="0" type="text"
+         @input="computeTitleEmpty"
          @keydown.down.prevent="down"
          @keydown.right="right"
-         @keydown.enter.prevent="handleInputEnter"
-         @input="computeTitleEmpty">{{ dream?.title }}
+         @keydown.enter.prevent="handleInputEnter">{{ dream?.title }}
     </div>
     <textarea ref="contentRef" :readonly="(titleEmpty || !editable)"
               class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type {Dream} from "~/stores/dreams";
 
 const props = defineProps<{
@@ -32,7 +32,6 @@ const titleEmpty = ref<boolean>(true)
 onMounted(() => {
   titleRef.value?.focus()
   computeTitleEmpty()
-  console.log((titleEmpty.value && props.editable))
 })
 
 const computeTitleEmpty = () => {
