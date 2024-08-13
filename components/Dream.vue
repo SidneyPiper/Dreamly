@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col px-4 py-6 cursor-pointer gap-1.5" @click="onClick">
+  <div class="flex flex-col px-4 py-6 lg:px-0 cursor-pointer gap-1.5" @click="onClick">
     <!-- Date -->
     <p v-if="showDate" class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{
         new Date(dream.date).toLocaleDateString('en-us', {
@@ -17,7 +17,7 @@
     <TagList :editable="true" :tags="dream.tags" class="flex-wrap"/>
 
     <!-- Content -->
-    <p :class="shortDesc ? 'line-clamp-3' : 'line-clamp-5'">{{ dream.content }}</p>
+    <p :class="shortDesc ? 'line-clamp-3' : 'line-clamp-5'" class="text-justify">{{ dream.content }}</p>
   </div>
 </template>
 

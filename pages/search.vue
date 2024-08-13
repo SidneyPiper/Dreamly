@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full gap-3 pt-4 overflow-y-hidden">
-    <div class="flex flex-col items-stretch rounded-3xl mx-4 px-4 py-2 bg-white dark:bg-stone-950">
+    <div class="flex flex-col items-stretch rounded-3xl mx-4 px-4 lg:mx-0 py-2 bg-white dark:bg-stone-950">
       <div class="flex items-stretch">
         <MagnifyingGlassIcon class="w-6 h-6 shrink-0 my-auto"/>
         <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl grow py-0"
@@ -16,7 +16,7 @@
     <Fader class="grow text-cloud dark:text-stone-900" vertical>
       <div class="h-full overflow-y-auto text-stone-950 dark:text-white">
         <Dream v-for="dream in results" :key="dream.id!" :dream="dream"
-               class="last:border-none border-b-4 border-b-white dark:border-b-stone-950"/>
+               class="last:border-none border-b-4 border-b-white dark:border-b-stone-950 lg:border-b-2"/>
       </div>
     </Fader>
   </div>

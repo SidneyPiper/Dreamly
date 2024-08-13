@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex lg:flex-col lg:pt-8 bg-white dark:bg-stone-950 lg:bg-transparent dark:lg:bg-transparent stroke-stone-950 dark:stroke-white">
+      class="flex lg:flex-col lg:mt-8 bg-white dark:bg-stone-950 lg:bg-transparent dark:lg:bg-transparent stroke-stone-950 dark:stroke-white">
     <NuxtLink class="grow py-10 lg:py-4 flex items-center justify-center lg:justify-start gap-4 relative" to="/home">
       <span class="w-8 h-8">
         <Transition>
@@ -44,7 +44,7 @@
       <p class="hidden lg:block text-lg font-semibold">Profile</p>
     </NuxtLink>
     <NuxtLink
-        class="hidden grow lg:py-2 mt-4 lg:flex items-center justify-center relative bg-stone-950 dark:bg-white text-white dark:text-stone-950 rounded-full"
+        class="hidden grow lg:py-2 lg:mt-4 lg:flex items-center justify-center relative bg-stone-950 dark:bg-white text-white dark:text-stone-950 rounded-full"
         to="/dream">
       <p class="hidden lg:block text-lg font-semibold">Create</p>
     </NuxtLink>

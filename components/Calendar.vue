@@ -24,15 +24,16 @@
 
             <!-- Actual days -->
             <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
-                      :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'bg-white rounded-lg' : ''"
                       :to="'/day/' + DateTime.fromJSDate(data.date!).toISODate()"
                       class="flex flex-col grow justify-center items-center text-cloud dark:text-stone-950 p-1 relative">
               <svg :style="{width: width + 'px', height: width + 'px'}"
                    class="-rotate-90 flex items-center justify-center transition-all">
-                <circle :cx="offset" :cy="offset" :r="radius" :stroke-width="strokeWeight"
-                        class="texrt-cloud dark:text-stone-700"
-                        fill="transparent"
-                        stroke="currentColor"/>
+                <circle
+                    :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'fill-stone-800 dark:fill-white' : 'fill-transparent'"
+                    :cx="offset" :cy="offset" :r="radius"
+                    :stroke-width="strokeWeight"
+                    class="text-cloud dark:text-stone-700"
+                    stroke="currentColor"/>
 
                 <circle :class="data.quality ? 'text-traffic-' + data.quality * 100 : 'text-cloud'"
                         :cx="offset"
@@ -46,8 +47,8 @@
                         stroke="currentColor">
                 </circle>
               </svg>
-              <p :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'text-stone-950' : ''"
-                 class="font-mono text-stone-800 dark:text-cloud text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+              <p :class="DateTime.fromJSDate(data.date!).hasSame(DateTime.now(), 'day') ? 'text-white dark:text-stone-950' : 'text-stone-800 dark:text-cloud'"
+                 class="font-mono text-sm font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
                 {{ DateTime.fromJSDate(data.date!).toFormat('dd') }}
               </p>
             </NuxtLink>

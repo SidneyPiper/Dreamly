@@ -3,7 +3,7 @@
     <div class="flex flex-col items-stretch">
       <InfiniteScroller :bottom="0" @bottom="fetchNewPage">
         <Dream v-for="dream in dreamsStore.dreams" :key="dream.id!" :dream="dream"
-               class="last:border-none border-b-4 border-b-white dark:border-b-stone-950"
+               class="last:border-none border-b-4 border-white dark:border-stone-950 lg:border-b-2"
                @selected-tag="handleTagClick"/>
       </InfiniteScroller>
     </div>

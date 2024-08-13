@@ -9,7 +9,7 @@ export default {
             colors: {
                 'primary': '#3A7CA5',
                 'primary-light': '#81C3D7',
-                'cloud': '#E9ECD6',
+                'cloud': '#e5e8db',
                 'traffic': {
                     '500': '#a5d46a',
                     '400': '#ffff80',
