@@ -9,7 +9,7 @@
 
       <div class="grow relative flex items-center justify-center">
         <Transition name="fade">
-          <SecondaryButton v-if="!create && edit" @click="confirm = dream" class="border-red-600">Delete
+          <SecondaryButton v-if="!create && edit" @click="confirm = dream" class="border-red-600 text-red-600">Delete
           </SecondaryButton>
           <!-- Date -->
           <p v-else class="text-xs mb-0.5 opacity-60 uppercase font-bold">{{

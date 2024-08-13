@@ -11,7 +11,6 @@
         <div class="text-center">
           <p class="text-3xl">{{ data?.user?.name }}</p>
           <p class="text-lg">{{ data?.user?.email }}</p>
-          <p class="text-lg">{{ colorMode.preference }}</p>
         </div>
       </div>
 
@@ -37,9 +36,9 @@
     <div class="flex flex-col grow gap-4 py-4">
       <div class="flex flex-col bg-stone-950 px-4 pt-4 rounded-xl">
         <div class="text-xl font-bold">User Settings</div>
-        <NuxtLink class="flex flex-row gap-4 items-center border-b py-4 border-stone-800">
+        <NuxtLink class="flex flex-row gap-4 items-center border-b py-4 border-stone-800" to="/change/username">
           <AtSymbolIcon class="w-5 h-5"/>
-          <p>Change Username</p>
+          Change Username
         </NuxtLink>
         <NuxtLink class="flex flex-row gap-4 items-center border-b py-4 border-stone-800">
           <EnvelopeIcon class="w-5 h-5"/>
@@ -55,24 +54,24 @@
         <div class="text-xl font-bold">Theme</div>
         <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
                 @click="$colorMode.preference = 'system'">
-          <NuxtLink>System</NuxtLink>
+          System
           <CheckIcon v-if="$colorMode.preference == 'system'" class="w-5 h-5"/>
         </button>
         <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
                 @click="$colorMode.preference = 'dark'">
-          <NuxtLink>Dark</NuxtLink>
+          Dark
           <CheckIcon v-if="$colorMode.preference == 'dark'" class="w-5 h-5"/>
         </button>
         <button class="flex flex-row items-center justify-between pr-4 border-b py-4 border-stone-800"
                 @click="$colorMode.preference = 'light'">
-          <NuxtLink>Light</NuxtLink>
+          Light
           <CheckIcon v-if="$colorMode.preference == 'light'" class="w-5 h-5"/>
         </button>
       </div>
 
-      <SecondaryButton class="border-red-600 text-red-600 py-4">
+      <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4">
         Delete Account
-      </SecondaryButton>
+      </PrimaryButton>
     </div>
   </div>
 </template>
@@ -80,7 +79,6 @@
 <script lang="ts" setup>
 import {CheckIcon, UserIcon} from "@heroicons/vue/24/solid";
 import {AtSymbolIcon, EnvelopeIcon, KeyIcon, ArrowRightEndOnRectangleIcon} from "@heroicons/vue/24/outline";
-import locally from "~/plugins/locally";
 
 definePageMeta({
   middleware: 'auth',
@@ -88,8 +86,6 @@ definePageMeta({
   pageTransition: {name: 'fade-page'},
   layoutTransition: {name: 'stay'}
 })
-
-const colorMode = useColorMode()
 
 const {data, signOut} = useAuth()
 
