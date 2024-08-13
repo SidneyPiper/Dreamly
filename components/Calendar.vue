@@ -1,9 +1,9 @@
 <template>
   <div
-      class="h-full overflow-y-auto p-4 text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
+      class="h-full overflow-y-auto p-4 text-stone-950 bg-cloud dark:text-white dark:bg-stone-900 @container">
     <InfiniteScroller ref="scroller"
                       :bottom="200"
-                      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-stretch"
+                      class="grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-4 items-stretch"
                       @bottom="hitBottom">
       <div v-for="(month, i) in months" :key="i" class="flex flex-col gap-1 h-full">
         <!-- Month name -->
