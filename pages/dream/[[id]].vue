@@ -58,7 +58,8 @@
     </Transition>
 
     <!-- Available tags -->
-    <div v-if="edit" class="flex items-stretch bg-white dark:bg-stone-950 shrink-0">
+    <div v-if="edit"
+         class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0">
       <TagCreate @close="focusEditor"/>
       <Fader class="text-white dark:text-stone-950">
         <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
