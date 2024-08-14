@@ -73,7 +73,7 @@ import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
 
-const viewport = useViewport()
+const viewport = await useViewport()
 
 if (!viewport.isLessThan('lg')) setPageLayout('default')
 else setPageLayout('fullscreen')

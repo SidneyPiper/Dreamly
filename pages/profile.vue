@@ -66,7 +66,7 @@
         <LifebuoyIcon class="w-5 h-5"/>
         Help
       </IconButton>
-      <IconButton to="/terms">
+      <IconButton to="/donate">
         <BanknotesIcon class="w-5 h-5"/>
         Donate
       </IconButton>
@@ -108,5 +108,4 @@ const headers = useRequestHeaders(['cookie'])
 const {data: dreamCount} = await useFetch('/api/dreams/count', {headers})
 const {data: avgTime} = await useFetch('/api/tracker/avg/sleep', {headers})
 const {data: avgQuality} = await useFetch('/api/tracker/avg/quality', {headers})
-
 </script>

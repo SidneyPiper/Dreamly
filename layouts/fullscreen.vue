@@ -18,21 +18,4 @@
 
 <script setup>
 import Logo from "assets/images/logo.png";
-
-const containerRef = ref(null)
-
-const resizeHandler = (event) => {
-  const height = event.target.height
-  containerRef.value.style.height = height + 'px'
-  window.scrollTo(0, 0)
-}
-
-onMounted(() => {
-  window.visualViewport.addEventListener('resize', resizeHandler)
-})
-
-onBeforeUnmount(() => {
-  window.visualViewport.removeEventListener('resize', resizeHandler)
-})
-
 </script>
