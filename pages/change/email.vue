@@ -5,7 +5,7 @@
       <TextButton @click="$router.back()">Cancel</TextButton>
     </div>
 
-    <form class="flex flex-col gap-3" @submit.prevent="changeEmail">
+    <form class="flex flex-col gap-3 my-4" @submit.prevent="changeEmail">
       <input v-model="new_email"
              class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
              placeholder="New Email" type="text">

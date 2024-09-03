@@ -43,7 +43,7 @@ export default NuxtAuthHandler({
             async authorize(credentials: any) {
                 const user = await prisma.user.findFirst({
                     where: {
-                        OR: [{name: credentials.name}, {email: credentials.name}]
+                        email: credentials.name
                     },
                     select: {
                         id: true,

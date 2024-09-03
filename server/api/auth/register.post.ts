@@ -1,4 +1,4 @@
-import { genSalt, hash } from "bcrypt-ts";
+import {genSalt, hash} from "bcrypt-ts";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
@@ -7,14 +7,14 @@ export default defineEventHandler(async (event) => {
     const password = body.password
 
     const salt = await genSalt(10);
-    const hashed_pasword = await hash(password, salt);
+    const hashed_password = await hash(password, salt);
 
     try {
         await event.context.prisma.user.create({
             data: {
                 name: name,
                 email: email,
-                password: hashed_pasword
+                password: hashed_password
             }
         })
         return true

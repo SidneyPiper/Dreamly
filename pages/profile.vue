@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full gap-4 py-4 px-4 justify-between">
+  <div class="flex flex-col gap-4 py-4 px-4 justify-between">
     <div class="flex flex-col gap-10">
       <IconButton class="ml-auto px-2" @click="signOut({ callbackUrl: '/login' })">
         <ArrowRightEndOnRectangleIcon class="w-8 h-8"/>

@@ -74,6 +74,12 @@ import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
 
+definePageMeta({
+  middleware: 'auth',
+  layout: 'fullscreen',
+  layoutTransition: {name: 'slide-up'},
+})
+
 const viewport = await useViewport()
 
 if (!viewport.isLessThan('lg')) setPageLayout('default')
@@ -82,12 +88,6 @@ else setPageLayout('fullscreen')
 watch(viewport.breakpoint, () => {
   if (!viewport.isLessThan('lg')) setPageLayout('default')
   else setPageLayout('fullscreen')
-})
-
-definePageMeta({
-  middleware: 'auth',
-  layout: 'fullscreen',
-  layoutTransition: {name: 'slide-up'},
 })
 
 const route = useRoute()

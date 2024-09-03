@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col h-full gap-3 pt-4 overflow-y-hidden">
     <div class="flex flex-col items-stretch rounded-3xl mx-4 px-4 lg:mx-0 py-2 bg-white dark:bg-stone-950">
-      <div class="flex items-stretch">
+      <div class="flex items-stretch w-full">
         <MagnifyingGlassIcon class="w-6 h-6 shrink-0 my-auto"/>
-        <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl grow py-0"
+        <input v-model="searchTerm" class="bg-transparent border-none focus:ring-0 text-xl grow shrink min-w-0 py-0"
                placeholder="Search..."
                @input="search">
-        <IconButton class="flex items-center justify-center aspect-square" @click="tagDropdown?.toggle">
+        <IconButton class="flex items-center justify-center aspect-square shrink-0" @click="tagDropdown?.toggle">
           <FunnelIcon class="w-6 h-6 stroke-[1.5px] stroke-stone-950 dark:stroke-white"/>
         </IconButton>
       </div>

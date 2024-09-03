@@ -20,7 +20,7 @@
         <p>{{ t }}</p>
         <input v-model="name"
                class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-               placeholder="Username/Email" type="text">
+               placeholder="Email" type="text">
         <input v-model="password"
                class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                placeholder="Password" type="password">

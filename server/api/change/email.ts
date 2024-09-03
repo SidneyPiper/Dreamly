@@ -3,15 +3,14 @@ export default defineEventHandler(async (event) => {
     const email = body.email
 
     try {
-        /*
         await event.context.prisma.user.update({
             where: {
                 id: event.context.session!.user.id,
             },
             data: {
-                name: name,
+                email: email,
             }
-        })*/
+        })
 
         return {
             data: {
