@@ -28,11 +28,13 @@
         <AtSymbolIcon class="w-5 h-5"/>
         Change Username
       </IconButton>
-      <IconButton to="/change/email">
+      <!-- @vue-ignore -->
+      <IconButton v-if="!data?.user?.oauth" to="/change/email">
         <EnvelopeIcon class="w-5 h-5"/>
         Change Email
       </IconButton>
-      <IconButton to="/change/password">
+      <!-- @vue-ignore -->
+      <IconButton v-if="!data?.user?.oauth" to="/change/password">
         <KeyIcon class="w-5 h-5"/>
         Change Password
       </IconButton>
@@ -108,4 +110,5 @@ const headers = useRequestHeaders(['cookie'])
 const {data: dreamCount} = await useFetch('/api/dreams/count', {headers})
 const {data: avgTime} = await useFetch('/api/tracker/avg/sleep', {headers})
 const {data: avgQuality} = await useFetch('/api/tracker/avg/quality', {headers})
+const {data: session} = await useFetch('/api/me', {headers})
 </script>

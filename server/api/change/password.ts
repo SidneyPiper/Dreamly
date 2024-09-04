@@ -1,8 +1,17 @@
-import {genSalt, hash} from "bcrypt-ts";
+import {compare, genSalt, hash} from "bcrypt-ts";
+import {validatePassword} from "~/shared/validation";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const password = body.password
+    const old_password = body.old_password
+
+    if (event.context.session!.user.oauth) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'You can\'t change your password'
+        })
+    }
 
     const credentials = await event.context.prisma.user.findFirst({
         where: {
@@ -13,10 +22,19 @@ export default defineEventHandler(async (event) => {
         }
     })
 
-    if (!credentials?.password) {
+    const valid = await compare(old_password, credentials?.password!)
+
+    if (!valid) {
         throw createError({
             statusCode: 500,
-            statusMessage: 'You can\'t change your password'
+            statusMessage: 'Wrong password'
+        })
+    }
+
+    if (!validatePassword(password)) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Password is not sufficient.'
         })
     }
 
@@ -37,7 +55,7 @@ export default defineEventHandler(async (event) => {
         return {
             data: {
                 statusCode: 200,
-                statusMessage: 'Changed username successfully.'
+                statusMessage: 'Changed password successfully.'
             }
         }
     } catch (error) {

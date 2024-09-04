@@ -23,12 +23,24 @@ export default NuxtAuthHandler({
             const isSignIn = !!user;
             if (isSignIn) {
                 token.id = user ? user.id || '' : '';
+
+                const credentials = await prisma.user.findFirst({
+                    where: {
+                        id: user.id,
+                    },
+                    select: {
+                        password: true
+                    }
+                })
+
+                token.oauth = !credentials?.password;
             }
             return Promise.resolve(token);
         },
         // Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
         session: async ({session, token}) => {
-            (session as any).user.id = token.id
+            (session as any).user.id = token.id as string
+            (session as any).user.oauth = token.oauth
             return Promise.resolve(session)
         },
     },

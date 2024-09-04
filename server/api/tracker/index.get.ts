@@ -28,7 +28,7 @@ export default defineEventHandler(async (event): Promise<TrackerData[]> => {
     }
 
 
-    // hier kracht es und undendlicher error
+    // hier kracht es undendlicher error
     if (from > to) [from, to] = [to, from]
 
     return event.context.prisma.trackerData.findMany({

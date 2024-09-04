@@ -6,18 +6,18 @@
     </div>
 
     <form class="flex flex-col gap-3 my-4" @submit.prevent="changeUsername">
-      <input v-model="new_username"
-             class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-             placeholder="New Username" type="text">
-      <PrimaryButton>Save</PrimaryButton>
+      <Input v-model="new_username" placeholder="New Username" type="text" :validate-fn="validateUsername"/>
+      <PrimaryButton :disabled="!isUsernameValid">Save</PrimaryButton>
     </form>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {useNotificationsStore} from "stores/notifications";
+import {validateUsername} from "~/shared/validation";
 
 const {notify} = useNotificationsStore()
+const {signOut} = useAuth()
 
 const viewport = await useViewport()
 
@@ -37,6 +37,10 @@ definePageMeta({
 
 const new_username = ref<string>("")
 
+const isUsernameValid = computed(() => {
+  return validateUsername(new_username.value)
+});
+
 const changeUsername = async () => {
   await $fetch('/api/change/username', {
     method: 'POST',
@@ -45,7 +49,7 @@ const changeUsername = async () => {
     },
   }).then((response) => {
     notify(Level.SUCCESS, response.data.statusMessage)
-    useRouter().back()
+    signOut()
   }).catch((response) => {
     notify(Level.DANGER, response.data.statusMessage)
     return response
