@@ -72,6 +72,10 @@
         <BanknotesIcon class="w-5 h-5"/>
         Donate
       </IconButton>
+      <IconButton @click="downloadJson">
+        <FolderArrowDownIcon class="w-5 h-5"/>
+        Export data
+      </IconButton>
     </LabelContainer>
 
     <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4 rounded-xl">
@@ -92,9 +96,11 @@ import {
   KeyIcon,
   LifebuoyIcon,
   MoonIcon,
-  SunIcon
+  SunIcon,
+  FolderArrowDownIcon
 } from "@heroicons/vue/24/outline";
 import StatWidget from "~/components/StatWidget.vue";
+import {useNotificationsStore} from "stores/notifications";
 
 definePageMeta({
   middleware: 'auth',
@@ -104,11 +110,34 @@ definePageMeta({
 })
 
 const {data, signOut} = useAuth()
+const {notify} = useNotificationsStore()
 
 const headers = useRequestHeaders(['cookie'])
 
 const {data: dreamCount} = await useFetch('/api/dreams/count', {headers})
 const {data: avgTime} = await useFetch('/api/tracker/avg/sleep', {headers})
 const {data: avgQuality} = await useFetch('/api/tracker/avg/quality', {headers})
-const {data: session} = await useFetch('/api/me', {headers})
+
+async function downloadJson() {
+  await $fetch('/api/export', {
+    method: 'GET',
+  }).then(async (response) => {
+    // Create a blob from the JSON data
+    const blob = new Blob([JSON.stringify(response, null, 2)], {type: 'application/json'});
+
+    // Create a download link element
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'dreams.json';
+
+    // Trigger the download by programmatically clicking the link
+    link.click();
+
+    // Cleanup the object URL
+    URL.revokeObjectURL(link.href);
+  }).catch((response) => {
+    notify(Level.DANGER, response.data.statusMessage)
+    return response
+  })
+}
 </script>

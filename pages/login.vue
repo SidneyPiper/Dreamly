@@ -13,19 +13,15 @@
         Login with GitHub
       </button>
 
-      <span class="w-4/5 mx-auto h-1 bg-white dark:bg-gray-800 rounded-md"></span>
+      <span class="w-11/12 mx-auto h-1 bg-white dark:bg-gray-800 rounded-md"></span>
 
-      <form class="flex flex-col gap-3"
-            @submit.prevent="t = 'world'; signIn('credentials', { name, password })">
-        <p>{{ t }}</p>
-        <input v-model="name"
-               class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-               placeholder="Email" type="text">
-        <input v-model="password"
-               class="block py-2.5 text-stone-950 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-               placeholder="Password" type="password">
+      <form class="flex flex-col gap-3 w-72"
+            @submit.prevent="signIn('credentials', { name, password })">
+        <Input v-model="name" placeholder="Email" type="text"/>
+        <Input v-model="password" placeholder="Password" type="password"/>
         <PrimaryButton
-            class="flex text-gray-900 w-full py-3 rounded-lg justify-center items-center gap-3 font-semibold">
+            class="flex text-gray-900 w-full py-3 rounded-lg justify-center items-center gap-3 font-semibold"
+            :disabled="!name || !password">
           Login with credentials
         </PrimaryButton>
       </form>
@@ -42,8 +38,6 @@
 </template>
 
 <script lang="ts" setup>
-const t = ref('Hello')
-
 definePageMeta({
   middleware: 'auth',
   auth: {

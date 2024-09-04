@@ -25,8 +25,16 @@ export default defineEventHandler(async (event) => {
                 password: hashed_password
             }
         })
-        return true
+        return {
+            data: {
+                statusCode: 200,
+                statusMessage: 'Registered successfully.'
+            }
+        }
     } catch (error) {
-        return false
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'The email is already registered.'
+        })
     }
 })

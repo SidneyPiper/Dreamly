@@ -12,11 +12,11 @@
       <PrimaryButton :disabled="!isPasswordValid">Save</PrimaryButton>
     </form>
     <ul>
-      <li :class="passwordCriteria.minLength ? 'text-green-600' : ''">Minimum 8 characters</li>
-      <li :class="passwordCriteria.hasUpperCase ? 'text-green-600' : ''">At least one uppercase letter</li>
-      <li :class="passwordCriteria.hasLowerCase ? 'text-green-600' : ''">At least one lowercase letter</li>
-      <li :class="passwordCriteria.hasNumber? 'text-green-600' : ''">At least one number</li>
-      <li :class="passwordCriteria.hasSpecialChar ? 'text-green-600' : ''">At least one special character</li>
+      <li :class="passwordCriteria.minLength ? 'text-green-600' : ''">- Minimum 8 characters</li>
+      <li :class="passwordCriteria.hasUpperCase ? 'text-green-600' : ''">- At least one uppercase letter</li>
+      <li :class="passwordCriteria.hasLowerCase ? 'text-green-600' : ''">- At least one lowercase letter</li>
+      <li :class="passwordCriteria.hasNumber? 'text-green-600' : ''">- At least one number</li>
+      <li :class="passwordCriteria.hasSpecialChar ? 'text-green-600' : ''">- At least one special character</li>
     </ul>
   </div>
 </template>
