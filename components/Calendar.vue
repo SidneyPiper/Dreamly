@@ -127,6 +127,7 @@ const updateDay = (tracker: TrackerData) => {
 
 defineExpose({updateDay})
 
+
 onMounted(async () => {
   while (!scroller.value?.isScrollable) {
     await fetchOlder({month: 0})

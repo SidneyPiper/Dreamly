@@ -1,6 +1,6 @@
 <template>
   <Transition name="expand">
-    <div v-if="isOpen">
+    <div v-if="open">
       <div>
         <div class="flex flex-wrap gap-2 py-2">
           <button v-for="tag in tagsStore.tags" :key="tag.id" @click="update(tag.id)">
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import {useTagsStore} from "stores/tags";
+import {useSearchStore} from "stores/search";
 
 const filteredTags = defineModel<string[]>()
 
@@ -25,7 +26,7 @@ const emit = defineEmits<{
   (e: 'update'): void
 }>()
 
-const isOpen = ref<boolean>(false)
+const open = defineModel<boolean>("open")
 
 const tagsStore = useTagsStore()
 
@@ -42,7 +43,7 @@ const update = (id: string) => {
   emit('update')
 }
 
-const toggle = () => isOpen.value = !isOpen.value
+const toggle = () => open.value = !open.value
 
 defineExpose({toggle})
 </script>

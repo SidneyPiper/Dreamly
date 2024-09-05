@@ -224,5 +224,14 @@ export const useTrackerStore = defineStore('tracker', () => {
         })
     }
 
-    return {tracker, get, today, between, empty, fetch, create, update, destroy}
+    function cacheRange() {
+        //@ts-ignore
+        let min_date = DateTime.min(tracker.value.map(t => DateTime.fromJSDate(t.date)))
+        //@ts-ignore
+        let max_date = DateTime.max(tracker.value.map(t => DateTime.fromJSDate(t.date)))
+
+        return [min_date, max_date]
+    }
+
+    return {tracker, get, today, between, empty, fetch, create, update, destroy, cacheRange}
 })

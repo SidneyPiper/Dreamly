@@ -186,29 +186,5 @@ export const useDreamsStore = defineStore('dreams', () => {
         })
     }
 
-    /**
-     * Searches for a dream using a keyword. Uses Levenshtein distance in the backend.
-     *
-     * @param {string} term - The search term
-     * @param tags
-     */
-    async function search(term: string, tags?: string): Promise<DreamWithTags[]> {
-        return $fetch<DreamWithTags[]>('/api/dreams/search', {
-            method: 'GET',
-            headers: headers,
-            params: {
-                s: term,
-                tags: tags
-            }
-        }).then((response: DreamWithTags[]) => {
-            return response
-        }).catch((error) => {
-            console.log(error)
-            notify(Level.DANGER, 'Couldn\'t load dreams')
-            return error
-        })
-
-    }
-
-    return {dreams, get, empty, fetch, create, update, destroy, search}
+    return {dreams, get, empty, fetch, create, update, destroy}
 })

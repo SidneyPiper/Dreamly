@@ -106,17 +106,34 @@ definePageMeta({
   middleware: 'auth',
   layout: 'default',
   pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'}
+  layoutTransition: {name: 'stay'},
+  preserveScroll: true
 })
 
 const {data, signOut} = useAuth()
 const {notify} = useNotificationsStore()
+const dreamCount = ref<number>(0)
+const avgTime = ref<number>(0)
+const avgQuality = ref<number>(0)
 
-const headers = useRequestHeaders(['cookie'])
+onBeforeMount(() => {
+  fetchStats()
+})
 
-const {data: dreamCount} = await useFetch('/api/dreams/count', {headers})
-const {data: avgTime} = await useFetch('/api/tracker/avg/sleep', {headers})
-const {data: avgQuality} = await useFetch('/api/tracker/avg/quality', {headers})
+async function fetchStats() {
+  await $fetch('/api/dreams/count')
+      .then(async (response) => {
+        dreamCount.value = response
+      })
+  await $fetch('/api/tracker/avg/sleep')
+      .then(async (response) => {
+        avgTime.value = response
+      })
+  await $fetch('/api/tracker/avg/quality')
+      .then(async (response) => {
+        avgQuality.value = response
+      })
+}
 
 async function downloadJson() {
   await $fetch('/api/export', {

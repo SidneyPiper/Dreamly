@@ -78,7 +78,7 @@ const emit = defineEmits<{
 
 const tagsStore = useTagsStore()
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await tagsStore.fetch()
 })
 

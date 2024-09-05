@@ -7,5 +7,24 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import {setPageScrollPositions} from "stores/scroll";
+
+onBeforeRouteLeave((to, from, next) => {
+  if (from.meta.preserveScroll) {
+    const windowScroll = window.scrollY
+    const containerScroll: { [key: string]: number } = {}
+
+    document.querySelectorAll('[data-scrollable]').forEach((c) => {
+      if (c.hasAttribute('data-scrollable'))
+        containerScroll[c.getAttribute('data-scrollable')!] = c.scrollTop;
+    })
+
+    setPageScrollPositions(from.fullPath, {
+      window: windowScroll,
+      containers: containerScroll,
+    })
+  }
+  next()
+})
 </script>

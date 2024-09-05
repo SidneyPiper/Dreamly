@@ -3,11 +3,11 @@ import {DreamWithTags} from "~/prisma/types";
 export default defineEventHandler(async (event): Promise<DreamWithTags[]> => {
     const url = getRequestURL(event)
     const term = url.searchParams.get('s')
-    const tags = url.searchParams.get('tags')?.split(":")
+    const tags = url.searchParams.get('tags')?.split(":") || []
 
     let tagFilter: any = {}
 
-    if (tags![0] != '') {
+    if (tags.length > 0 && tags[0] != '') {
         tagFilter = {
             some: {
                 id: {

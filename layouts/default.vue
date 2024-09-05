@@ -1,7 +1,7 @@
 <template>
   <div
       class="flex flex-col lg:flex-row-reverse lg:justify-center lg:gap-12 h-dvh lg:min-h-dvh lg:h-auto font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
-    <div class="grow overflow-y-scroll relative lg:max-w-2xl">
+    <div data-scrollable="main" class="grow overflow-y-scroll relative lg:max-w-2xl">
       <slot/>
     </div>
     <div class="shrink-0">
@@ -17,4 +17,23 @@
 </template>
 <script lang="ts" setup>
 import Logo from "assets/images/logo.png";
+import {setPageScrollPositions} from "stores/scroll";
+
+onBeforeRouteLeave((to, from, next) => {
+  if (from.meta.preserveScroll) {
+    const windowScroll = window.scrollY
+    const containerScroll: { [key: string]: number } = {}
+
+    document.querySelectorAll('[data-scrollable]').forEach((c) => {
+      if (c.hasAttribute('data-scrollable'))
+        containerScroll[c.getAttribute('data-scrollable')!] = c.scrollTop;
+    })
+
+    setPageScrollPositions(from.fullPath, {
+      window: windowScroll,
+      containers: containerScroll,
+    })
+  }
+  next()
+})
 </script>

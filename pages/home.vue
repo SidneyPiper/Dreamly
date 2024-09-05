@@ -17,14 +17,16 @@ definePageMeta({
   middleware: 'auth',
   layout: 'default',
   pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'}
+  layoutTransition: {name: 'stay'},
+  preserveScroll: true
 })
 
 const selectedTags = ref<TagWithColor[]>([])
 
 const dreamsStore = useDreamsStore()
+const route = useRoute()
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await fetchNewPage()
 })
 
