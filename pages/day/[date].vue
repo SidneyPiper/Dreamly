@@ -28,7 +28,7 @@
     <DailyTracker ref="dailyTracker"
                   :tracker="tracker"
                   :date="('date' in $route.params && $route.params.date) ? DateTime.fromISO($route.params.date).toJSDate() : null"
-                  class="grow"
+                  class="grow lg:fixed lg:bottom-4"
                   @save="handleTrackerUpdate"/>
   </div>
 </template>

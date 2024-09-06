@@ -58,7 +58,7 @@
     </Transition>
 
     <!-- Available tags (little workaround because of flickering of taglist with the navbar)-->
-    <div v-if="edit && !navbarStore.open"
+    <div v-if="edit && (!navbarStore.open || !viewport.isLessThan('lg')) "
          class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0">
       <TagCreate @close="focusEditor"/>
       <Fader class="text-white dark:text-stone-950">

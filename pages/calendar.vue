@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col lg:flex-col-reverse h-full relative">
+  <div class="flex flex-col h-full relative">
     <Fader class="text-cloud dark:text-stone-900" vertical>
       <Calendar ref="calendar" data-scrollable="calender"/>
     </Fader>
 
-    <DailyTracker ref="dailyTracker" @save="handleTrackerSave"/>
+    <DailyTracker ref="dailyTracker" @save="handleTrackerSave" class="lg:fixed lg:bottom-4"/>
   </div>
 </template>
 

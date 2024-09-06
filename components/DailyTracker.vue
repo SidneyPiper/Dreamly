@@ -1,8 +1,8 @@
 <template>
   <Transition name="expand">
-    <div v-if="show">
+    <div v-if="show" class="lg:w-full lg:max-w-2xl">
       <div>
-        <div class="flex flex-col gap-3 p-4 shadow-lg bg-cloud dark:bg-stone-800 rounded-xl">
+        <div class="flex flex-col gap-3 p-4 shadow-lg bg-cloud dark:bg-stone-800 lg:rounded-xl lg:shadow-xl">
           <div>
             <h2 class="text-lg font-semibold">How did you sleep?</h2>
             <div class="flex items-center gap-2 mt-2">
