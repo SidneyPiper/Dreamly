@@ -2,12 +2,20 @@ import type {RouterConfig} from "@nuxt/schema";
 
 export default <RouterConfig>{
     scrollBehavior(to, from, savedPosition) {
-        if (to.meta.preserveScroll) {
-            const scroll = getPageScrollPositions(to.fullPath)
-            window.scrollTo(0, scroll.window)
-            for (const id in scroll.containers) {
-                console.log("setting", id, scroll.containers[id])
-                document.querySelector(`[data-scrollable="${id}"]`)?.scrollTo(0, scroll.containers[id])
+        const scroll = getPageScrollPositions(to.fullPath)
+        if (to.fullPath === from.fullPath) {
+            window.scrollTo({top: 0, left: 0, behavior: "smooth"})
+            document.querySelectorAll(`[data-scrollable]`).forEach(e => e.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+            }))
+        } else {
+            if (to.meta.preserveScroll) {
+                window.scrollTo(0, scroll.window)
+                for (const id in scroll.containers) {
+                    document.querySelector(`[data-scrollable="${id}"]`)?.scrollTo(0, scroll.containers[id])
+                }
             }
         }
     }

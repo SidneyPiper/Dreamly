@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     },
 
     devtools: {
-        enabled: true,
+        enabled: false,
 
         timeline: {
             enabled: true
@@ -70,7 +70,11 @@ export default defineNuxtConfig({
             ],
             meta: [
                 {name: 'msapplication-TileColor', content: '#da532c'},
-                {name: 'theme-color', content: '#ffffff'}
+                {name: 'theme-color', content: '#1c1917'},
+                {
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+                }
             ]
         }
     },

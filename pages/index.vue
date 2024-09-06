@@ -7,6 +7,11 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: "static"
+  layout: "static",
+  middleware: 'auth',
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/home',
+  },
 })
 </script>

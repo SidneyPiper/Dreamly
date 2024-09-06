@@ -1,7 +1,7 @@
 <template>
-  <div
-      class="flex flex-col lg:flex-row-reverse lg:justify-center lg:gap-12 h-dvh lg:min-h-dvh lg:h-auto font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
-    <div data-scrollable="main" class="grow overflow-y-scroll relative lg:max-w-2xl">
+  <div ref="containerRef"
+       class="flex flex-col lg:flex-row-reverse lg:justify-center lg:gap-12 h-dvh lg:min-h-dvh lg:h-auto font-sans text-stone-950 bg-cloud dark:text-white dark:bg-stone-900">
+    <div data-scrollable="main" class="flex flex-col grow overflow-y-scroll relative lg:max-w-2xl">
       <slot/>
     </div>
     <div class="shrink-0">
@@ -10,7 +10,7 @@
           <img :src="Logo" alt="Logo" class="w-8 h-8 "/>
           <h1 class="text-2xl font-bold">Dreamly</h1>
         </div>
-        <Tabs v-if="navbarStore.open"/>
+        <Tabs v-if="navbarStore.open" class="pb-4 lg:pb-0"/>
       </div>
     </div>
   </div>
@@ -19,6 +19,7 @@
 import Logo from "assets/images/logo.png";
 import {setPageScrollPositions} from "stores/scroll";
 import {useNavbarStore} from "stores/navbar";
+import {useRoute} from "#app";
 
 const navbarStore = useNavbarStore()
 
@@ -43,8 +44,25 @@ onBeforeRouteLeave((to, from, next) => {
 
 
 onBeforeRouteUpdate((to, from, next) => {
-  // TODO: fix navbar flickering, because it gets displayed to early
   navbarStore.showNavbar()
   next()
+})
+
+const containerRef = ref(null)
+
+const resizeHandler = (event) => {
+  if (useRoute().meta.resize) {
+    const height = event.target.height
+    containerRef.value.style.height = height + 'px'
+    window.scrollTo(0, 0)
+  }
+}
+
+onMounted(() => {
+  window.visualViewport.addEventListener('resize', resizeHandler)
+})
+
+onBeforeUnmount(() => {
+  window.visualViewport.removeEventListener('resize', resizeHandler)
 })
 </script>

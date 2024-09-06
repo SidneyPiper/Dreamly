@@ -43,17 +43,18 @@
     <!-- Theme -->
     <LabelContainer label="Theme">
       <IconButton :selected="$colorMode.preference == 'system'"
-                  class="flex items-center justify-between pr-2 py-4" @click="$colorMode.preference = 'system'">
+                  class="flex items-center justify-between pr-2 py-4"
+                  @click="$colorMode.preference = 'system'; handleStatusBar()">
         <ComputerDesktopIcon class="w-5 h-5"/>
         System
       </IconButton>
       <IconButton :selected="$colorMode.preference == 'dark'" class="flex items-center justify-between pr-2 py-4"
-                  @click="$colorMode.preference = 'dark'">
+                  @click="$colorMode.preference = 'dark'; handleStatusBar()">
         <MoonIcon class="w-5 h-5"/>
         Dark
       </IconButton>
       <IconButton :selected="$colorMode.preference == 'light'" class="flex items-center justify-between pr-2 py-4"
-                  @click="$colorMode.preference = 'light'">
+                  @click="$colorMode.preference = 'light'; handleStatusBar()">
         <SunIcon class="w-5 h-5"/>
         Light
       </IconButton>
@@ -152,6 +153,19 @@ async function downloadJson() {
   }).catch((response) => {
     notify(Level.DANGER, response.data.statusMessage)
     return response
+  })
+}
+
+const handleStatusBar = () => {
+  const color_mode = useColorMode()
+  const meta = document.querySelector("meta[name='theme-color']")
+
+  nextTick(() => {
+    if (color_mode.value == 'dark') {
+      meta?.setAttribute('content', '#1c1917')
+    } else {
+      meta?.setAttribute('content', '#e5e8db')
+    }
   })
 }
 </script>

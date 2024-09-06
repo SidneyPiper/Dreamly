@@ -1,18 +1,21 @@
 <template>
   <div class="flex flex-col grow group w-full gap-1.5" @click="click">
-    <div ref="titleRef"
+    <div id="editor-title"
+         ref="titleRef"
          :contenteditable="editable"
-         class="text-3xl resize-none break-words pt-0 text-wrap px-4 font-bold pb-0 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent" tabindex="0" type="text"
-         @input="computeTitleEmpty"
+         class="text-3xl resize-none break-words pt-0 text-wrap px-4 font-bold pb-0 border-0 block w-full focus:border-none focus:ring-0 focus:shadow-none focus:outline-0 bg-transparent"
+         tabindex="0" type="text"
+         @input="calcTitleEmpty"
          @keydown.down.prevent="down"
          @keydown.right="right"
          @keydown.enter.prevent="handleInputEnter">{{ dream?.title }}
     </div>
-    <textarea ref="contentRef" :readonly="(titleEmpty || !editable)"
-              class="block grow px-4 w-full resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
+    <textarea id="editor-content" ref="contentRef" :readonly="titleEmpty || !props.editable"
+              class="block grow px-4 w-full min-h-fit resize-none pt-0 border-0 cursor-text focus:border-none focus:ring-0 bg-transparent"
               @keydown.up="up"
               @keydown.left="left"
-              @keydown.backspace="left">{{ dream?.content }}</textarea>
+              @keydown.backspace="left"
+    >{{ dream?.content }}</textarea>
   </div>
 </template>
 
@@ -27,21 +30,26 @@ const props = defineProps<{
 const titleRef = ref<HTMLInputElement>()
 const contentRef = ref<HTMLTextAreaElement>()
 
-const titleEmpty = ref<boolean>(true)
-
 onMounted(() => {
   titleRef.value?.focus()
-  computeTitleEmpty()
+  calcTitleEmpty()
 })
 
-const computeTitleEmpty = () => {
+const titleEmpty = ref<boolean>(false)
+
+const calcTitleEmpty = () => {
   titleEmpty.value = titleRef.value?.innerText.length == 1 || titleRef.value?.innerText.length == 0
 }
+
 
 const handleInputEnter = () => {
   if (titleRef.value!.innerText.length > 0) {
     focusContent()
   }
+}
+
+const setTitleEmpty = () => {
+  titleEmpty.value = false
 }
 
 const focusContent = () => {
@@ -120,10 +128,12 @@ const reset = () => {
 defineExpose<{
   get: () => string[],
   focusContent: () => void
+  setTitleEmpty: () => void,
   reset: () => void
 }>({
   get,
   focusContent,
+  setTitleEmpty,
   reset
 })
 </script>

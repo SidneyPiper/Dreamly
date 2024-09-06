@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col grow pt-4 h-full">
+  <div class="flex flex-col grow pt-4">
 
     <!-- Top bar -->
     <div class="flex justify-between items-center px-4">
@@ -26,7 +26,7 @@
       <PrimaryButton v-if="edit" @click="save">
         <p class="w-9">Save</p>
       </PrimaryButton>
-      <PrimaryButton v-else @click="edit = true; focusEditor()">
+      <PrimaryButton v-else @click="handleEditButton">
         <p class="w-9">Edit</p>
       </PrimaryButton>
     </div>
@@ -58,8 +58,8 @@
     </Transition>
 
     <!-- Available tags (little workaround because of flickering of taglist with the navbar)-->
-    <div v-if="edit && (!navbarStore.open || !viewport.isLessThan('lg')) "
-         class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0">
+    <div v-if="edit && (!navbarStore.open || !viewport.isLessThan('lg'))"
+         class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0 transition-all pb-4 lg:pb-0">
       <TagCreate @close="focusEditor"/>
       <Fader class="text-white dark:text-stone-950">
         <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
@@ -89,6 +89,7 @@ watch(viewport.breakpoint, () => {
 
 definePageMeta({
   middleware: 'auth',
+  resize: true
 })
 
 const route = useRoute()
@@ -134,17 +135,18 @@ const save = async () => {
 }
 
 const focusEditor = () => {
-  editorRef.value!.focusContent()
+  editorRef.value!.setTitleEmpty()
+  nextTick(() => {
+    editorRef.value!.focusContent()
+  })
 }
 
 const select = (tag: TagWithColor) => {
   selectedTags.value.push(tag)
-  focusEditor()
 }
 
 const unselect = (tag: TagWithColor) => {
   selectedTags.value = selectedTags.value.filter(x => x != tag)
-  focusEditor()
 }
 
 const editOff = async () => {
@@ -157,5 +159,12 @@ const editOff = async () => {
 const deleteDream = async () => {
   await dreamsStore.destroy(dream.value)
   back()
+}
+
+const handleEditButton = () => {
+  edit.value = true
+  nextTick(() => {
+    focusEditor()
+  })
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout class="bg-cloud dark:bg-stone-800 text-stone-950 dark:text-cloud">
+  <NuxtLayout class="bg-cloud dark:bg-stone-800 text-stone-950 dark:text-cloud fixed inset-0">
     <NuxtPage/>
   </NuxtLayout>
   <Notifications/>
@@ -7,4 +7,20 @@
 
 <script lang="ts" setup>
 import Notifications from "~/components/Notifications.vue";
+
+onBeforeMount(() => {
+  const color_mode = useColorMode()
+  const meta = document.querySelector("meta[name='theme-color']")
+
+  if (color_mode.value == 'dark') {
+    meta?.setAttribute('content', '#1c1917')
+  } else {
+    meta?.setAttribute('content', '#e5e8db')
+  }
+
+  document.body.style.overflow = 'hidden'
+  document.body.style.position = 'fixed'
+  document.body.style.top = '0'
+  document.body.style.bottom = '0'
+})
 </script>

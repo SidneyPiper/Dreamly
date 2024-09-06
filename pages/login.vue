@@ -17,7 +17,7 @@
 
       <form class="flex flex-col gap-3 w-72"
             @submit.prevent="signIn('credentials', { name, password })">
-        <Input v-model="name" placeholder="Email" type="text"/>
+        <Input v-model="name" placeholder="Email" type="email"/>
         <Input v-model="password" placeholder="Password" type="password"/>
         <PrimaryButton
             class="flex text-gray-900 w-full py-3 rounded-lg justify-center items-center gap-3 font-semibold"
@@ -42,7 +42,7 @@ definePageMeta({
   middleware: 'auth',
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/profile',
+    navigateAuthenticatedTo: '/home',
   },
   layout: 'auth'
 })
