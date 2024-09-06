@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col h-full relative">
+    <!-- TODO: fix tracker position if to many dreams -->
     <div class="flex items-center justify-between p-4">
       <!-- Back button with date -->
       <TextButton class="flex items-center gap-2 font-semibold text-xl" @click="back">
@@ -26,6 +27,7 @@
     <!-- Tracker -->
     <DailyTracker ref="dailyTracker"
                   :tracker="tracker"
+                  :date="('date' in $route.params && $route.params.date) ? DateTime.fromISO($route.params.date).toJSDate() : null"
                   class="grow"
                   @save="handleTrackerUpdate"/>
   </div>
@@ -36,6 +38,8 @@ import {DateTime} from "luxon";
 import type {Day, DreamWithTags, TrackerData} from "types";
 import {ChevronLeftIcon} from "@heroicons/vue/24/solid";
 import type {DailyTracker} from "#components";
+import {useCalenderStore} from "stores/calender";
+import {useTrackerStore} from "#imports";
 
 const {back} = useRouter()
 
@@ -50,6 +54,7 @@ const dreams = ref<DreamWithTags[]>([])
 const tracker = ref<TrackerData | null>(null)
 const dailyTracker = ref<typeof DailyTracker>()
 
+
 if ('date' in route.params && route.params.date) {
   date.value = DateTime.fromISO(route.params.date)
 
@@ -61,6 +66,7 @@ if ('date' in route.params && route.params.date) {
     tracker.value = data.tracker
   })
 }
+
 
 const handleTrackerUpdate = (updatedTracker: TrackerData | null) => {
   dailyTracker.value?.hideTracker()

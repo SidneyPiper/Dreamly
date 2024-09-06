@@ -48,11 +48,15 @@
 <script lang="ts" setup>
 import type {TrackerData} from "types";
 import {useTrackerStore} from "stores/tracker";
+import {useCalenderStore} from "stores/calender";
+import type {DateTime} from "luxon";
 
 const {create, update, today} = useTrackerStore()
+const calenderStore = useCalenderStore()
 
 const props = defineProps<{
   tracker?: Partial<TrackerData> | null
+  date?: Date | null
 }>()
 
 /* The tracker object */
@@ -72,19 +76,35 @@ const emit = defineEmits<{
 const save = async () => {
   let updatedTracker: TrackerData | null
 
+  // hier kracht es mit dem datum beim updaten
   if (id.value !== null) {
     updatedTracker = (await update({
       id: id.value,
       quality: quality.value,
       duration: duration.value
     })).data.data ?? null
+
+    calenderStore.updateDay(updatedTracker!)
   } else {
-    updatedTracker = (await create({
-      date: new Date(),
-      quality: quality.value,
-      duration: duration.value
-    })).data.data ?? null
+    if (props.date) {
+      updatedTracker = (await create({
+        date: props.date,
+        quality: quality.value,
+        duration: duration.value
+      })).data.data ?? null
+    } else {
+      updatedTracker = (await create({
+        date: new Date(),
+        quality: quality.value,
+        duration: duration.value
+      })).data.data ?? null
+    }
+
+
+    calenderStore.updateDay(updatedTracker!)
   }
+
+  console.log(updatedTracker)
 
   show.value = false
   emit('save', updatedTracker)
