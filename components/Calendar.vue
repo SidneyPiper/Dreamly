@@ -5,7 +5,7 @@
                       :bottom="200"
                       class="grid grid-cols-1 @sm:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-4 items-stretch"
                       @bottom="hitBottom">
-      <div v-for="(month, i) in months" :key="i" class="flex flex-col gap-1 h-full">
+      <div v-for="(month, i) in calenderStore.months" :key="i" class="flex flex-col gap-1 h-full">
         <!-- Month name -->
         <p class="text-stone-600 dark:text-stone-400 font-semibold">
           {{ DateTime.now().minus({month: i}).toFormat("LLLL y") }}</p>
@@ -68,6 +68,7 @@
 import {DateTime, type DurationLike, Info} from 'luxon'
 import {onMounted} from "vue";
 import type {TrackerData} from "~/prisma/types";
+import {useCalenderStore} from "stores/calender";
 
 /* Circle math */
 const radius = 15
@@ -77,60 +78,19 @@ const offset = radius + strokeWeight
 const width = 2 * offset
 
 /* All the data */
-const months = ref<(Partial<TrackerData>[])[]>([])
-
-const {empty, between} = useTrackerStore()
+const calenderStore = useCalenderStore()
 
 const scroller = ref()
 
-const fetchOlder = async (duration: DurationLike) => {
-  let end = DateTime.now().minus({month: months.value.length}).endOf('month')
-  let start = end.minus(duration).startOf('month')
-
-  let month_rel = months.value.length;
-  for (let d = end.startOf('month'); d >= start; d = d.minus({month: 1}).startOf('month')) {
-    months.value[month_rel] = []
-
-    for (let i = 0; i < d.daysInMonth; i++) {
-      months.value[month_rel][i] = empty({
-        date: d.plus({days: i}).toJSDate()
-      })
-    }
-
-    month_rel++
-  }
-
-  await between(start, end).then(results => {
-    results.forEach(day => {
-      const month = Math.floor(Math.abs(DateTime.fromJSDate(day.date).startOf('month').diffNow().as('months')))
-      const dayOfMonth = DateTime.fromJSDate(day.date).day - 1
-
-      if (!months.value[month]) months.value[month] = []
-      months.value[month][dayOfMonth] = day
-    })
-  })
-}
 
 const hitBottom = async () => {
-  while (!scroller.value?.isScrollable) await fetchOlder({month: 0})
+  while (!scroller.value?.isScrollable) await calenderStore.fetchOlder({month: 0})
 }
-
-const updateDay = (tracker: TrackerData) => {
-  const date = DateTime.fromJSDate(tracker.date)
-  if (date > DateTime.now()) return
-  if (date < DateTime.now().minus({month: months.value.length})) return
-
-  const index = Math.floor(Math.abs(date.startOf('month').diffNow().as('months')))
-  if (!months.value[index]) months.value[index] = []
-  months.value[index][date.day - 1] = tracker
-}
-
-defineExpose({updateDay})
 
 
 onMounted(async () => {
   while (!scroller.value?.isScrollable) {
-    await fetchOlder({month: 0})
+    await calenderStore.fetchOlder({month: 0})
   }
 })
 </script>

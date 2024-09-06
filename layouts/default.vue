@@ -10,7 +10,7 @@
           <img :src="Logo" alt="Logo" class="w-8 h-8 "/>
           <h1 class="text-2xl font-bold">Dreamly</h1>
         </div>
-        <Tabs/>
+        <Tabs v-if="navbarStore.open"/>
       </div>
     </div>
   </div>
@@ -18,6 +18,10 @@
 <script lang="ts" setup>
 import Logo from "assets/images/logo.png";
 import {setPageScrollPositions} from "stores/scroll";
+import {useNavbarStore} from "stores/navbar";
+
+const navbarStore = useNavbarStore()
+
 
 onBeforeRouteLeave((to, from, next) => {
   if (from.meta.preserveScroll) {
@@ -34,6 +38,13 @@ onBeforeRouteLeave((to, from, next) => {
       containers: containerScroll,
     })
   }
+  next()
+})
+
+
+onBeforeRouteUpdate((to, from, next) => {
+  // TODO: fix navbar flickering, because it gets displayed to early
+  navbarStore.showNavbar()
   next()
 })
 </script>

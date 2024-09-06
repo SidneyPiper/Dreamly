@@ -15,24 +15,25 @@
 <script lang="ts" setup>
 import {useNotificationsStore} from "stores/notifications";
 import {validateUsername} from "~/shared/validation";
+import {useNavbarStore} from "stores/navbar";
+
 
 const {notify} = useNotificationsStore()
 const {signOut} = useAuth()
 
 const viewport = await useViewport()
+const navbarStore = useNavbarStore()
 
-if (!viewport.isLessThan('lg')) setPageLayout('default')
-else setPageLayout('fullscreen')
+if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+else navbarStore.hideNavbar()
 
 watch(viewport.breakpoint, () => {
-  if (!viewport.isLessThan('lg')) setPageLayout('default')
-  else setPageLayout('fullscreen')
+  if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+  else navbarStore.hideNavbar()
 })
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'fullscreen',
-  layoutTransition: {name: 'slide-up'},
 })
 
 const new_username = ref<string>("")

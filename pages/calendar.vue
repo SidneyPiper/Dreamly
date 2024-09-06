@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col lg:flex-col-reverse h-full relative">
     <Fader class="text-cloud dark:text-stone-900" vertical>
-      <Calendar ref="calendar"/>
+      <Calendar ref="calendar" data-scrollable="calender"/>
     </Fader>
 
     <DailyTracker ref="dailyTracker" @save="handleTrackerSave"/>
@@ -34,8 +34,6 @@ onBeforeMount(async () => {
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'default',
-  pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'}
+  preserveScroll: true
 })
 </script>

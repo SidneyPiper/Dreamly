@@ -30,9 +30,6 @@ import {useSearchStore} from "stores/search";
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'default',
-  pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'},
   preserveScroll: true
 })
 

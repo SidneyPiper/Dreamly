@@ -41,9 +41,6 @@ const {back} = useRouter()
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'default',
-  pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'}
 })
 
 const route = useRoute()

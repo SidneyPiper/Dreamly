@@ -15,9 +15,6 @@ import type {TagWithColor} from "~/prisma/types"
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'default',
-  pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'},
   preserveScroll: true
 })
 

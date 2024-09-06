@@ -28,9 +28,9 @@ export default defineEventHandler(async (event): Promise<TrackerData[]> => {
     }
 
 
-    // hier kracht es undendlicher error
     if (from > to) [from, to] = [to, from]
 
+    // hier kracht es undendlicher error
     return event.context.prisma.trackerData.findMany({
         where: {
             userId: event.context.session!.user.id,

@@ -31,24 +31,25 @@ import {
   hasUpperCase,
   validatePassword as vp
 } from "~/shared/validation";
+import {useNavbarStore} from "stores/navbar";
 
 const {notify} = useNotificationsStore()
 const {signOut} = useAuth()
 
 const viewport = await useViewport()
 
-if (!viewport.isLessThan('lg')) setPageLayout('default')
-else setPageLayout('fullscreen')
+const navbarStore = useNavbarStore()
+
+if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+else navbarStore.hideNavbar()
 
 watch(viewport.breakpoint, () => {
-  if (!viewport.isLessThan('lg')) setPageLayout('default')
-  else setPageLayout('fullscreen')
+  if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+  else navbarStore.hideNavbar()
 })
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'fullscreen',
-  layoutTransition: {name: 'slide-up'},
 })
 
 const old_password = ref<string>("")

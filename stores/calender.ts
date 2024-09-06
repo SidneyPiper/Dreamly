@@ -1,36 +1,49 @@
 import {defineStore} from 'pinia'
-import type {DreamWithTags, TagWithColor} from "types";
-import {useNotificationsStore} from "stores/notifications";
+import type {TrackerData} from "types";
+import type {DurationLike} from "luxon";
+import {DateTime} from "luxon";
 
 export const useCalenderStore = defineStore('calender', () => {
-    const term = ref<string>("")
-    const results = ref<DreamWithTags[]>([])
-    const tags = ref<string[]>([])
-    const filterOpen = ref<boolean>(false)
+    const months = ref<(Partial<TrackerData>[])[]>([])
+    const {empty, between} = useTrackerStore()
 
-    const {notify} = useNotificationsStore()
-    const headers = useRequestHeaders(['cookie']) as HeadersInit
+    async function fetchOlder(duration: DurationLike) {
+        let end = DateTime.now().minus({month: months.value.length}).endOf('month')
+        let start = end.minus(duration).startOf('month')
 
+        let month_rel = months.value.length;
+        for (let d = end.startOf('month'); d >= start; d = d.minus({month: 1}).startOf('month')) {
+            months.value[month_rel] = []
 
-    async function search(): Promise<DreamWithTags[]> {
-        const tags_string = tags.value.join(":")
-
-        return $fetch<DreamWithTags[]>('/api/dreams/search', {
-            method: 'GET',
-            headers: headers,
-            params: {
-                s: term,
-                tags: tags_string
+            for (let i = 0; i < d.daysInMonth; i++) {
+                months.value[month_rel][i] = empty({
+                    date: d.plus({days: i}).toJSDate()
+                })
             }
-        }).then((response: DreamWithTags[]) => {
-            results.value = response
-            return response
-        }).catch((error) => {
-            console.log(error)
-            notify(Level.DANGER, 'Couldn\'t load dreams')
-            return error
+
+            month_rel++
+        }
+
+        await between(start, end).then(results => {
+            results.forEach(day => {
+                const month = Math.floor(Math.abs(DateTime.fromJSDate(day.date).startOf('month').diffNow().as('months')))
+                const dayOfMonth = DateTime.fromJSDate(day.date).day - 1
+
+                if (!months.value[month]) months.value[month] = []
+                months.value[month][dayOfMonth] = day
+            })
         })
     }
 
-    return {search, term, tags, results, filterOpen}
+    const updateDay = (tracker: TrackerData) => {
+        const date = DateTime.fromJSDate(tracker.date)
+        if (date > DateTime.now()) return
+        if (date < DateTime.now().minus({month: months.value.length})) return
+
+        const index = Math.floor(Math.abs(date.startOf('month').diffNow().as('months')))
+        if (!months.value[index]) months.value[index] = []
+        months.value[index][date.day - 1] = tracker
+    }
+
+    return {months, fetchOlder, updateDay}
 })

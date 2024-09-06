@@ -57,8 +57,8 @@
       </div>
     </Transition>
 
-    <!-- Available tags -->
-    <div v-if="edit"
+    <!-- Available tags (little workaround because of flickering of taglist with the navbar)-->
+    <div v-if="edit && !navbarStore.open"
          class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0">
       <TagCreate @close="focusEditor"/>
       <Fader class="text-white dark:text-stone-950">
@@ -73,21 +73,22 @@ import type {TagWithColor} from '~/prisma/types'
 import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
+import {useNavbarStore} from "stores/navbar";
 
 const viewport = await useViewport()
 
-if (!viewport.isLessThan('lg')) setPageLayout('default')
-else setPageLayout('fullscreen')
+const navbarStore = useNavbarStore()
+
+if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+else navbarStore.hideNavbar()
 
 watch(viewport.breakpoint, () => {
-  if (!viewport.isLessThan('lg')) setPageLayout('default')
-  else setPageLayout('fullscreen')
+  if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
+  else navbarStore.hideNavbar()
 })
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'fullscreen',
-  layoutTransition: {name: 'slide-up'},
 })
 
 const route = useRoute()

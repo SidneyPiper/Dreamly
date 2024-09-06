@@ -104,9 +104,6 @@ import {useNotificationsStore} from "stores/notifications";
 
 definePageMeta({
   middleware: 'auth',
-  layout: 'default',
-  pageTransition: {name: 'fade-page'},
-  layoutTransition: {name: 'stay'},
   preserveScroll: true
 })
 
