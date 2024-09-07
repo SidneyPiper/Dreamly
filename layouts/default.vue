@@ -23,7 +23,6 @@ import {useRoute} from "#app";
 
 const navbarStore = useNavbarStore()
 
-
 onBeforeRouteLeave((to, from, next) => {
   if (from.meta.preserveScroll) {
     const windowScroll = window.scrollY
@@ -42,7 +41,6 @@ onBeforeRouteLeave((to, from, next) => {
   next()
 })
 
-
 onBeforeRouteUpdate((to, from, next) => {
   navbarStore.showNavbar()
   next()
@@ -54,6 +52,7 @@ const resizeHandler = (event) => {
   if (useRoute().meta.resize) {
     const height = event.target.height
     containerRef.value.style.height = height + 'px'
+    useNavbarStore().screenHeight = height
     window.scrollTo(0, 0)
   }
 }
