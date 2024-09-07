@@ -20,7 +20,7 @@
       <p class="hidden lg:block text-lg font-semibold">Search</p>
     </NuxtLink>
     <NuxtLink class="grow py-6 flex lg:hidden items-center justify-center relative" to="/dream">
-      <div class="flex absolute items-center justify-center bg-stone-950 dark:bg-white rounded-lg p-1">
+      <div class="w-8 h-8 flex items-center justify-center bg-stone-950 dark:bg-white rounded-lg p-1">
         <PlusIcon class="w-8 h-8 stroke-white dark:stroke-stone-950"/>
       </div>
     </NuxtLink>

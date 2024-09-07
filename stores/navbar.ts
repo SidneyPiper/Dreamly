@@ -3,7 +3,7 @@ import {defineStore} from 'pinia'
 
 export const useNavbarStore = defineStore('navbar', () => {
     const open = ref<boolean>(true)
-    const screenHeight = ref<number>(0)
+    const screenHeight = ref<number>(1000)
 
     function showNavbar() {
         open.value = true

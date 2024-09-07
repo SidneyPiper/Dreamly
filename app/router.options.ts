@@ -16,6 +16,9 @@ export default <RouterConfig>{
                 for (const id in scroll.containers) {
                     document.querySelector(`[data-scrollable="${id}"]`)?.scrollTo(0, scroll.containers[id])
                 }
+            } else {
+                window.scrollTo(0, 0)
+                document.querySelectorAll(`[data-scrollable]`).forEach(e => e.scrollTo(0, 0))
             }
         }
     }

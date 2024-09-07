@@ -65,9 +65,13 @@
         <IdentificationIcon class="w-5 h-5"/>
         About
       </IconButton>
-      <IconButton to="/privacy">
+      <IconButton to="/guide">
         <LifebuoyIcon class="w-5 h-5"/>
-        Help
+        Guide
+      </IconButton>
+      <IconButton to="/privacy">
+        <ScaleIcon class="w-5 h-5"/>
+        Privacy
       </IconButton>
       <IconButton to="/donate">
         <BanknotesIcon class="w-5 h-5"/>
@@ -98,7 +102,8 @@ import {
   LifebuoyIcon,
   MoonIcon,
   SunIcon,
-  FolderArrowDownIcon
+  FolderArrowDownIcon,
+  ScaleIcon
 } from "@heroicons/vue/24/outline";
 import StatWidget from "~/components/StatWidget.vue";
 import {useNotificationsStore} from "stores/notifications";
