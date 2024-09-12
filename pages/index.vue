@@ -1,7 +1,9 @@
 <template>
-  <div class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-    <StaticHeader/>
-    <StaticHero/>
+  <div class="px-4 w-dvw">
+    <div class="mx-auto max-w-7xl">
+      <StaticHeader/>
+      <StaticHero/>
+    </div>
   </div>
 </template>
 

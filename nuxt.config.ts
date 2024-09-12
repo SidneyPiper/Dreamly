@@ -60,7 +60,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            viewport: 'width=device-width, initial-scale=1, interactive-widget=resizes-visual',
+            viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
             link: [
                 {rel: 'apple-touch-icon', sizes: '120x120', href: '/apple-touch-icon.png'},
                 {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
@@ -71,10 +71,6 @@ export default defineNuxtConfig({
             meta: [
                 {name: 'msapplication-TileColor', content: '#da532c'},
                 {name: 'theme-color', content: '#1c1917'},
-                {
-                    name: 'viewport',
-                    content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-                }
             ]
         }
     },

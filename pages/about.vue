@@ -21,13 +21,11 @@
           </LabeledText>
           <LabeledText label="Lucid Dreaming" small>
             <p>A dream diary can aid in recognizing patterns in your dreams, making it easier to identify when you are
-              dreaming
-              and eventually take control of the dream.</p>
+              dreaming and eventually take control of the dream.</p>
           </LabeledText>
           <LabeledText label="Self-Reflection" small>
             <p>Dreams often reveal hidden thoughts and emotions. Recording them can lead to a deeper understanding of
-              your
-              subconscious.</p>
+              your subconscious.</p>
           </LabeledText>
           <LabeledText label="Improved Sleep Quality" small>
             <p>Being mindful of your dream habits can help track your sleep patterns and promote better rest.</p>
@@ -39,11 +37,9 @@
             a development duo with a shared fascination for dreams. Both
             Sidney and John collaborated closely on every aspect of the app, from its design to how it works behind the
             scenes. The idea for Dreamly came about when they began sharing their own vivid and interesting dreams,
-            realizing
-            the value of having a dedicated space to record and reflect on them.</p>
+            realizing the value of having a dedicated space to record and reflect on them.</p>
           <p>Together, they believe that <span class="font-bold">the better we understand our dreams, the better we understand ourselves</span>,
-            and Dreamly
-            was built with this philosophy in mind.</p>
+            and Dreamly was built with this philosophy in mind.</p>
         </LabeledText>
       </div>
     </Fader>

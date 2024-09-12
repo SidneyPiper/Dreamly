@@ -17,10 +17,5 @@ onBeforeMount(() => {
   } else {
     meta?.setAttribute('content', '#e5e8db')
   }
-
-  document.body.style.overflow = 'hidden'
-  document.body.style.position = 'fixed'
-  document.body.style.top = '0'
-  document.body.style.bottom = '0'
 })
 </script>
