@@ -6,8 +6,8 @@
         Back
       </TextButton>
     </div>
-    <Fader class="grow text-stone-900" vertical>
-      <div class="h-full overflow-y-auto text-white px-4 pb-4 flex flex-col gap-6">
+    <Fader class="grow text-cloud dark:text-stone-900" vertical>
+      <div class="h-full overflow-y-auto text-black dark:text-white px-4 pb-4 flex flex-col gap-6">
         <LabeledText label="Welcome to Dreamly!">
           <p>Dreamly is a user-friendly app designed to help you document and explore your dreams. Whether you're
             interested in dream interpretation, pursuing lucid dreaming, or simply want to capture and reflect on your

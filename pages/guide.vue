@@ -7,8 +7,8 @@
       </TextButton>
     </div>
 
-    <Fader class="grow text-stone-900" vertical>
-      <div class="h-full overflow-y-auto text-white px-4 pb-4 flex flex-col gap-6">
+    <Fader class="grow text-cloud dark:text-stone-900" vertical>
+      <div class="h-full overflow-y-auto text-black dark:text-white px-4 pb-4 flex flex-col gap-6">
         <LabeledText label="Using Dreamly: A Quick Guide">
           <p>Dreamly is designed to be easy and intuitive.</p>
         </LabeledText>

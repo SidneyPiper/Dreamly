@@ -61,7 +61,7 @@
     <div v-if="edit && (!navbarStore.open || !viewport.isLessThan('lg'))"
          class="flex items-stretch bg-white dark:bg-stone-950 lg:rounded-full lg:overflow-hidden lg:pr-5 lg:my-4 shrink-0 transition-all lg:pb-0"
          :class="useNavbarStore().screenHeight > 700 ? 'pb-4' : 'pb-0'">
-      <TagCreate @close="focusEditor"/>
+      <TagCreate @close="editorRef?.focusTitle()"/>
       <Fader class="text-white dark:text-stone-950">
         <TagList :editable="edit" :tags="availableTags" class="overflow-x-scroll py-3 px-1" @click="select"/>
       </Fader>

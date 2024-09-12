@@ -19,7 +19,7 @@
       </div>
       <div class="flex justify-center">
         <input ref="inputRef" v-model="label"
-               class="bg-transparent text-2xl flex-1 min-w-0 transition-colors delay-100 font-medium border-1 py-2.5 rounded-xl focus:border-cloud focus:ring-0 focus:shadow-none focus:outline-0 focus:placeholder:opacity-0 text-center"
+               class="bg-transparent border-stone-400 dark:border-stone-500 focus:border-stone-900 dark:focus:border-cloud text-2xl flex-1 min-w-0 transition-colors delay-100 font-medium border-1 py-2.5 rounded-xl focus:ring-0 focus:shadow-none focus:outline-0 focus:placeholder:opacity-0 text-center"
                maxlength="32"
                type="text">
       </div>
@@ -46,7 +46,7 @@
     <Transition name="expand">
       <div v-if="confirm" v-click-outside="() => confirm = null" class="mt-auto">
         <div>
-          <div class="flex p-4 bg-white dark:bg-stone-800 flex-col gap-3">
+          <div class="flex p-4 bg-white dark:bg-stone-800 flex-col gap-3 pb-8 lg:pb-4">
             <h3 class="text-lg font-semibold">Are you sure?</h3>
             <p>This tag will be deleted and removed from all you dreams. This action is irreversible!</p>
             <div class="flex items-center gap-3 grow justify-between flex-wrap">

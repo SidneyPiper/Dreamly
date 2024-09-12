@@ -17,8 +17,8 @@
     </div>
 
     <!-- Dreams -->
-    <Fader class="grow text-stone-900" vertical>
-      <div class="h-full overflow-y-auto text-white">
+    <Fader class="grow text-cloud dark:text-stone-900" vertical>
+      <div class="h-full overflow-y-auto text-black dark:text-white">
         <Dream v-for="dream in dreams" :key="dream.id!" :dream="dream" :short-desc="true" :show-date="false"
                class="last:border-none border-b-4 border-b-white dark:border-b-stone-950"/>
       </div>

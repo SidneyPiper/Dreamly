@@ -56,6 +56,10 @@ const focusContent = () => {
   contentRef.value!.focus({preventScroll: true})
 }
 
+const focusTitle = () => {
+  titleRef.value!.focus({preventScroll: true})
+}
+
 const click = (event: Event) => {
   if (titleEmpty.value) {
     event.preventDefault()
@@ -129,11 +133,13 @@ defineExpose<{
   get: () => string[],
   focusContent: () => void
   setTitleEmpty: () => void,
+  focusTitle: () => void,
   reset: () => void
 }>({
   get,
   focusContent,
   setTitleEmpty,
+  focusTitle,
   reset
 })
 </script>
