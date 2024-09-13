@@ -1,8 +1,13 @@
 <template>
   <div class="px-4 w-dvw">
-    <div class="mx-auto max-w-7xl">
+    <div class="space-y-6 lg:space-y-16 mx-auto max-w-7xl">
       <StaticHeader/>
-      <StaticHero/>
+      <div class="space-y-32">
+        <StaticHero/>
+        <StaticReasons/>
+        <StaticFeatures/>
+        <StaticTeam/>
+      </div>
     </div>
   </div>
 </template>
