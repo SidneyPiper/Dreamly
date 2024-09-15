@@ -1,6 +1,6 @@
 <template>
-  <div
-      class="flex flex-col font-sans text-stone-950 h-dvh bg-cloud dark:text-white dark:bg-stone-900 overflow-y-auto">
+  <div class="flex flex-col font-sans text-stone-950 h-dvh bg-cloud dark:text-white dark:bg-stone-900 overflow-y-auto"
+       data-scrollable="wrapper">
     <slot/>
   </div>
   <div class="fixed top-0 left-0 text-cloud">

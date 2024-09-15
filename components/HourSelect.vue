@@ -51,7 +51,6 @@ const updateDisplay = () => {
 }
 
 watch(duration, (newTime) => {
-  console.log("HourSelect/change: " + newTime)
   constrainTime()
   updateDisplay()
 }, {immediate: true})

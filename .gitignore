@@ -23,4 +23,8 @@ logs
 .env.*
 !.env.example
 
+# Prisma
 prisma/*.db
+
+# Service Worker
+sw.*

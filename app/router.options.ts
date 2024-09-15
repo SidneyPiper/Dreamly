@@ -17,6 +17,7 @@ export default <RouterConfig>{
                     document.querySelector(`[data-scrollable="${id}"]`)?.scrollTo(0, scroll.containers[id])
                 }
             } else {
+                console.log("Not preserving scroll. Up to the top")
                 window.scrollTo(0, 0)
                 document.querySelectorAll(`[data-scrollable]`).forEach(e => e.scrollTo(0, 0))
             }

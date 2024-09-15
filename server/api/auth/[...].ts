@@ -9,7 +9,7 @@ import {compare} from "bcrypt-ts";
 const prisma = new PrismaClient()
 
 export default NuxtAuthHandler({
-    secret: 'my-secret',
+    secret: process.env.NUXT_NEXTAUTH_SECRET,
     pages: {
         signIn: '/login'
     },

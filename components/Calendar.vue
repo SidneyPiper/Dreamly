@@ -24,7 +24,7 @@
 
             <!-- Actual days -->
             <NuxtLink v-for="data in month" :key="data.date!.toISOString()"
-                      :to="DateTime.fromJSDate(data.date!) <= DateTime.now().endOf('day') && '/day/' + DateTime.fromJSDate(data.date!).toISODate()"
+                      :to="DateTime.fromJSDate(data.date!) <= DateTime.now().endOf('day') ? '/day/' + DateTime.fromJSDate(data.date!).toISODate() : '#'"
                       class="flex flex-col grow justify-center items-center text-cloud dark:text-stone-950 p-1 relative">
               <svg :style="{width: width + 'px', height: width + 'px'}"
                    class="-rotate-90 flex items-center justify-center transition-all">
@@ -65,9 +65,8 @@
 </template>
 
 <script lang="ts" setup>
-import {DateTime, type DurationLike, Info} from 'luxon'
+import {DateTime, Info} from 'luxon'
 import {onMounted} from "vue";
-import type {TrackerData} from "~/prisma/types";
 import {useCalenderStore} from "stores/calender";
 
 /* Circle math */

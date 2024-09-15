@@ -26,7 +26,7 @@ export default defineNuxtConfig({
         '@nuxtjs/google-fonts',
         '@nuxtjs/color-mode',
         '@pinia/nuxt',
-        "nuxt-viewport"
+        "nuxt-viewport",
     ],
 
     colorMode: {
@@ -70,6 +70,10 @@ export default defineNuxtConfig({
                 {rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#5bbad5'},
             ],
             meta: [
+                {
+                    name: 'description',
+                    content: 'Dreamly is a gentle companion for capturing and exploring your dreams.'
+                },
                 {name: 'msapplication-TileColor', content: '#da532c'},
                 {name: 'theme-color', content: '#1c1917'},
             ]
