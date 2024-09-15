@@ -3,6 +3,7 @@
        data-scrollable="wrapper">
     <slot/>
   </div>
+  <!--
   <div class="fixed top-0 left-0 text-cloud">
     <p class="sm:hidden">XS</p>
     <p class="hidden sm:block md:hidden">SM</p>
@@ -11,6 +12,7 @@
     <p class="hidden xl:block 2xl:hidden">XL</p>
     <p class="hidden 2xl:block">2XL</p>
   </div>
+  -->
 </template>
 
 <script setup>
