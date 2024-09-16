@@ -83,9 +83,28 @@
       </IconButton>
     </LabelContainer>
 
-    <PrimaryButton class="border-red-600 text-red-600 bg-red-600 py-4 rounded-xl">
+    <div v-if="confirm"
+         class="fixed w-dvw h-dvh top-0 left-0 z-10 bg-black/80">
+      <div class="flex items-center justify-center h-full w-full">
+        <div v-click-outside="() => confirm = false" class="flex p-4 bg-white dark:bg-stone-800 flex-col gap-3">
+          <h3 class="text-lg font-semibold">Are you sure?</h3>
+          <p>Your account and all your dreams will be deleted. This action is irreversible!</p>
+          <div class="flex items-center gap-3 grow justify-between flex-wrap">
+            <div class="flex gap-x-2 gap-y-3 items-stretch shrink-0 grow">
+              <SecondaryButton class="grow justify-center" @click="confirm = false">Cancel</SecondaryButton>
+              <PrimaryButton class="bg-red-600 grow justify-center" @click="deleteAccount">Confirm</PrimaryButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <PrimaryButton
+        class="border-red-600 text-red-600 bg-red-600 py-4 rounded-xl"
+        @click="confirm = true">
       Delete Account
     </PrimaryButton>
+
   </div>
 </template>
 
@@ -108,6 +127,8 @@ import {
 import StatWidget from "~/components/StatWidget.vue";
 import {useNotificationsStore} from "stores/notifications";
 import {setPageScrollPositions} from "stores/scroll";
+import type {Response} from "types";
+import {navigateTo} from "#app";
 
 definePageMeta({
   middleware: 'auth',
@@ -137,10 +158,23 @@ const {notify} = useNotificationsStore()
 const dreamCount = ref<number>(0)
 const avgTime = ref<number>(0)
 const avgQuality = ref<number>(0)
+const confirm = ref<boolean>(false)
 
 onBeforeMount(() => {
   fetchStats()
 })
+
+
+const deleteAccount = async () => {
+  await $fetch<Response<null>>('/api/user/', {
+    method: 'DELETE'
+  }).then(response => {
+    notify(Level.SUCCESS, response.data.statusMessage)
+    signOut({callbackUrl: '/'})
+  }).catch((response) => {
+    notify(Level.DANGER, response.data.statusMessage)
+  })
+}
 
 async function fetchStats() {
   await $fetch('/api/dreams/count')
