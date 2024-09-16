@@ -16,6 +16,7 @@
 import {useNotificationsStore} from "stores/notifications";
 import {validateUsername} from "~/shared/validation";
 import {useNavbarStore} from "stores/navbar";
+import {onBeforeUnmount} from "vue";
 
 
 const {notify} = useNotificationsStore()
@@ -30,6 +31,10 @@ else navbarStore.hideNavbar()
 watch(viewport.breakpoint, () => {
   if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
   else navbarStore.hideNavbar()
+})
+
+onBeforeUnmount(() => {
+  navbarStore.showNavbar()
 })
 
 definePageMeta({

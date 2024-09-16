@@ -21,6 +21,7 @@
     "@types/luxon": "^3.4.2",
     "bcrypt-ts": "^5.0.2",
     "click-outside-vue3": "^4.0.1",
+    "jose": "^5.9.2",
     "luxon": "^3.4.4",
     "maska": "^3.0.0",
     "next-auth": "4.21.1",

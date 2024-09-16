@@ -75,6 +75,7 @@ import type {Editor} from "#components";
 import {type Dream, useDreamsStore} from "~/stores/dreams";
 import {useTagsStore} from "~/stores/tags";
 import {useNavbarStore} from "stores/navbar";
+import {onBeforeUnmount} from "vue";
 
 const viewport = await useViewport()
 
@@ -86,6 +87,10 @@ else navbarStore.hideNavbar()
 watch(viewport.breakpoint, () => {
   if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
   else navbarStore.hideNavbar()
+})
+
+onBeforeUnmount(() => {
+  navbarStore.showNavbar()
 })
 
 definePageMeta({

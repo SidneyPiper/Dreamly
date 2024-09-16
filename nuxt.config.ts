@@ -55,7 +55,9 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         githubClientId: '',
-        githubClientSecret: ''
+        githubClientSecret: '',
+        nextauthUrl: '',
+        nextauthSecret: ''
     },
 
     app: {

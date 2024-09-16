@@ -32,6 +32,7 @@ import {
   validatePassword as vp
 } from "~/shared/validation";
 import {useNavbarStore} from "stores/navbar";
+import {onBeforeUnmount} from "vue";
 
 const {notify} = useNotificationsStore()
 const {signOut} = useAuth()
@@ -46,6 +47,10 @@ else navbarStore.hideNavbar()
 watch(viewport.breakpoint, () => {
   if (!viewport.isLessThan('lg')) navbarStore.showNavbar()
   else navbarStore.hideNavbar()
+})
+
+onBeforeUnmount(() => {
+  navbarStore.showNavbar()
 })
 
 definePageMeta({
