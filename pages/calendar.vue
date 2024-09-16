@@ -12,6 +12,8 @@
 import type {TrackerData} from "types";
 import {type Calendar, DailyTracker} from "#components";
 import {useTrackerStore} from "stores/tracker";
+import {onBeforeUnmount} from "vue";
+import {setPageScrollPositions} from "stores/scroll";
 
 const {today} = useTrackerStore()
 
@@ -35,5 +37,20 @@ onBeforeMount(async () => {
 definePageMeta({
   middleware: 'auth',
   preserveScroll: true
+})
+
+onBeforeUnmount(() => {
+  const windowScroll = window.scrollY
+  const containerScroll: { [key: string]: number } = {}
+
+  document.querySelectorAll('[data-scrollable]').forEach((c) => {
+    if (c.hasAttribute('data-scrollable'))
+      containerScroll[c.getAttribute('data-scrollable')!] = c.scrollTop;
+  })
+
+  setPageScrollPositions(from.fullPath, {
+    window: windowScroll,
+    containers: containerScroll,
+  })
 })
 </script>
