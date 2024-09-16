@@ -41,13 +41,6 @@ onBeforeRouteLeave((to, from, next) => {
   next()
 })
 
-onBeforeRouteUpdate((to, from, next) => {
-  navbarStore.showNavbar()
-  nextTick(() => {
-    next()
-  })
-})
-
 const containerRef = ref(null)
 
 const resizeHandler = (event: any) => {
