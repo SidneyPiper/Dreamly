@@ -15,11 +15,14 @@ export const useSearchStore = defineStore('search', () => {
     async function search(): Promise<DreamWithTags[]> {
         const tags_string = tags.value.join(":")
 
+        console.log(term.value)
+        console.log(tags_string)
+
         return $fetch<DreamWithTags[]>('/api/dreams/search', {
             method: 'GET',
             headers: headers,
             params: {
-                s: term,
+                s: term.value,
                 tags: tags_string
             }
         }).then((response: DreamWithTags[]) => {
