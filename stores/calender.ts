@@ -36,19 +36,12 @@ export const useCalenderStore = defineStore('calender', () => {
     }
 
     const updateDay = (tracker: TrackerData) => {
-        console.log("updateDay Start")
         const date = DateTime.fromJSDate(tracker.date)
         if (date > DateTime.now()) return
         if (date < DateTime.now().minus({month: months.value.length})) return
-
-        console.log("updateDay mid", date)
-
         const index = Math.floor(Math.abs(date.startOf('month').diffNow().as('months')))
-        console.log("updateDay index", index)
         if (!months.value[index]) months.value[index] = []
         months.value[index][date.day - 1] = tracker
-
-        console.log("calender store: ", months.value[index][date.day - 1])
     }
 
     return {months, fetchOlder, updateDay}

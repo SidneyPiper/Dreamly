@@ -29,7 +29,6 @@ const installPrompt = ref<any>(null)
 
 if (import.meta.client) {
   window.addEventListener('beforeinstallprompt', e => {
-    console.log('beforeinstallprompt fired')
     installPrompt.value = e
     showButton.value = true
   })

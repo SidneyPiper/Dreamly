@@ -104,8 +104,6 @@ const save = async () => {
     calenderStore.updateDay(updatedTracker!)
   }
 
-  console.log(updatedTracker)
-
   show.value = false
   emit('save', updatedTracker)
 }
